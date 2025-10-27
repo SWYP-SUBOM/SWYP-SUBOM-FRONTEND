@@ -1,1 +1,234 @@
 @import 'tailwindcss';
+
+@theme {
+  /* 폰트 설정 */
+  --font-family-sans: 'SUIT Variable', system-ui, sans-serif;
+
+  /* 폰트 두께 설정 */
+  --font-weight-bold: 700;
+  --font-weight-semibold: 600;
+  --font-weight-medium: 500;
+
+  /* 타이포그래피 설정 */
+  --font-size-title-01: 24px;
+  --font-size-title-02: 20px;
+  --font-size-body-01: 18px;
+  --font-size-body-02: 16px;
+  --font-size-body-03: 14px;
+  --font-size-caption-01: 12px;
+
+  --line-height-tight: 130%;
+  --line-height-relaxed: 160%;
+  --letter-spacing-tight: -0.5%;
+
+  /* 일반 색상 */
+  --color-blue2: #f2f6ff;
+
+  /* 주 색상 (Primary Color) */
+  --color-b1: #edf7ff;
+  --color-b2: #d7ecff;
+  --color-b3: #b9e0ff;
+  --color-b4: #88ccff;
+  --color-b5: #50b0ff;
+  --color-b6: #288cff;
+  --color-b7: #2277ff;
+  --color-b8: #0a55eb;
+  --color-b9: #0f43be;
+  --color-b10: #133e95;
+
+  /* 회색 계열 색상 (Gray Color) */
+  --color-white: #f9f9f9;
+  --color-gray-100: #f3f5f8;
+  --color-gray-200: #eef1f4;
+  --color-gray-300: #e7ebee;
+  --color-gray-400: #e0e4e7;
+  --color-gray-500: #d0d2d9;
+  --color-gray-600: #acafba;
+  --color-gray-700: #8e919c;
+  --color-gray-800: #484953;
+  --color-gray-900: #222329;
+  --color-black: #121212;
+
+  /* Action 색상 */
+  --color-action-blue: #6da0ff;
+  --color-action-pink: #ff8c8c;
+  --color-action-purple: #ce9cff;
+  --color-action-yellow: #ffd16e;
+  --color-action-green: #3ff0b2;
+  --color-action-error: #fe4145;
+  --color-action-complete: #ff5222;
+}
+
+/* 글로벌 폰트 설정 */
+body {
+  font-family: var(--font-family-sans);
+}
+
+/* 디자인 시스템 타이포그래피 클래스 */
+.T01_B {
+  font-size: var(--font-size-title-01);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.T02_B {
+  font-size: var(--font-size-title-02);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-tight);
+}
+
+.B01_B {
+  font-size: var(--font-size-body-01);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.B01_M {
+  font-size: var(--font-size-body-01);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-tight);
+}
+
+.B02_B {
+  font-size: var(--font-size-body-02);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.B02_M {
+  font-size: var(--font-size-body-02);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-tight);
+}
+
+.B03_B {
+  font-size: var(--font-size-body-03);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.B03_M {
+  font-size: var(--font-size-body-03);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-tight);
+}
+
+.B03_1_M {
+  font-size: var(--font-size-body-03);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-relaxed);
+}
+.C01_SB {
+  font-size: var(--font-size-caption-01);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+}
+.C01_M {
+  font-size: var(--font-size-caption-01);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-tight);
+}
+
+/* 색상 클래스들 */
+.color-b1 {
+  color: var(--color-b1);
+}
+.color-b2 {
+  color: var(--color-b2);
+}
+.color-b3 {
+  color: var(--color-b3);
+}
+.color-b4 {
+  color: var(--color-b4);
+}
+.color-b5 {
+  color: var(--color-b5);
+}
+.color-b6 {
+  color: var(--color-b6);
+}
+.color-b7 {
+  color: var(--color-b7);
+}
+.color-b8 {
+  color: var(--color-b8);
+}
+.color-b9 {
+  color: var(--color-b9);
+}
+.color-b10 {
+  color: var(--color-b10);
+}
+
+.color-blue2 {
+  color: var(--color-blue2);
+}
+
+.text-white {
+  color: var(--color-white);
+}
+.text-gray-100 {
+  color: var(--color-gray-100);
+}
+.text-gray-200 {
+  color: var(--color-gray-200);
+}
+.text-gray-300 {
+  color: var(--color-gray-300);
+}
+.text-gray-400 {
+  color: var(--color-gray-400);
+}
+.text-gray-500 {
+  color: var(--color-gray-500);
+}
+.text-gray-600 {
+  color: var(--color-gray-600);
+}
+.text-gray-700 {
+  color: var(--color-gray-700);
+}
+.text-gray-800 {
+  color: var(--color-gray-800);
+}
+.text-gray-900 {
+  color: var(--color-gray-900);
+}
+.text-black {
+  color: var(--color-black);
+}
+
+.color-action-blue {
+  color: var(--color-action-blue);
+}
+.color-action-pink {
+  color: var(--color-action-pink);
+}
+.color-action-purple {
+  color: var(--color-action-purple);
+}
+.color-action-yellow {
+  color: var(--color-action-yellow);
+}
+.color-action-green {
+  color: var(--color-action-green);
+}
+.color-action-error {
+  color: var(--color-action-error);
+}
+.color-action-complete {
+  color: var(--color-action-complete);
+}
+
+/* 모바일 레이아웃 스타일 */
+.mobile-layout {
+  max-width: 360px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: var(--color-white);
+  position: relative;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
