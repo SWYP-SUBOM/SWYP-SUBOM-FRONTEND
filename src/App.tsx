@@ -1,4 +1,4 @@
-import { MobileLayout } from './components/layout/MobileLayout';
+import { MobileLayout } from './layout/MobileLayout';
 
 function App() {
   return (
