@@ -8,7 +8,10 @@ const smallCategoryBoxes = CategoryBoxItems.filter((item) => item.column === 2);
 
 export const CategoryBoxGrid = () => {
   return (
-    <div className="flex flex-grow gap-[7px] flex-1 mb-15 object-contain">
+    <div
+      className="flex flex-grow gap-[7px] flex-1 object-contain"
+      style={{ paddingBottom: `calc(60px + env(safe-area-inset-bottom))` }}
+    >
       <div className="flex flex-col flex-1 gap-1 justify-between">
         {largeCategoryBoxes.map((largeCategoryBox) => (
           <CategoryBox
