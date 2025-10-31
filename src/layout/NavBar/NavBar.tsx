@@ -7,8 +7,9 @@ export const NavBar = () => {
 
   return (
     <div
-      className="flex justify-between gap-[30px] px-[17px] items-center absolute bottom-0 w-full py-[10px]
-                bg-[#F9F9F9]/80 backdrop-blur-md rounded-xl shadow-[0px_10px_50px_0px_#D0D2D9]"
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 flex justify-between items-center gap-8 max-w-[360px] w-full
+       py-2.5 bg-[#F9F9F9]/80 backdrop-blur-md rounded-xl shadow-[0px_10px_50px_0px_#D0D2D9]"
+      style={{ paddingBottom: `calc(10px + env(safe-area-inset-bottom))` }}
     >
       {NAVBAR_ITEMS.map((item) => (
         <NavBarIcon
