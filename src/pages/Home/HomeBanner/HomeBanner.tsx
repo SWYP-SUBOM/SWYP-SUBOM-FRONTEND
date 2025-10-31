@@ -6,7 +6,9 @@ export const HomeBannerTitle = ({ children, textColor }: HomeBannerTitleProps) =
   return <div className={`${textColor} T02_B`}>{children}</div>;
 };
 
+/*todo.사용자 이름 불러오기 API 호출*/
 const username = '지수';
+
 const bannerStatus = HomeBannerItem['NOT_STARTED'];
 const titleContent =
   typeof bannerStatus.title === 'function' ? bannerStatus.title(username) : bannerStatus.title;
@@ -15,7 +17,7 @@ export const HomeBanner = () => {
   return (
     <div
       className={`
-          relative mt-16 flex h-[134px] py-[22px] px-4 justify-between rounded-2xl
+          relative mt-[14px] flex h-[134px] py-[22px] px-4 justify-between rounded-2xl
           ${HomeBannerItem['NOT_STARTED'].bgColor} 
         `}
     >
