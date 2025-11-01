@@ -30,7 +30,7 @@ export const Xbutton = () => {
 
 export const Content = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="relative bg-[#F9F9F9] max-w-[328px]  max-h-[288px] w-full py-6 rounded-2xl px-5">
+    <div className="relative bg-[#F9F9F9] max-w-[328px] max-h-[288px] w-full py-6 rounded-2xl px-5">
       {children}
     </div>
   );
