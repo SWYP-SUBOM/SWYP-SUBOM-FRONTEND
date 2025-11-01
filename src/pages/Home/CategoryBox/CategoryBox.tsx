@@ -21,7 +21,7 @@ export const CategoryBox = ({
       <div className="B02_B" style={{ color: titleColor }}>
         {title}
       </div>
-      <img src={icon} className="w-[54px] h-[52px] absolute bottom-4 right-4" />
+      <img src={icon} className="w-[56px] h-[57px] absolute bottom-4 right-4" />
     </div>
   );
 };

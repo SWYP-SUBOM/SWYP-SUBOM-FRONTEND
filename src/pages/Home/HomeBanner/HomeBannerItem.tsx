@@ -1,8 +1,8 @@
-import penCompleteWithClick from '../../../assets/HomeBanner/pen-complete-withclick.svg';
-import penComplete from '../../../assets/HomeBanner/pen-complete.svg';
-import penDraft from '../../../assets/HomeBanner/pen-draft.svg';
-import penGuest from '../../../assets/HomeBanner/pen-guest.svg';
-import penNotStarted from '../../../assets/HomeBanner/pen-not-started.svg';
+import penCompleteWithClick from '../../../assets/HomeBanner/pen-complete-withclick.png';
+import penComplete from '../../../assets/HomeBanner/pen-complete.png';
+import penDraft from '../../../assets/HomeBanner/pen-draft.png';
+import penGuest from '../../../assets/HomeBanner/pen-guest.png';
+import penNotStarted from '../../../assets/HomeBanner/pen-not-started.png';
 import type {
   HomeBannerItemType,
   HomeBannerStatus,

@@ -1,8 +1,8 @@
-import culture from '../../../assets/CategoryBox/culture.svg';
-import daily from '../../../assets/CategoryBox/daily.svg';
-import hobby from '../../../assets/CategoryBox/hobby.svg';
-import relationship from '../../../assets/CategoryBox/relationship.svg';
-import values from '../../../assets/CategoryBox/values.svg';
+import culture from '../../../assets/CategoryBox/culture.png';
+import daily from '../../../assets/CategoryBox/daily.png';
+import hobby from '../../../assets/CategoryBox/hobby.png';
+import relationship from '../../../assets/CategoryBox/relationship.png';
+import value from '../../../assets/CategoryBox/value.png';
 import type { CategoryBoxItemType } from './CategoryBox.types';
 
 export const CategoryBoxItem: Record<string, CategoryBoxItemType> = {
@@ -35,7 +35,7 @@ export const CategoryBoxItem: Record<string, CategoryBoxItemType> = {
     title: '가치관',
     titleColor: '#6F431F',
     size: 'small',
-    icon: values,
+    icon: value,
     column: 2,
   },
   '취미·취향': {
