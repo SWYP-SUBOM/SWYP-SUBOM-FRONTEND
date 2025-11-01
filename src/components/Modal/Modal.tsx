@@ -31,7 +31,7 @@ export const Overlay = ({ children }: { children: ReactNode }) => {
     <FadeOverlay>
       <div
         onClick={closeModal}
-        className="absolute inset-0 bg-[#121212]/50 flex items-center justify-center"
+        className="absolute inset-0 mx-auto bg-[#121212]/50 max-w-[360px] flex items-center justify-center"
       >
         <div onClick={(e) => e.stopPropagation()}>{children}</div>
       </div>
