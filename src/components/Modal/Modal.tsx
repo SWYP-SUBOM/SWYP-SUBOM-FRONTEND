@@ -1,18 +1,25 @@
 import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import xButton from '../../assets/Modal/xbutton.svg';
+import { useModal } from '../../hooks/useModal';
 
 export const Overlay = ({ children }: { children: ReactNode }) => {
+  const { closeModal } = useModal();
   return (
-    <div className="absolute inset-0 bg-[#121212]/50 flex items-center justify-center">
-      {children}
+    <div
+      onClick={closeModal}
+      className="absolute inset-0 bg-[#121212]/50 flex items-center justify-center"
+    >
+      <div onClick={(e) => e.stopPropagation()}>{children}</div>
     </div>
   );
 };
 
 export const Xbutton = () => {
+  const { closeModal } = useModal();
   return (
     <button
+      onClick={closeModal}
       className="cursor-pointer rounded-[10px] absolute top-5 right-5 w-8 h-8 flex items-center justify-center hover:bg-[#E7EBEE] active:bg-[#E7EBEE]"
       type="button"
     >
