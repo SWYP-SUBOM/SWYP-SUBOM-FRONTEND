@@ -1,17 +1,41 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import xButton from '../../assets/Modal/xbutton.svg';
 import { useModal } from '../../hooks/useModal';
 
+export const FadeOverlay = ({ children }: { children: ReactNode }) => (
+  <motion.div
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.2 }}
+  >
+    {children}
+  </motion.div>
+);
+
+export const ScaleContent = ({ children }: { children: ReactNode }) => (
+  <motion.div
+    initial={{ scale: 0.8, opacity: 0 }}
+    animate={{ scale: 1, opacity: 1 }}
+    exit={{ scale: 0.8, opacity: 0 }}
+  >
+    {children}
+  </motion.div>
+);
+
 export const Overlay = ({ children }: { children: ReactNode }) => {
   const { closeModal } = useModal();
   return (
-    <div
-      onClick={closeModal}
-      className="absolute inset-0 bg-[#121212]/50 flex items-center justify-center"
-    >
-      <div onClick={(e) => e.stopPropagation()}>{children}</div>
-    </div>
+    <FadeOverlay>
+      <div
+        onClick={closeModal}
+        className="absolute inset-0 bg-[#121212]/50 flex items-center justify-center"
+      >
+        <div onClick={(e) => e.stopPropagation()}>{children}</div>
+      </div>
+    </FadeOverlay>
   );
 };
 
@@ -30,9 +54,11 @@ export const Xbutton = () => {
 
 export const Content = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="relative bg-[#F9F9F9] w-[328px] max-h-[288px] py-6 rounded-2xl px-5">
-      {children}
-    </div>
+    <ScaleContent>
+      <div className="relative bg-[#F9F9F9] w-[328px] max-h-[288px] py-6 rounded-2xl px-5">
+        {children}
+      </div>
+    </ScaleContent>
   );
 };
 
@@ -62,9 +88,11 @@ export const Trigger = ({ children }: { children: ReactNode }) => {
 
 export const Modal = ({ children }: { children: ReactNode }) => {
   return createPortal(
-    <div className="fixed inset-0 flex flex-col items-center justify-center text-center">
-      {children}
-    </div>,
+    <AnimatePresence>
+      <div className="fixed inset-0 flex flex-col items-center justify-center text-center">
+        {children}
+      </div>
+    </AnimatePresence>,
     document.body,
   );
 };
