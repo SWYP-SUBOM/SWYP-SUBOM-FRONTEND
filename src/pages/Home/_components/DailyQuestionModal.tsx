@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { Modal, Xbutton } from '../../../components/Modal/Modal';
 
 interface TopicPropsType {
@@ -6,6 +7,11 @@ interface TopicPropsType {
 }
 
 export const DailyQuestionModal = ({ categoryName, topicName }: TopicPropsType) => {
+  const navigate = useNavigate();
+  const onMoveToWrite = () => {
+    navigate('/write', { state: { categoryName: categoryName, topicName: topicName } });
+  };
+
   return (
     <Modal>
       <Modal.Overlay>
@@ -13,7 +19,7 @@ export const DailyQuestionModal = ({ categoryName, topicName }: TopicPropsType) 
           <Xbutton></Xbutton>
           <Modal.Title>{categoryName}</Modal.Title>
           <Modal.Description>{topicName}</Modal.Description>
-          <Modal.Trigger>글 쓰러가기</Modal.Trigger>
+          <Modal.Trigger handleClickButton={onMoveToWrite}>글 쓰러가기</Modal.Trigger>
         </Modal.Content>
       </Modal.Overlay>
     </Modal>

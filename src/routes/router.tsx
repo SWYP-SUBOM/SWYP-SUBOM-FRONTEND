@@ -5,6 +5,7 @@ import Calendar from '../pages/Calendar';
 import Feed from '../pages/Feed';
 import Home from '../pages/Home';
 import Profile from '../pages/Profile';
+import { Write } from '../pages/Write';
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
       {
         path: 'profile',
         element: <Profile />,
+      },
+      {
+        path: 'write',
+        element: <Write />,
       },
     ],
   },
