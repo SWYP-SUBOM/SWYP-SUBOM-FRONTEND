@@ -3,6 +3,7 @@ import { HomeLayout } from '../layout/HomeLayout';
 import { MobileLayout } from '../layout/MobileLayout';
 import Calendar from '../pages/Calendar';
 import Feed from '../pages/Feed';
+import { FeedBack } from '../pages/Feedback';
 import Home from '../pages/Home';
 import Profile from '../pages/Profile';
 import { Write } from '../pages/Write';
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
       {
         path: 'write',
         element: <Write />,
+      },
+      {
+        path: 'feedback',
+        element: <FeedBack />,
       },
     ],
   },
