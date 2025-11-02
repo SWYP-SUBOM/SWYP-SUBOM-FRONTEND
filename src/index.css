@@ -227,7 +227,10 @@ body {
 .mobile-layout {
   max-width: 360px;
   margin: 0 auto;
-  min-height: 100vh;
+  height: 100vh;
+  height: -webkit-fill-available;
+  min-height: 100dvh;
+  overflow: hidden;
   background-color: var(--color-white);
   position: relative;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
