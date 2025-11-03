@@ -3,22 +3,27 @@ import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import warning from '../../assets/BottomSheet/warning.svg';
 import xButton from '../../assets/Modal/xbutton.svg';
+import { useBottomSheet } from '../../hooks/useBottomSheet';
 
 export const Overlay = ({ children }: { children: ReactNode }) => {
+  const { closeBottomSheet } = useBottomSheet();
   return (
     <motion.div
+      onClick={closeBottomSheet}
       className="fixed inset-0 flex w-[360px] mx-auto items-end justify-center bg-black/50"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
     >
-      {children}
+      <div onClick={(e) => e.stopPropagation()}>{children}</div>
     </motion.div>
   );
 };
 export const Xbutton = () => {
+  const { closeBottomSheet } = useBottomSheet();
   return (
     <button
+      onClick={closeBottomSheet}
       className="cursor-pointer rounded-[10px] absolute top-5 right-5 w-8 h-8 flex items-center justify-center hover:bg-[#E7EBEE] active:bg-[#E7EBEE]"
       type="button"
     >
@@ -50,7 +55,7 @@ export const Title = ({ children }: { children: ReactNode }) => {
 
 export const Description = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="inline-block items-center justify-center text-center break-normal whitespace-normal B02_M pt-2 pb-[31px] text-gray-800">
+    <div className="inline-block items-center justify-center text-center break-normal whitespace-normal B02_M pt-2 pb-[34px] text-gray-800">
       {children}
     </div>
   );

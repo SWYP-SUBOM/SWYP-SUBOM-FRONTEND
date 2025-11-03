@@ -1,5 +1,4 @@
 import { useModal } from '../../hooks/useModal';
-import { IsDraftBottomSheet } from './_components/IsDraftBottomSheet';
 import { CategoryBoxGrid } from './CategoryBox/CategoryBoxGrid';
 import { HomeBanner } from './HomeBanner/HomeBanner';
 
@@ -27,7 +26,6 @@ const Home = () => {
         </div>
       </div>
       {isOpen && Content}
-      <IsDraftBottomSheet />
     </>
   );
 };
