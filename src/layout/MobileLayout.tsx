@@ -1,17 +1,16 @@
 import { Outlet } from 'react-router-dom';
-import { Header } from './Header';
 import { NavBar } from './NavBar/NavBar';
 interface MobileLayoutProps {
   children?: React.ReactNode;
+  showNavBar?: boolean; // 기본값 true
 }
 
-export const MobileLayout: React.FC<MobileLayoutProps> = ({ children }) => {
+export const MobileLayout: React.FC<MobileLayoutProps> = ({ children, showNavBar = true }) => {
   return (
     <div className={'mobile-layout'}>
-      <div className="pt-[14px] bg-[#F3F5F8]">{<Header />}</div>
       {children}
       <Outlet />
-      <NavBar />
+      {showNavBar && <NavBar />}
     </div>
   );
 };

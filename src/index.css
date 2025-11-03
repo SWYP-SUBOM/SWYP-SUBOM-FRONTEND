@@ -112,13 +112,13 @@ body {
 .B03_M {
   font-size: var(--font-size-body-03);
   font-weight: var(--font-weight-medium);
-  line-height: var(--line-height-tight);
+  line-height: var(--line-height-relaxed);
 }
 
 .B03_1_M {
   font-size: var(--font-size-body-03);
   font-weight: var(--font-weight-medium);
-  line-height: var(--line-height-relaxed);
+  line-height: var(--line-height-tight);
 }
 .C01_SB {
   font-size: var(--font-size-caption-01);
@@ -227,7 +227,9 @@ body {
 .mobile-layout {
   max-width: 360px;
   margin: 0 auto;
-  min-height: 100vh;
+  height: 100vh;
+  height: -webkit-fill-available;
+  min-height: 100dvh;
   background-color: var(--color-white);
   position: relative;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
