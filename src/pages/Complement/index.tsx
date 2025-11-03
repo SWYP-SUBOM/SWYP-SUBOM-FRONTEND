@@ -1,0 +1,84 @@
+import { useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { CategoryChip, CategoryChipMap } from '../../components/common/CategoryChip';
+import { FeedbackBanner } from '../Feedback/_components/FeedbackBanner';
+import { FeedbackBox } from '../Feedback/_components/FeedbackBox';
+
+export const Complement = () => {
+  const { categoryName, topicName } = useParams();
+
+  console.log('compl', categoryName);
+  const [opinion, setOpinion] = useState('');
+  const [isScrolled, setIsScrolled] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const feedbackData = {
+    writingId: 'uuid',
+    aiFeedbackId: '1',
+    strength:
+      '도입에서 “나는 아침형 인간이 더 효율적이라고 생각한다”라고 명확히 입장을 밝히고, 바로 근거로 이어지는 구조가 좋아요. 개인적 경험(시험 기간의 효율 차이)을 근거로 제시한 점도 진정성을 높여줍니다.',
+    pointsToImprove: [
+      '1. 논리의 탄탄함 아침형 인간이 ‘효율적’이라고 한 이유가 집중력, 건강, 루틴 등으로 나뉘어 있지만 각각의 인과가 조금 더 구체화되면 좋아요. 예를 들어 “아침에 집중력이 높다” 다음에 왜 그런지 혹은 어떤 상황에서 그런 차이를 느꼈는지를 한두 줄 덧붙이면 설득력이 더 커질 거예요.',
+      '2. 흐름/구조 글 후반부에서 “저녁형 생활은 순간적 몰입에는 도움이 될 수 있지만…”으로 넘어갈 때, 비교 전환이 약간 갑작스러워요. 두 유형을 대비하기 전에 “물론 저녁형 인간에게도 장점이 있지만…”처럼 완충 문장을 넣으면 자연스러울 거예요.',
+    ],
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      setIsScrolled(scrollTop > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <>
+      <div ref={containerRef} className="relative min-h-[100dvh] bg-[#F3F5F8]">
+        <div className="sticky top-0 z-10 px-4 pb-3 pt-[30px] bg-[#F3F5F8]">
+          <CategoryChip categoryName={categoryName as keyof typeof CategoryChipMap} />
+          <div className="py-[10px] B01_B">{topicName}</div>
+        </div>
+        <div className="px-4">
+          <div className="relative w-[328px]">
+            <textarea
+              placeholder="내 의견을 논리적으로 작성해보세요!"
+              value={opinion}
+              onChange={(e) => setOpinion(e.target.value)}
+              className="B03_M px-4 pt-4 py-10 w-full h-[360px] border border-gray-500 rounded-xl resize-none bg-white"
+            />
+            <div className="C01_SB absolute bottom-6 right-4 text-gray-700">
+              {opinion.length} / 700
+            </div>
+          </div>
+          <div className="pt-[15px]">
+            <FeedbackBanner>써봄이의 피드백을{'\n'}참고해서 수정해보세요!</FeedbackBanner>
+          </div>
+          <div>
+            <FeedbackBox
+              strength={feedbackData.strength}
+              pointsToImprove={feedbackData.pointsToImprove}
+            />
+          </div>
+          <div className="h-[50px]" />
+        </div>
+        <div
+          className={`sticky bottom-0 left-0 right-0 flex justify-center bg-[#F3F5F8] pb-7 pt-4 transition-shadow duration-300 ${
+            isScrolled ? 'shadow-[0_-10px_50px_0_#D0D2D9]' : 'shadow-none'
+          }`}
+        >
+          <div className="flex gap-2 w-[340px]">
+            <button className="flex-2 h-14 bg-gray-300 text-gray-800 rounded-xl B02_B">
+              작성완료
+            </button>
+            <button className="flex-3 h-14 bg-[var(--color-b7)] text-white rounded-xl B02_B">
+              보완하기
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
