@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryChip } from '../../components/common/CategoryChip';
 
 export const Write = () => {
@@ -16,6 +16,11 @@ export const Write = () => {
 
   const handleSubmit = () => {
     console.log(opinion);
+  };
+
+  const navigate = useNavigate();
+  const movetoGetFeedback = () => {
+    navigate(`/feedback/${categoryName}/${topicName}`);
   };
 
   return (
@@ -39,6 +44,7 @@ export const Write = () => {
           </div>
           <button
             type="submit"
+            onClick={movetoGetFeedback}
             disabled={!isWriteOpinion()}
             className={`cursor-pointer rounded-xl max-w-[328px] w-full h-14 B02_B fixed bottom-7 left-1/2 -translate-x-1/2
                 ${!isWriteOpinion() ? 'bg-gray-600 text-white' : 'bg-[var(--color-b8)] text-white'}`}

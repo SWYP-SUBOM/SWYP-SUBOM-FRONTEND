@@ -2,6 +2,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { HomeLayout } from '../layout/HomeLayout';
 import { MobileLayout } from '../layout/MobileLayout';
 import Calendar from '../pages/Calendar';
+import { Complement } from '../pages/Complement';
 import Feed from '../pages/Feed';
 import { FeedBack } from '../pages/Feedback';
 import Home from '../pages/Home';
@@ -40,8 +41,12 @@ export const router = createBrowserRouter([
         element: <Write />,
       },
       {
-        path: 'feedback',
+        path: '/feedback/:categoryName/:topicName',
         element: <FeedBack />,
+      },
+      {
+        path: '/complement/:categoryName/:topicName',
+        element: <Complement />,
       },
     ],
   },
