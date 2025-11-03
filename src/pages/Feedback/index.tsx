@@ -28,7 +28,7 @@ export const FeedBack = () => {
     <>
       <div className="flex flex-col pt-[30px] px-4 bg-[#F3F5F8]">
         <FeedbackBanner>써봄이가 피드백을 준비했어요!</FeedbackBanner>
-        <div className="flex-1 mt-[14px] ">
+        <div className="flex-1">
           <FeedbackBox
             strength={feedbackData.strength}
             pointsToImprove={feedbackData.pointsToImprove}

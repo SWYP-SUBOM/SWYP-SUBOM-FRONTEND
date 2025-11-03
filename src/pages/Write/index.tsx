@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryChip } from '../../components/common/CategoryChip';
+import { SpeechBubble } from './_components/SpeechBubble';
 
 export const Write = () => {
   const location = useLocation();
@@ -9,6 +10,8 @@ export const Write = () => {
   const topicName = location.state.topicName;
 
   const [opinion, setOpinion] = useState('');
+  const [isBubbleOpen, setIsBubbleOpen] = useState(false);
+  const hasClosedBubble = useRef(false);
 
   const isWriteOpinion = () => {
     return opinion.trim() !== '';
@@ -16,6 +19,17 @@ export const Write = () => {
 
   const handleSubmit = () => {
     console.log(opinion);
+  };
+
+  useEffect(() => {
+    if (isWriteOpinion() && !hasClosedBubble.current) {
+      setIsBubbleOpen(true);
+    }
+  }, [opinion]);
+
+  const handleCloseBubble = () => {
+    setIsBubbleOpen(false);
+    hasClosedBubble.current = true;
   };
 
   const navigate = useNavigate();
@@ -52,6 +66,7 @@ export const Write = () => {
             피드백 받기
           </button>
         </form>
+        {isBubbleOpen && <SpeechBubble onBubbleClose={handleCloseBubble} />}
       </div>
     </>
   );
