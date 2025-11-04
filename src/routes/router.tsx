@@ -15,7 +15,7 @@ import { GuideScreen1 } from '../pages/Onboarding/FeatureTour/GuideScreen1';
 import { GuideScreen2 } from '../pages/Onboarding/FeatureTour/GuideScreen2';
 import { GuideScreen3 } from '../pages/Onboarding/FeatureTour/GuideScreen3';
 import { GuideScreen4 } from '../pages/Onboarding/FeatureTour/GuideScreen4';
-
+3;
 export const router = createBrowserRouter([
   // 홈 페이지
   {
@@ -25,6 +25,17 @@ export const router = createBrowserRouter([
       {
         path: '',
         element: <Home />,
+      },
+    ],
+  },
+
+  {
+    path: '/calendar',
+    element: <HomeLayout showHeaderVar={false} />,
+    children: [
+      {
+        path: '',
+        element: <Calendar />,
       },
     ],
   },
@@ -43,24 +54,17 @@ export const router = createBrowserRouter([
       },
       {
         path: '2',
-        element: <ServiceIntro2 />,
+        element: <Login />,
       },
       {
         path: '3',
-        element: <GuideScreen4 />,
+        element: <GuideScreen3 />,
       },
       {
         path: '4',
         element: <NameInput />,
       },
-      {
-        path: 'feed',
-        element: <Feed />,
-      },
-      {
-        path: 'calendar',
-        element: <Calendar />,
-      },
+
       {
         path: 'profile',
         element: <Profile />,
