@@ -17,11 +17,14 @@ export const WriteLayout = ({
       className="
         max-w-[360px]
         mx-auto
+        h-[100vh]
+        min-h-[100dvh]
         bg-[var(--color-white)]
         relative
         shadow-[0_0_20px_rgba(0,0,0,0.1)]
         flex
         flex-col
+        [height:-webkit-fill-available]
         "
     >
       <div className="bg-white">

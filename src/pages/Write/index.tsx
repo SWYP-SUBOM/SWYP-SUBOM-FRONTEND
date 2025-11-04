@@ -45,8 +45,8 @@ export const Write = () => {
   return (
     <>
       <WriteLayout handleClickSaveButton={handleSavePost}>
-        <div className="px-4 bg-[#F3F5F8] h-[100dvh]">
-          <div className="pt-[30px] pb-3">
+        <div className="px-4 bg-[#F3F5F8]">
+          <div className="pt-[30px] pb-3 flex-shrink-0">
             <CategoryChip categoryName={categoryName}></CategoryChip>
             <div className="py-[10px] B01_B">{topicName}</div>
           </div>
@@ -56,7 +56,7 @@ export const Write = () => {
                 placeholder="내 의견을 논리적으로 작성해보세요!"
                 value={opinion}
                 onChange={(e) => setOpinion(e.target.value)}
-                className="B03_M px-4 pt-4 py-10 w-full h-[360px] border border-gray-500 rounded-xl resize-none"
+                className="B03_M px-4 pt-4 py-10 w-full min-h-[360px] border border-gray-500 rounded-xl resize-none"
               />
               <div className="C01_SB absolute bottom-6 right-4 text-gray-700">
                 {opinion.length} / 700
