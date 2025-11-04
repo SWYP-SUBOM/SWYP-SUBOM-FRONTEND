@@ -26,14 +26,15 @@ export const FeedBack = () => {
   return (
     <>
       <WriteLayout isSaveDisabled={true}>
-        <div className="flex flex-col pt-[30px] px-4 bg-[#F3F5F8]">
+        <div className="flex flex-col pt-[30px] min-h-[100dvh] px-4 bg-[#F3F5F8]">
           <FeedbackBanner>써봄이가 피드백을 준비했어요!</FeedbackBanner>
           <div className="flex-1">
             <FeedbackBox
               strength={feedbackData.strength}
               pointsToImprove={feedbackData.pointsToImprove}
             />
-            <div className="flex fixed bottom-7 left-1/2 -translate-x-1/2 gap-2 w-[340px]">
+            <div className="h-[30px]" />
+            <div className="w-[340px] sticky bottom-0 left-0 right-0 flex justify-center gap-2 bg-[#F3F5F8] pb-7 pt-4 transition-shadow duration-300 ">
               <button className="flex-2 h-14 bg-gray-300 text-gray-800 rounded-xl B02_B">
                 작성완료
               </button>
