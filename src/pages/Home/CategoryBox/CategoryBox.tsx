@@ -15,7 +15,6 @@ export const CategoryBox = ({
 
   const handleModalOpen = (categoryId: number) => {
     openModal(<DailyQuestionModal categoryName={categoryName} topicName={topicName} />);
-    console.log(categoryId);
   };
 
   return (

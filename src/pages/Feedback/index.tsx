@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
+import { WriteLayout } from '../../layout/WriteLayout';
 import { FeedbackBanner } from './_components/FeedbackBanner';
 import { FeedbackBox } from './_components/FeedbackBox';
 
@@ -17,8 +18,6 @@ export const FeedBack = () => {
   const { categoryName, topicName } = useParams();
   const encodedTopicName = encodeURIComponent(topicName!);
 
-  console.log('feed', categoryName);
-
   const navigate = useNavigate();
   const movetoComplement = () => {
     navigate(`/complement/${categoryName}/${encodedTopicName}`);
@@ -26,26 +25,28 @@ export const FeedBack = () => {
 
   return (
     <>
-      <div className="flex flex-col pt-[30px] px-4 bg-[#F3F5F8]">
-        <FeedbackBanner>써봄이가 피드백을 준비했어요!</FeedbackBanner>
-        <div className="flex-1">
-          <FeedbackBox
-            strength={feedbackData.strength}
-            pointsToImprove={feedbackData.pointsToImprove}
-          />
-          <div className="flex fixed bottom-7 left-1/2 -translate-x-1/2 gap-2 w-[340px]">
-            <button className="flex-2 h-14 bg-gray-300 text-gray-800 rounded-xl B02_B">
-              작성완료
-            </button>
-            <button
-              onClick={movetoComplement}
-              className="flex-3 h-14 bg-[var(--color-b7)] text-white rounded-xl B02_B"
-            >
-              보완하기
-            </button>
+      <WriteLayout isSaveDisabled={true}>
+        <div className="flex flex-col pt-[30px] px-4 bg-[#F3F5F8]">
+          <FeedbackBanner>써봄이가 피드백을 준비했어요!</FeedbackBanner>
+          <div className="flex-1">
+            <FeedbackBox
+              strength={feedbackData.strength}
+              pointsToImprove={feedbackData.pointsToImprove}
+            />
+            <div className="flex fixed bottom-7 left-1/2 -translate-x-1/2 gap-2 w-[340px]">
+              <button className="flex-2 h-14 bg-gray-300 text-gray-800 rounded-xl B02_B">
+                작성완료
+              </button>
+              <button
+                onClick={movetoComplement}
+                className="flex-3 h-14 bg-[var(--color-b7)] text-white rounded-xl B02_B"
+              >
+                보완하기
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </WriteLayout>
     </>
   );
 };
