@@ -1,3 +1,5 @@
+import type { CategoryNameType } from '../../constants/Category';
+
 export const CategoryChipMap = {
   일상: 'bg-[var(--color-action-blue)]',
   인간관계: 'bg-[var(--color-action-purple)]',
@@ -7,7 +9,7 @@ export const CategoryChipMap = {
 };
 
 interface CategoryChipProps {
-  categoryName: keyof typeof CategoryChipMap;
+  categoryName: CategoryNameType;
 }
 
 export const CategoryChip = ({ categoryName }: CategoryChipProps) => {

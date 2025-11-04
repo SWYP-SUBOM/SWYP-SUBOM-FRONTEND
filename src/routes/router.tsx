@@ -63,56 +63,11 @@ export const router = createBrowserRouter([
         path: 'profile',
         element: <Profile />,
       },
-      {
-        path: 'write',
-        element: <Write />,
-      },
-      {
-        path: '/feedback/:categoryName/:topicName',
-        element: <FeedBack />,
-      },
-      {
-        path: '/complement/:categoryName/:topicName',
-        element: <Complement />,
-      },
     ],
   },
   {
     path: '/',
-    element: <MobileLayout showNavBar={false} />,
     children: [
-      {
-        path: '',
-        element: <SplashScreen />,
-      },
-      {
-        path: 'onboarding/intro1',
-        element: <ServiceIntro1 />,
-      },
-      {
-        path: '2',
-        element: <ServiceIntro2 />,
-      },
-      {
-        path: '3',
-        element: <GuideScreen4 />,
-      },
-      {
-        path: '4',
-        element: <NameInput />,
-      },
-      {
-        path: 'feed',
-        element: <Feed />,
-      },
-      {
-        path: 'calendar',
-        element: <Calendar />,
-      },
-      {
-        path: 'profile',
-        element: <Profile />,
-      },
       {
         path: 'write',
         element: <Write />,
