@@ -1,12 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { CategoryChip, CategoryChipMap } from '../../components/common/CategoryChip';
+import { CategoryChip } from '../../components/common/CategoryChip';
+import type { CategoryNameType } from '../../constants/Category';
 import { WriteLayout } from '../../layout/WriteLayout';
 import { FeedbackBanner } from '../Feedback/_components/FeedbackBanner';
 import { FeedbackBox } from '../Feedback/_components/FeedbackBox';
 
 export const Complement = () => {
-  const { categoryName, topicName } = useParams();
+  const { categoryName, topicName } = useParams<{
+    categoryName: CategoryNameType;
+    topicName: string;
+  }>();
+
+  if (!categoryName) return null;
 
   const [opinion, setOpinion] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
@@ -43,7 +49,7 @@ export const Complement = () => {
       <WriteLayout handleClickSaveButton={handleSaveComplementPost}>
         <div ref={containerRef} className="relative min-h-[100dvh] bg-[#F3F5F8]">
           <div className="sticky top-0 z-10 px-4 pb-3 pt-[30px] bg-[#F3F5F8]">
-            <CategoryChip categoryName={categoryName as keyof typeof CategoryChipMap} />
+            <CategoryChip categoryName={categoryName} />
             <div className="py-[10px] B01_B">{topicName}</div>
           </div>
           <div className="px-4">

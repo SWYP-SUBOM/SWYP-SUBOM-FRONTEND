@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
+import type { CategoryNameType } from '../../constants/Category';
 import { WriteLayout } from '../../layout/WriteLayout';
 import { FeedbackBanner } from './_components/FeedbackBanner';
 import { FeedbackBox } from './_components/FeedbackBox';
@@ -15,7 +16,13 @@ export const FeedBack = () => {
     ],
   };
 
-  const { categoryName, topicName } = useParams();
+  const { categoryName, topicName } = useParams<{
+    categoryName: CategoryNameType;
+    topicName: string;
+  }>();
+
+  if (!categoryName) return null;
+
   const encodedTopicName = encodeURIComponent(topicName!);
 
   const navigate = useNavigate();
