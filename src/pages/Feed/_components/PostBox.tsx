@@ -1,0 +1,34 @@
+import heartIcon from '../../../assets/Feed/heart.svg';
+import right from '../../../assets/Feed/right.svg';
+
+interface PostBoxProps {
+  nickname: string;
+  summary: string;
+  heart: number;
+  completedAt: Date;
+}
+
+export const PostBox = ({ nickname, summary, heart, completedAt }: PostBoxProps) => {
+  return (
+    <div className="px-4 py-4 rounded-xl w-[328px] h-[185px] border border-[#E0E4E7] bg-white flex flex-col justify-between">
+      <div>
+        <div className="flex justify-between">
+          <div className="B03-1_M text-gray-900 ">By {nickname}</div>
+          <div>
+            <img src={right} className="w-6 h-6" />
+          </div>
+        </div>
+        <div className="B02_B text-gray-900 pt-6">{summary}</div>
+      </div>
+      <div className="flex justify-between">
+        <div>
+          <div className="flex">
+            <img src={heartIcon} className="w-5 h-5 -translate-y-1/9" />
+            <div className="C01_M text-gray-700">{heart}</div>
+          </div>
+        </div>
+        <div className="C01_M text-gray-700">{completedAt.getDate()}</div>
+      </div>
+    </div>
+  );
+};
