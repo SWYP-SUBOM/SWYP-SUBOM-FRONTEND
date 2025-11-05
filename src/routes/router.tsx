@@ -11,6 +11,7 @@ import { GuideScreen4 } from '../pages/Onboarding/FeatureTour/GuideScreen4';
 import { ServiceIntro1 } from '../pages/Onboarding/Introduction/ServiceIntro1';
 import { ServiceIntro2 } from '../pages/Onboarding/Introduction/ServiceIntro2';
 import { SplashScreen } from '../pages/Onboarding/Introduction/SplashScreen';
+import { PostDetail } from '../pages/PostDetail';
 import Profile from '../pages/Profile';
 import { Write } from '../pages/Write';
 
@@ -52,16 +53,26 @@ export const router = createBrowserRouter([
         element: <NameInput />,
       },
       {
-        path: 'feed',
-        element: <Feed />,
-      },
-      {
         path: 'calendar',
         element: <Calendar />,
       },
       {
         path: 'profile',
         element: <Profile />,
+      },
+    ],
+  },
+  {
+    path: '/',
+    element: <MobileLayout showNavBar={true} />,
+    children: [
+      {
+        path: 'feed',
+        element: <Feed />,
+      },
+      {
+        path: '/postdetail/:postId',
+        element: <PostDetail />,
       },
     ],
   },

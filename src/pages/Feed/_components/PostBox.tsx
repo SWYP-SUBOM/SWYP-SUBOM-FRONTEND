@@ -2,15 +2,19 @@ import heartIcon from '../../../assets/Feed/heart.svg';
 import right from '../../../assets/Feed/right.svg';
 
 interface PostBoxProps {
+  onClick: () => void;
   nickname: string;
   summary: string;
   heart: number;
   completedAt: Date;
 }
 
-export const PostBox = ({ nickname, summary, heart, completedAt }: PostBoxProps) => {
+export const PostBox = ({ onClick, nickname, summary, heart, completedAt }: PostBoxProps) => {
   return (
-    <div className="px-4 py-4 rounded-xl w-[328px] h-[185px] border border-[#E0E4E7] bg-white flex flex-col justify-between">
+    <div
+      onClick={onClick}
+      className="px-4 py-4 rounded-xl w-[328px] h-[185px] border border-[#E0E4E7] bg-white flex flex-col justify-between"
+    >
       <div>
         <div className="flex justify-between">
           <div className="B03-1_M text-gray-900 ">By {nickname}</div>

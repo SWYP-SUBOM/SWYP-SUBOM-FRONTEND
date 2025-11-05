@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { PostBox } from './_components/PostBox';
 import { TodayTopicBox } from './_components/TodayTopicBox';
 
@@ -13,7 +14,7 @@ const Feed = () => {
 
   const items = [
     {
-      writingId: 'uuid-1',
+      postId: 'uuid-1',
       user: {
         userId: 'uuid-user-A',
         nickname: '귀여운 코알라',
@@ -28,7 +29,7 @@ const Feed = () => {
     },
 
     {
-      writingId: 'uuid-1',
+      postId: 'uuid-2',
       user: {
         userId: 'uuid-user-A',
         nickname: '귀여운 코알라',
@@ -43,6 +44,12 @@ const Feed = () => {
     },
   ];
 
+  const navigate = useNavigate();
+  const movetoDetail = (postId: string) => {
+    console.log('click');
+    navigate(`/postdetail/${postId}`);
+  };
+
   return (
     <>
       <div className="pt-10">
@@ -53,7 +60,8 @@ const Feed = () => {
         <div className="flex flex-col gap-4">
           {items.map((item) => (
             <PostBox
-              key={item.writingId}
+              onClick={() => movetoDetail(item.postId)}
+              key={item.postId}
               nickname={item.user.nickname}
               summary={item.summary}
               heart={item.metrics.reactionCount}
