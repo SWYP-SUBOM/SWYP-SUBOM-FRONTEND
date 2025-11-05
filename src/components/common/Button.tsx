@@ -1,14 +1,12 @@
 interface ButtonProps {
   label: string;
-  primary?: boolean;
+  primary?: string;
 }
 
-export const Button = ({ label, primary = false }: ButtonProps) => {
+export const Button = ({ label, primary }: ButtonProps) => {
   return (
     <button
-      className={`px-4 py-2 rounded ${
-        primary ? 'bg-blue-500 text-white' : 'bg-red-100 text-black'
-      } `}
+      className={`B02_B w-82 h-14 mx-4  rounded-xl bg-b7 text-white active:bg-b8 active:scale-95 hover:bg-b8 transition-colors duration-300 cursor-pointer ${primary}`}
     >
       {label}
     </button>
