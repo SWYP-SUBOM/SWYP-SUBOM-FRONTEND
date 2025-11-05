@@ -11,11 +11,9 @@ export const HeaderwithSavePost = ({
 }: HeaderwithSavePostProps) => {
   return (
     <>
-      <div className="flex items-center justify-between w-full bg-white px-4 py-[14px]">
+      <div className="flex items-center justify-between w-full bg-white px-4 pb-[14px] pt-[6px]">
         <img src={left} className="w-9 h-9" />
-        <div className="B02_B text-gray-900">
-          <div>오늘의 주제</div>
-        </div>
+        <div className="B02_B text-gray-900 translate-x-1/4">오늘의 주제</div>
         <button
           onClick={handleClickSaveButton}
           disabled={isSaveDisabled}
