@@ -26,7 +26,7 @@ export const ServiceIntro1 = () => {
           className: 'w-61 h-61',
         }}
       />
-      <div className="absolute top-[654px] left-0 right-0 flex flex-col justify-center items-center px-4  z-5">
+      <div className="absolute top-[520px] sm:top-[654px] left-0 right-0 flex flex-col justify-center items-center px-4  z-5">
         <button className="w-full h-14 bg-b7 rounded-xl text-white B02_B cursor-pointer active:bg-b8 active:scale-95  hover:bg-b8  transition-colors duration-300 ">
           다음으로
         </button>
