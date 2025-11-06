@@ -5,6 +5,7 @@ import Calendar from '../pages/Calendar';
 import { Complement } from '../pages/Complement';
 import { Feed } from '../pages/Feed';
 import { FeedBack } from '../pages/Feedback';
+import { GatherTopic } from '../pages/GatherTopic';
 import Home from '../pages/Home';
 import { NameInput } from '../pages/Onboarding/Authentication/NameInput';
 import { GuideScreen4 } from '../pages/Onboarding/FeatureTour/GuideScreen4';
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
       {
         path: 'profile',
         element: <Profile />,
+      },
+      {
+        path: 'gathertopic',
+        element: <GatherTopic />,
       },
     ],
   },
