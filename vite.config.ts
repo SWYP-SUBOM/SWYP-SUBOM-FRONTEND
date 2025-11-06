@@ -17,9 +17,9 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     host: true,
-    port: 5173,
+    port: 5174,
     strictPort: true,
-    hmr: { clientPort: 5173 },
+    hmr: { clientPort: 5174 },
   },
   test: {
     projects: [
