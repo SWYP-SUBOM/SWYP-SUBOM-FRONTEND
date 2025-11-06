@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import culture from '../../../assets/CategoryBox/culture.png';
 import daily from '../../../assets/CategoryBox/daily.png';
 import hobby from '../../../assets/CategoryBox/hobby.png';
@@ -48,14 +49,22 @@ export const TodayTopicBox = ({
   type CategoryKey = keyof typeof TodayTopicBoxMap;
   const categoryData = TodayTopicBoxMap[categoryText as CategoryKey];
 
+  const navigate = useNavigate();
+  const movetoGatherTopic = () => {
+    navigate('/gathertopic');
+  };
+
   return (
     <>
       <div className={`${categoryData.bgColor} relative w-[360px] h-[270px] px-4 py-7`}>
         <div className="B01_B text-gray-900 pb-3">오늘의 주제</div>
         <div className="B01_B text-gray-800 pb-[23px]">{topicText}</div>
         <img src={categoryData.icon} className="absolute right-5 bottom-5 w-[87px] h-[86px]"></img>
-        <div className="absolute bottom-5 left-4 flex items-center gap-1">
-          <button className="B03-1_M text-gray-750">주제 모아보기</button>
+        <div
+          className="absolute bottom-5 left-4 flex items-center gap-1 cursor-pointer"
+          onClick={movetoGatherTopic}
+        >
+          <button className="B03-1_M text-gray-750 cursor-pointer">주제 모아보기</button>
           <img src={right} className="w-6 h-6" />
         </div>
       </div>
