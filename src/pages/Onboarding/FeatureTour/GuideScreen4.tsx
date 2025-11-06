@@ -4,7 +4,7 @@ import { ProgressIndicator } from '../_components/ProgressIndicator';
 import guide4 from '../../../assets/onboarding/Guide4.png';
 export const GuideScreen4 = () => {
   return (
-    <div className="app-root">
+    <>
       <ProgressIndicator activeIndexes={[2]} total={3} />
 
       <OnboardingLayout
@@ -29,6 +29,6 @@ export const GuideScreen4 = () => {
           시작하기
         </button>
       </div>
-    </div>
+    </>
   );
 };

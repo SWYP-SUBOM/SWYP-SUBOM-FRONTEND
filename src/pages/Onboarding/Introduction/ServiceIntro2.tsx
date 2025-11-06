@@ -4,10 +4,7 @@ import onboardingServiceIntro2 from '../../../assets/onboarding/onboardingServic
 
 export const ServiceIntro2 = () => {
   return (
-    <div
-      className="app-root "
-      style={{ paddingBottom: 'calc(16px + env(safe-area-inset-bottom))' }}
-    >
+    <>
       <ProgressIndicator activeIndexes={[1]} total={2} />
 
       <OnboardingLayout
@@ -37,6 +34,6 @@ export const ServiceIntro2 = () => {
           건너뛰기
         </button>
       </div>
-    </div>
+    </>
   );
 };

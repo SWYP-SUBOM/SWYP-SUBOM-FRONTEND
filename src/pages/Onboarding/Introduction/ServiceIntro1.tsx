@@ -4,7 +4,7 @@ import onboardingServiceIntro1 from '../../../assets/onboarding/onboardingServic
 
 export const ServiceIntro1 = () => {
   return (
-    <div className="app-root">
+    <>
       <ProgressIndicator activeIndexes={[0]} total={2} />
 
       <OnboardingLayout
@@ -34,6 +34,6 @@ export const ServiceIntro1 = () => {
           건너뛰기
         </button>
       </div>
-    </div>
+    </>
   );
 };
