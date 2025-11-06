@@ -1,4 +1,7 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { PostBoxSkeleton } from '../Skeleton/PostBoxSkeleton';
+import { TodayTopicBoxSkeleton } from '../Skeleton/TodayTopicBoxSkeleton';
 import { PostBox } from './PostBox';
 import { TodayTopicBox } from './TodayTopicBox';
 
@@ -12,6 +15,8 @@ const FeedContent = ({ categoryName }: { categoryName: string }) => {
       categoryText: '취미·취향',
     },
   };
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const items = [
     {
@@ -52,24 +57,33 @@ const FeedContent = ({ categoryName }: { categoryName: string }) => {
 
   return (
     <>
-      <div className="">
-        <TodayTopicBox topicText={topic.topicText} categoryText={topic.category.categoryText} />
-      </div>
-      <div className="B02_M text-gray-900 pt-6 px-4 pb-3">다른 사람들은 어떻게 생각할까요?</div>
-      <div className="px-4">
-        <div className="flex flex-col gap-4">
-          {items.map((item) => (
-            <PostBox
-              onClick={() => movetoDetail(item.postId)}
-              key={item.postId}
-              nickname={item.user.nickname}
-              summary={item.summary}
-              heart={item.metrics.reactionCount}
-              completedAt={new Date(item.completedAt)}
-            />
-          ))}
-        </div>
-      </div>
+      {isLoading ? (
+        <>
+          <TodayTopicBoxSkeleton />
+          <div className="mx-4 h-6 w-48 bg-gray-300 rounded mt-6 mb-3 animate-pulse"></div>
+          <div className="flex flex-col gap-4 px-4">
+            <PostBoxSkeleton />
+            <PostBoxSkeleton />
+          </div>
+        </>
+      ) : (
+        <>
+          <TodayTopicBox topicText={topic.topicText} categoryText={topic.category.categoryText} />
+          <div className="B02_M text-gray-900 pt-6 px-4 pb-3">다른 사람들은 어떻게 생각할까요?</div>
+          <div className="px-4 flex flex-col gap-4">
+            {items.map((item) => (
+              <PostBox
+                key={item.postId}
+                onClick={() => movetoDetail(item.postId)}
+                nickname={item.user.nickname}
+                summary={item.summary}
+                heart={item.metrics.reactionCount}
+                completedAt={item.completedAt}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </>
   );
 };

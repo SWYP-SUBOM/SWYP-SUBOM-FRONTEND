@@ -1,12 +1,13 @@
 import heartIcon from '../../../assets/Feed/heart.svg';
 import right from '../../../assets/Feed/right.svg';
+import { DateFormatter } from '../../../utils/DateFormatter';
 
 interface PostBoxProps {
   onClick: () => void;
   nickname: string;
   summary: string;
   heart: number;
-  completedAt: Date;
+  completedAt: string;
 }
 
 export const PostBox = ({ onClick, nickname, summary, heart, completedAt }: PostBoxProps) => {
@@ -32,7 +33,7 @@ export const PostBox = ({ onClick, nickname, summary, heart, completedAt }: Post
             <div className="C01_M text-gray-700">{heart}</div>
           </div>
         </div>
-        <div className="C01_M text-gray-700">{completedAt.getDate()}</div>
+        <div className="C01_M text-gray-700">{DateFormatter(completedAt)}</div>
       </div>
     </div>
   );
