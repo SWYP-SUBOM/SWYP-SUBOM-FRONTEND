@@ -2,6 +2,7 @@ import heartIcon from '../../../assets/Feed/heart.svg';
 import smileIcon from '../../../assets/Feed/smile.svg';
 import surpriseIcon from '../../../assets/Feed/surprise.svg';
 import viewIcon from '../../../assets/Feed/view.svg';
+import { DateFormatter } from '../../../utils/DateFormatter';
 
 interface reactionsType {
   reactionId: number;
@@ -36,7 +37,7 @@ export const PostDetailBox = ({
       <div>
         <div className="flex justify-between">
           <div className="B01_M text-gray-900 ">By {writer}</div>
-          <div className="C01_SB text-gray-700 translate-y-1/7">{createdAt}</div>
+          <div className="C01_SB text-gray-700 translate-y-1/7">{DateFormatter(createdAt)}</div>
         </div>
         <div className="border-t border-[#E0E4E7] my-4"></div>
         <div className="B03_M text-gray-800 ">{content}</div>
