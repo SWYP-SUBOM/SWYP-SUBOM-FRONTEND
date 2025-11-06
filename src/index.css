@@ -230,7 +230,7 @@ body {
   height: 100vh;
   height: -webkit-fill-available;
   min-height: 100dvh;
-  background-color: var(--color-white);
+  background-color: var(--color-gray-100);
   position: relative;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }

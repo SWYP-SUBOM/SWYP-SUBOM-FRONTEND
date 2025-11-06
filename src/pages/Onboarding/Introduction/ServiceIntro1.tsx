@@ -1,6 +1,6 @@
 import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
 import { ProgressIndicator } from '../../../layout/Onboarding/ProgressIndicator';
-import aa from '../../../assets/onboarding/aa.gif';
+import onboardingServiceIntro1 from '../../../assets/onboarding/onboardingServiceIntro1.gif';
 
 export const ServiceIntro1 = () => {
   return (
@@ -21,7 +21,7 @@ export const ServiceIntro1 = () => {
           </>
         }
         image={{
-          src: aa,
+          src: onboardingServiceIntro1,
           alt: 'ServiceIntro1',
           className: 'w-61 h-61',
         }}

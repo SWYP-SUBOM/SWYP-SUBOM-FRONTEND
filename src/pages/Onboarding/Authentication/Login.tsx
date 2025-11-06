@@ -1,10 +1,10 @@
 import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
 
-import onboardingLogin from '../../../assets/onboarding/onboardingLogin.png';
+import onboardingLogin from '../../../assets/onboarding/onboardingLogin.gif';
 import kakao from '../../../assets/Onboarding/kakao.png';
 export const Login = () => {
   return (
-    <>
+    <div className="bg-b7">
       <OnboardingLayout
         title={
           <>
@@ -33,6 +33,6 @@ export const Login = () => {
           쓰기전에 둘러보기
         </button>
       </div>
-    </>
+    </div>
   );
 };
