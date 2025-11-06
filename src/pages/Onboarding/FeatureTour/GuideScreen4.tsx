@@ -1,5 +1,5 @@
 import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
-import { ProgressIndicator } from '../../../layout/Onboarding/ProgressIndicator';
+import { ProgressIndicator } from '../_components/ProgressIndicator';
 
 import guide4 from '../../../assets/onboarding/Guide4.png';
 export const GuideScreen4 = () => {

@@ -1,5 +1,5 @@
 import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
-import { ProgressIndicator } from '../../../layout/Onboarding/ProgressIndicator';
+import { ProgressIndicator } from '../_components/ProgressIndicator';
 import onboardingServiceIntro2 from '../../../assets/onboarding/onboardingServiceIntro2.gif';
 
 export const ServiceIntro2 = () => {
