@@ -3,7 +3,7 @@ import { HomeLayout } from '../layout/HomeLayout';
 import { MobileLayout } from '../layout/MobileLayout';
 import Calendar from '../pages/Calendar';
 import { Complement } from '../pages/Complement';
-import Feed from '../pages/Feed';
+import { Feed } from '../pages/Feed';
 import { FeedBack } from '../pages/Feedback';
 import Home from '../pages/Home';
 import { NameInput } from '../pages/Onboarding/Authentication/NameInput';
