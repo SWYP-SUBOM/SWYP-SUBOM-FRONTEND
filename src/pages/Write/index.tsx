@@ -72,7 +72,13 @@ export const Write = () => {
               피드백 받기
             </button>
           </form>
-          {isBubbleOpen && <SpeechBubble onBubbleClose={handleCloseBubble} />}
+          {isBubbleOpen && (
+            <SpeechBubble
+              className="fixed bottom-[80px] left-1/2 -translate-x-[10%] flex flex-col items-end z-50"
+              bubbleText="피드백은 한 번만 가능해요."
+              onBubbleClose={handleCloseBubble}
+            />
+          )}
         </div>
       </WriteLayout>
     </>

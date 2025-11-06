@@ -15,3 +15,5 @@ export type QuestiondataType = {
 };
 
 export type CategoryBoxPropsType = Omit<CategoryBoxItemType, 'column'>;
+
+export type CategoryBoxType = Omit<CategoryBoxItemType, 'categoryName' | 'topicName'>;
