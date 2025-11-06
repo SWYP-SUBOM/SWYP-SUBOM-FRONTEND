@@ -4,7 +4,7 @@ import { ProgressIndicator } from '../../../layout/Onboarding/ProgressIndicator'
 import guide1 from '../../../assets/onboarding/Guide1.png';
 export const GuideScreen1 = () => {
   return (
-    <>
+    <div className="app-root">
       <ProgressIndicator activeIndexes={[0]} total={3} />
       <OnboardingLayout
         title={
@@ -24,7 +24,7 @@ export const GuideScreen1 = () => {
           alt: 'guide1',
         }}
       />
-      <div className="flex flex-col justify-center items-center px-4  sm:mt-[32px] ">
+      <div className="absolute top-[654px] left-0 right-0 flex flex-col justify-center items-center px-4  z-5">
         <button className="w-full h-14 bg-b7 rounded-xl text-white B02_B cursor-pointer active:bg-b8 active:scale-95  hover:bg-b8  transition-colors duration-300 ">
           다음으로
         </button>
@@ -32,6 +32,6 @@ export const GuideScreen1 = () => {
           건너뛰기
         </button>
       </div>
-    </>
+    </div>
   );
 };
