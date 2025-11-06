@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
 
 export const NameInput = () => {
   const [name, setName] = useState('');
   const maxLength = 10;
+  const { handleNext } = useOnboardingNavigation();
 
   return (
     <div className="app-root flex flex-col  pt-[168px]  style={{ paddingBottom: 'calc(16px + env(safe-area-inset-bottom))'}}">
@@ -31,7 +33,10 @@ export const NameInput = () => {
         </div>
       </div>
       <div className="absolute top-[520px] sm:top-[654px] left-0 right-0 flex flex-col justify-center items-center px-4 z-5">
-        <button className="w-full h-14 bg-b7 rounded-xl text-white B02_B cursor-pointer active:bg-b8 active:scale-95  hover:bg-b8  transition-colors duration-300 ">
+        <button
+          onClick={handleNext}
+          className="w-full h-14 bg-b7 rounded-xl text-white B02_B cursor-pointer active:bg-b8 active:scale-95  hover:bg-b8  transition-colors duration-300 "
+        >
           시작하기
         </button>
       </div>
