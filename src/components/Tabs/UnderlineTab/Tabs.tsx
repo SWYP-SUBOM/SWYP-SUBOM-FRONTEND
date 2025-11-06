@@ -20,12 +20,17 @@ export const Trigger = ({
   return (
     <button
       onClick={() => setIsActive(categoryName)}
-      className={`items-center relative pb-[3px] text-center
-      ${isActive ? 'text-blue-500 B02_B' : 'B02_M text-gray-500'}`}
+      className={`cursor-pointer items-center relative pb-[3px] text-center transition-colors
+      ${
+        isActive
+          ? 'text-blue-500 B02_B'
+          : 'B02_M text-gray-500 hover:!text-gray-750 active:!text-gray-750'
+      }
+    `}
     >
       {children}
       <span
-        className={`absolute bottom-0 left-0 h-[2px] w-full transition-all ${
+        className={`absolute bottom-0 left-0 h-[2px] w-full ${
           isActive ? 'bg-[var(--color-b7)]' : 'bg-transparent'
         }`}
       />

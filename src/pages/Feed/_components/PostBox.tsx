@@ -13,7 +13,8 @@ export const PostBox = ({ onClick, nickname, summary, heart, completedAt }: Post
   return (
     <div
       onClick={onClick}
-      className="px-4 py-4 rounded-xl w-[328px] h-[185px] border border-[#E0E4E7] bg-white flex flex-col justify-between"
+      className="px-4 py-4 rounded-xl w-[328px] h-[185px] border border-[#E0E4E7] bg-white flex flex-col justify-between
+      hover:shadow-[0_0_30px_0_#D0D2D9] active:shadow-[0_0_30px_0_#D0D2D9]"
     >
       <div>
         <div className="flex justify-between">

@@ -20,8 +20,8 @@ export const Trigger = ({
   return (
     <button
       onClick={() => setIsActive(categoryName)}
-      className={`items-center text-center px-3 py-[6px] rounded-lg
-      ${isActive ? 'text-white bg-[var(--color-b7)] B02_B' : 'B02_M text-gray-800 border border-gray-400'}`}
+      className={`items-center text-center px-3 py-[6px] rounded-lg cursor-pointer
+      ${isActive ? 'text-white bg-[var(--color-b7)] B02_B' : 'hover:bg-gray-200 active:bg-gray-200 B02_M text-gray-800 border border-gray-400'}`}
     >
       {children}
     </button>
