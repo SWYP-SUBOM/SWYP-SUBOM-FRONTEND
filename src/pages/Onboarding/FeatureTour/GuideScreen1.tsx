@@ -1,5 +1,5 @@
 import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
-import { ProgressIndicator } from '../../../layout/Onboarding/ProgressIndicator';
+import { ProgressIndicator } from '../_components/ProgressIndicator';
 
 import guide1 from '../../../assets/onboarding/Guide1.png';
 export const GuideScreen1 = () => {
@@ -22,9 +22,10 @@ export const GuideScreen1 = () => {
         image={{
           src: guide1,
           alt: 'guide1',
+          className: 'w-61 h-61',
         }}
       />
-      <div className="flex flex-col justify-center items-center px-4  sm:mt-[32px] ">
+      <div className="absolute top-[520px] sm:top-[654px] left-0 right-0 flex flex-col justify-center items-center px-4  z-5">
         <button className="w-full h-14 bg-b7 rounded-xl text-white B02_B cursor-pointer active:bg-b8 active:scale-95  hover:bg-b8  transition-colors duration-300 ">
           다음으로
         </button>
