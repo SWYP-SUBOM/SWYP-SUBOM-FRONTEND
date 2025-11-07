@@ -11,6 +11,7 @@ import { ServiceIntro1 } from '../pages/Onboarding/Introduction/ServiceIntro1';
 import { ServiceIntro2 } from '../pages/Onboarding/Introduction/ServiceIntro2';
 import { Login } from '../pages/Onboarding/Authentication/Login';
 import { NameInput } from '../pages/Onboarding/Authentication/NameInput';
+import { OAuthCallback } from '../pages/Onboarding/Authentication/OAuthCallback';
 import { SplashMessage } from '../pages/Onboarding/FeatureTour/SplashMessage';
 import { GuideScreen1 } from '../pages/Onboarding/FeatureTour/GuideScreen1';
 import { GuideScreen2 } from '../pages/Onboarding/FeatureTour/GuideScreen2';
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
       {
         path: 'onboarding/Nameinput',
         element: <NameInput />,
+      },
+      {
+        path: 'oauth2-jwt-header',
+        element: <OAuthCallback />,
       },
       {
         path: 'onboarding/splashmessage',
