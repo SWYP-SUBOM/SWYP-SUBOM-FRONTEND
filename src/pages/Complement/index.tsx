@@ -14,9 +14,11 @@ export const Complement = () => {
 
   if (!categoryName) return null;
 
-  const [opinion, setOpinion] = useState('');
+  const [opinion, setOpinion] = useState('수정전');
+  const initialOpinion = '수정전';
   const [isScrolled, setIsScrolled] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isDirty, setIsDirty] = useState(false);
 
   const feedbackData = {
     writingId: 'uuid',
@@ -28,6 +30,10 @@ export const Complement = () => {
       '2. 흐름/구조 글 후반부에서 “저녁형 생활은 순간적 몰입에는 도움이 될 수 있지만…”으로 넘어갈 때, 비교 전환이 약간 갑작스러워요. 두 유형을 대비하기 전에 “물론 저녁형 인간에게도 장점이 있지만…”처럼 완충 문장을 넣으면 자연스러울 거예요.',
     ],
   };
+
+  useEffect(() => {
+    setIsDirty(opinion !== initialOpinion);
+  }, [opinion, initialOpinion]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,7 +52,7 @@ export const Complement = () => {
 
   return (
     <>
-      <WriteLayout handleClickSaveButton={handleSaveComplementPost}>
+      <WriteLayout handleClickSaveButton={handleSaveComplementPost} isDirty={isDirty}>
         <div ref={containerRef} className="relative min-h-[100dvh] bg-[#F3F5F8]">
           <div className="sticky top-0 z-10 px-4 pb-3 pt-[30px] bg-[#F3F5F8]">
             <CategoryChip categoryName={categoryName} />
