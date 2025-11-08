@@ -45,6 +45,7 @@
   --color-gray-500: #d0d2d9;
   --color-gray-600: #acafba;
   --color-gray-700: #8e919c;
+  --color-gray-750: #5a5b66;
   --color-gray-800: #484953;
   --color-gray-900: #222329;
   --color-black: #121212;
@@ -190,6 +191,9 @@ body {
 }
 .text-gray-700 {
   color: var(--color-gray-700);
+}
+.text-gray-750 {
+  color: var(--color-gray-750);
 }
 .text-gray-800 {
   color: var(--color-gray-800);

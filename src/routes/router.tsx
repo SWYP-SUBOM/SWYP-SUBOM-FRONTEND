@@ -3,8 +3,9 @@ import { HomeLayout } from '../layout/HomeLayout';
 import { MobileLayout } from '../layout/MobileLayout';
 import Calendar from '../pages/Calendar';
 import { Complement } from '../pages/Complement';
-import Feed from '../pages/Feed';
+import { Feed } from '../pages/Feed';
 import { FeedBack } from '../pages/Feedback';
+import { GatherTopic } from '../pages/GatherTopic';
 import Home from '../pages/Home';
 import { SplashScreen } from '../pages/Onboarding/Introduction/SplashScreen';
 import { ServiceIntro1 } from '../pages/Onboarding/Introduction/ServiceIntro1';
@@ -20,6 +21,7 @@ import { GuideScreen4 } from '../pages/Onboarding/FeatureTour/GuideScreen4';
 
 import Profile from '../pages/Profile';
 import { Write } from '../pages/Write';
+import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
 
 export const router = createBrowserRouter([
   // 홈 페이지
@@ -94,6 +96,28 @@ export const router = createBrowserRouter([
       {
         path: 'profile',
         element: <Profile />,
+      },
+      {
+        path: 'gathertopic',
+        element: <GatherTopic />,
+      },
+      {
+        path: 'loadingfeedback',
+        element: <FeedbackLoading />,
+      },
+    ],
+  },
+  {
+    path: '/',
+    element: <MobileLayout showNavBar={true} />,
+    children: [
+      {
+        path: 'feed',
+        element: <Feed />,
+      },
+      {
+        path: '/postdetail/:postId',
+        element: <PostDetail />,
       },
     ],
   },

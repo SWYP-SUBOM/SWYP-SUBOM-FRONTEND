@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Modal, Xbutton } from '../../../components/Modal/Modal';
+import { useModal } from '../../../hooks/useModal';
 
 interface TopicPropsType {
   categoryName: string;
@@ -7,8 +8,10 @@ interface TopicPropsType {
 }
 
 export const DailyQuestionModal = ({ categoryName, topicName }: TopicPropsType) => {
+  const { closeModal } = useModal();
   const navigate = useNavigate();
   const onMoveToWrite = () => {
+    closeModal();
     navigate('/write', { state: { categoryName: categoryName, topicName: topicName } });
   };
 

@@ -5,12 +5,14 @@ interface WriteLayoutProps {
   children?: React.ReactNode;
   handleClickSaveButton?: () => void;
   isSaveDisabled?: boolean;
+  isDirty?: boolean;
 }
 
 export const WriteLayout = ({
   children,
   handleClickSaveButton,
   isSaveDisabled = false,
+  isDirty = false,
 }: WriteLayoutProps) => {
   return (
     <div
@@ -31,6 +33,7 @@ export const WriteLayout = ({
         <HeaderwithSavePost
           handleClickSaveButton={handleClickSaveButton}
           isSaveDisabled={isSaveDisabled}
+          isDirty={isDirty}
         />
       </div>
       <main>
