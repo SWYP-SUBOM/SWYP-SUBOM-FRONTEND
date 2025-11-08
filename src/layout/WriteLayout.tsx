@@ -5,7 +5,7 @@ interface WriteLayoutProps {
   children?: React.ReactNode;
   handleClickSaveButton?: () => void;
   isSaveDisabled?: boolean;
-  isDirty: boolean;
+  isDirty?: boolean;
 }
 
 export const WriteLayout = ({
