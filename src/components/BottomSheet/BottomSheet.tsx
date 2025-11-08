@@ -10,7 +10,7 @@ export const Overlay = ({ children }: { children: ReactNode }) => {
   return (
     <motion.div
       onClick={closeBottomSheet}
-      className="fixed inset-0 flex w-[360px] mx-auto items-end justify-center bg-black/50"
+      className="fixed inset-0 flex w-[360px] mx-auto items-end justify-center bg-black/50 z-50"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -81,7 +81,7 @@ export const Trigger = ({
         {leftText}
       </button>
       <button
-        className="flex-1 h-14 bg-[var(--color-b8)] rounded-xl text-white font-medium"
+        className="flex-1 h-14 cursor-pointer bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] rounded-xl text-white font-medium"
         onClick={onRightClick}
       >
         {rightText}
@@ -91,7 +91,12 @@ export const Trigger = ({
 };
 
 export const BottomSheet = ({ children }: { children: ReactNode }) => {
-  return createPortal(<AnimatePresence>{children}</AnimatePresence>, document.body);
+  return createPortal(
+    <AnimatePresence>
+      <div className="z-50">{children}</div>
+    </AnimatePresence>,
+    document.body,
+  );
 };
 
 BottomSheet.Content = Content;

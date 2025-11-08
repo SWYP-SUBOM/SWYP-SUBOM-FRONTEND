@@ -15,6 +15,7 @@ import { SplashScreen } from '../pages/Onboarding/Introduction/SplashScreen';
 import { PostDetail } from '../pages/PostDetail';
 import Profile from '../pages/Profile';
 import { Write } from '../pages/Write';
+import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
 
 export const router = createBrowserRouter([
   // 홈 페이지
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
       {
         path: 'gathertopic',
         element: <GatherTopic />,
+      },
+      {
+        path: 'loadingfeedback',
+        element: <FeedbackLoading />,
       },
     ],
   },

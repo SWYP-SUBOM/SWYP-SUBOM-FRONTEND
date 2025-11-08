@@ -13,7 +13,7 @@ export const SpeechBubble = ({ onBubbleClose, bubbleText, className }: SpeechBub
   };
   return (
     <>
-      <div className={`flex flex-col items-end z-50 ${className}`}>
+      <div className={`flex flex-col items-end ${className}`}>
         <div className="flex gap-2 bg-[#4D4D4D] px-3 py-2 rounded-lg relative">
           <div className="C01_M text-gray-100 translate-y-1">{bubbleText}</div>
           <img
