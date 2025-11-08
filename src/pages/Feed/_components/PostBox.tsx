@@ -1,5 +1,6 @@
 import heartIcon from '../../../assets/Feed/heart.svg';
 import right from '../../../assets/Feed/right.svg';
+import viewIcon from '../../../assets/Feed/view.svg';
 import { DateFormatter } from '../../../utils/DateFormatter';
 
 interface PostBoxProps {
@@ -8,9 +9,10 @@ interface PostBoxProps {
   summary: string;
   heart: number;
   completedAt: string;
+  view: number;
 }
 
-export const PostBox = ({ onClick, nickname, summary, heart, completedAt }: PostBoxProps) => {
+export const PostBox = ({ onClick, nickname, summary, heart, completedAt, view }: PostBoxProps) => {
   return (
     <div
       onClick={onClick}
@@ -28,9 +30,15 @@ export const PostBox = ({ onClick, nickname, summary, heart, completedAt }: Post
       </div>
       <div className="flex justify-between">
         <div>
-          <div className="flex">
-            <img src={heartIcon} className="w-5 h-5 -translate-y-1/9" />
-            <div className="C01_M text-gray-700">{heart}</div>
+          <div className="flex gap-3">
+            <div className="flex gap-2">
+              <img src={heartIcon} className="w-5 h-5 -translate-y-1/9" />
+              <div className="C01_M text-gray-700">{heart}</div>
+            </div>
+            <div className="flex gap-2">
+              <img src={viewIcon} className="w-5 h-5 -translate-y-1/9" />
+              <div className="C01_M text-gray-700">{view}</div>
+            </div>
           </div>
         </div>
         <div className="C01_M text-gray-700">{DateFormatter(completedAt)}</div>

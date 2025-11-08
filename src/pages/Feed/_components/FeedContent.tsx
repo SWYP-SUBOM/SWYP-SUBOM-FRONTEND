@@ -79,6 +79,7 @@ const FeedContent = ({ categoryName }: { categoryName: string }) => {
                 summary={item.summary}
                 heart={item.metrics.reactionCount}
                 completedAt={item.completedAt}
+                view={item.metrics.viewCount}
               />
             ))}
           </div>
