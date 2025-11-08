@@ -1,10 +1,26 @@
 import { useState } from 'react';
 import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
+import { userService } from '../../../api/services/userService';
 
 export const NameInput = () => {
   const [name, setName] = useState('');
+
   const maxLength = 10;
   const { handleNext } = useOnboardingNavigation();
+
+  const handleSubmit = async () => {
+    if (!name.trim()) {
+      alert('이름을 입력해주세요.');
+      return;
+    }
+
+    try {
+      await userService.saveUserName(name.trim());
+      handleNext();
+    } catch (error) {
+      alert(error instanceof Error ? error.message : '닉네임 저장에 실패했습니다.');
+    }
+  };
 
   return (
     <div className="app-root flex flex-col  pt-[168px]  style={{ paddingBottom: 'calc(16px + env(safe-area-inset-bottom))'}}">
@@ -34,8 +50,8 @@ export const NameInput = () => {
       </div>
       <div className="absolute top-[520px] sm:top-[654px] left-0 right-0 flex flex-col justify-center items-center px-4 z-5">
         <button
-          onClick={handleNext}
-          className="w-full h-14 bg-b7 rounded-xl text-white B02_B cursor-pointer active:bg-b8 active:scale-95  hover:bg-b8  transition-colors duration-300 "
+          onClick={handleSubmit}
+          className="w-full h-14 bg-b7 rounded-xl text-white B02_B cursor-pointer active:bg-b8 active:scale-95  hover:bg-b8  transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           시작하기
         </button>
