@@ -81,7 +81,7 @@ export const Trigger = ({
         {leftText}
       </button>
       <button
-        className="flex-1 h-14 bg-[var(--color-b8)] rounded-xl text-white font-medium"
+        className="flex-1 h-14 cursor-pointer bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] rounded-xl text-white font-medium"
         onClick={onRightClick}
       >
         {rightText}

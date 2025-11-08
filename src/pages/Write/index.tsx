@@ -77,7 +77,7 @@ export const Write = () => {
               onClick={movetoGetFeedback}
               disabled={!isWriteOpinion()}
               className={`cursor-pointer rounded-xl max-w-[328px] w-full h-14 B02_B fixed bottom-7 left-1/2 -translate-x-1/2
-                ${!isWriteOpinion() ? 'bg-gray-600 text-white' : 'bg-[var(--color-b8)] text-white'}`}
+                ${!isWriteOpinion() ? 'bg-gray-600 text-white' : 'bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white'}`}
             >
               피드백 받기
             </button>

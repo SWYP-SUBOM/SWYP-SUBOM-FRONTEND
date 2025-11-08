@@ -87,10 +87,10 @@ export const Complement = () => {
             }`}
           >
             <div className="flex gap-2 w-[340px]">
-              <button className="flex-2 h-14 bg-gray-300 text-gray-800 rounded-xl B02_B">
+              <button className="cursor-pointer flex-2 h-14 bg-gray-300 text-gray-800 rounded-xl B02_B">
                 작성완료
               </button>
-              <button className="flex-3 h-14 bg-[var(--color-b7)] text-white rounded-xl B02_B">
+              <button className="cursor-pointer flex-3 h-14 bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white rounded-xl B02_B">
                 보완하기
               </button>
             </div>
