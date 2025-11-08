@@ -13,6 +13,7 @@ export const Write = () => {
   const [opinion, setOpinion] = useState('');
   const [isBubbleOpen, setIsBubbleOpen] = useState(false);
   const hasClosedBubble = useRef(false);
+  const [isDirty, setIsDirty] = useState(false);
 
   const isWriteOpinion = () => {
     return opinion.trim() !== '';
@@ -21,6 +22,15 @@ export const Write = () => {
   const handleSubmit = () => {
     console.log(opinion);
   };
+
+  useEffect(() => {
+    if (isWriteOpinion()) {
+      setIsDirty(true);
+    }
+    if (!isWriteOpinion()) {
+      setIsDirty(false);
+    }
+  }, [opinion]);
 
   useEffect(() => {
     if (isWriteOpinion() && !hasClosedBubble.current) {
@@ -44,7 +54,7 @@ export const Write = () => {
 
   return (
     <>
-      <WriteLayout handleClickSaveButton={handleSavePost}>
+      <WriteLayout handleClickSaveButton={handleSavePost} isDirty={isDirty}>
         <div className="px-4 bg-[#F3F5F8]">
           <div className="pt-[30px] pb-3 flex-shrink-0">
             <CategoryChip categoryName={categoryName}></CategoryChip>
