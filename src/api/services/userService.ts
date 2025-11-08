@@ -10,12 +10,12 @@ export const getUserName = async (): Promise<string> => {
   return response.data;
 };
 
-export const saveUserName = async (name: string): Promise<void> => {
+export const postUserName = async (name: string): Promise<void> => {
   const request: namingRequest = { name };
   await apiClient.post<namingResponse>(USER_ENDPOINTS.NAMING, request);
 };
 
 export const userService = {
   getUserName,
-  saveUserName,
+  postUserName,
 };

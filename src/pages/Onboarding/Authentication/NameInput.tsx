@@ -15,7 +15,7 @@ export const NameInput = () => {
     }
 
     try {
-      await userService.saveUserName(name.trim());
+      await userService.postUserName(name.trim());
       handleNext();
     } catch (error) {
       alert(error instanceof Error ? error.message : '닉네임 저장에 실패했습니다.');
