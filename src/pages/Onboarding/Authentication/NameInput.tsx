@@ -1,8 +1,31 @@
 import { useState } from 'react';
+import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
+import { usePostUserName } from '../../../hooks/usePostUserName';
 
 export const NameInput = () => {
   const [name, setName] = useState('');
+
   const maxLength = 10;
+  const { handleNext } = useOnboardingNavigation();
+
+  const mutation = usePostUserName();
+
+  const handleSubmit = () => {
+    if (!name.trim()) {
+      alert('이름을 입력해주세요.');
+      return;
+    }
+
+    mutation.mutate(name.trim(), {
+      onSuccess: () => {
+        handleNext();
+      },
+      onError: (error: Error) => {
+        console.error('닉네임 저장 에러:', error);
+        alert(error.message || '닉네임 저장에 실패했습니다.');
+      },
+    });
+  };
 
   return (
     <div className="app-root flex flex-col  pt-[168px]  style={{ paddingBottom: 'calc(16px + env(safe-area-inset-bottom))'}}">
@@ -31,8 +54,12 @@ export const NameInput = () => {
         </div>
       </div>
       <div className="absolute top-[520px] sm:top-[654px] left-0 right-0 flex flex-col justify-center items-center px-4 z-5">
-        <button className="w-full h-14 bg-b7 rounded-xl text-white B02_B cursor-pointer active:bg-b8 active:scale-95  hover:bg-b8  transition-colors duration-300 ">
-          시작하기
+        <button
+          onClick={handleSubmit}
+          disabled={mutation.isPending}
+          className="w-full h-14 bg-b7 rounded-xl text-white B02_B cursor-pointer active:bg-b8 active:scale-95  hover:bg-b8  transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {mutation.isPending ? '저장 중...' : '시작하기'}
         </button>
       </div>
     </div>
