@@ -8,13 +8,11 @@ export const CategoryBox = ({
   icon,
   size,
   categoryId,
-  categoryName,
-  topicName,
 }: CategoryBoxPropsType) => {
   const { openModal } = useModal();
 
   const handleModalOpen = (categoryId: number) => {
-    openModal(<DailyQuestionModal categoryName={categoryName} topicName={topicName} />);
+    openModal(<DailyQuestionModal categoryId={categoryId} />);
   };
 
   return (

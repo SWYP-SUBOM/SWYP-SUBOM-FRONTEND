@@ -18,3 +18,13 @@ export type homeResponse = {
     };
   } | null;
 };
+
+export type dailyQuestionResponse = {
+  success: boolean;
+  code: string;
+  message: string;
+  data: {
+    categoryName: string;
+    topicName: string;
+  };
+};

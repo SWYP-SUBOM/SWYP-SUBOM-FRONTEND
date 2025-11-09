@@ -1,5 +1,4 @@
 import { CategoryBox } from './CategoryBox';
-import type { QuestiondataType } from './CategoryBox.types';
 import { CategoryBoxItem } from './CategoryBoxItem';
 
 const CategoryBoxItems = Object.values(CategoryBoxItem);
@@ -7,7 +6,7 @@ const CategoryBoxItems = Object.values(CategoryBoxItem);
 const largeCategoryBoxes = CategoryBoxItems.filter((item) => item.column === 1);
 const smallCategoryBoxes = CategoryBoxItems.filter((item) => item.column === 2);
 
-export const CategoryBoxGrid = ({ categoryName, topicName }: QuestiondataType) => {
+export const CategoryBoxGrid = () => {
   return (
     <div
       className="flex h-full gap-[7px] flex-1 object-contain"
@@ -22,8 +21,6 @@ export const CategoryBoxGrid = ({ categoryName, topicName }: QuestiondataType) =
             size={largeCategoryBox.size}
             icon={largeCategoryBox.icon}
             categoryId={largeCategoryBox.categoryId}
-            categoryName={categoryName}
-            topicName={topicName}
           />
         ))}
       </div>
@@ -36,8 +33,6 @@ export const CategoryBoxGrid = ({ categoryName, topicName }: QuestiondataType) =
             size={smallCategoryBox.size}
             icon={smallCategoryBox.icon}
             categoryId={smallCategoryBox.categoryId}
-            categoryName={categoryName}
-            topicName={topicName}
           />
         ))}
       </div>
