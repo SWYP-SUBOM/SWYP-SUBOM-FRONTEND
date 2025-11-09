@@ -10,7 +10,7 @@ interface TopicPropsType {
 export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
   const { closeModal } = useModal();
   const navigate = useNavigate();
-  const { data: dailyQuestionData } = useGetDailyQuestion(categoryId);
+  const { data: dailyQuestionData, isLoading } = useGetDailyQuestion(categoryId);
 
   const onMoveToWrite = () => {
     closeModal();
@@ -26,9 +26,11 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
     <Modal>
       <Modal.Overlay>
         <Modal.Content>
-          <Xbutton></Xbutton>
-          <Modal.Title>{dailyQuestionData?.categoryName}</Modal.Title>
-          <Modal.Description>{dailyQuestionData?.topicName}</Modal.Description>
+          <Xbutton />
+          <Modal.Title> {isLoading ? '오늘의 질문' : dailyQuestionData?.categoryName}</Modal.Title>
+          <Modal.Description>
+            {isLoading ? '로딩중...' : dailyQuestionData?.topicName}
+          </Modal.Description>
           <Modal.Trigger handleClickButton={onMoveToWrite}>글 쓰러가기</Modal.Trigger>
         </Modal.Content>
       </Modal.Overlay>
