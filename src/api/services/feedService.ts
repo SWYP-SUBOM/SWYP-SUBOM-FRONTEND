@@ -7,7 +7,7 @@ export const getTopics = async (
   sort: string,
 ): Promise<TopicsResponse['data']> => {
   const response = await apiClient.get<TopicsResponse>(
-    `${CATEGORY_ENDPOINTS.GET_CATEGORY}/${categoryId}/questions?${sort}`,
+    `${CATEGORY_ENDPOINTS.GET_CATEGORY}/${categoryId}/questions?${encodeURIComponent(sort)}`,
   );
   if (!response.data) {
     throw new Error('주제 모아보기를 조회할 수 없습니다');

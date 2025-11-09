@@ -13,15 +13,15 @@ export const FeedTab = () => {
     <Tabs>
       <Tabs.TabList>
         {tabs.map((tab) => (
-          <Tabs.Trigger key={tab.categoryName} categoryId={tab.categoryId}>
+          <Tabs.Trigger key={tab.categoryId} categoryId={tab.categoryId}>
             {tab.categoryName}
           </Tabs.Trigger>
         ))}
       </Tabs.TabList>
 
       {tabs.map((tab) => (
-        <Tabs.Content key={tab.categoryName} categoryId={tab.categoryId}>
-          <FeedContent categoryName={tab.categoryName} />
+        <Tabs.Content key={tab.categoryId} categoryId={tab.categoryId}>
+          <FeedContent categoryId={tab.categoryId} />
         </Tabs.Content>
       ))}
     </Tabs>

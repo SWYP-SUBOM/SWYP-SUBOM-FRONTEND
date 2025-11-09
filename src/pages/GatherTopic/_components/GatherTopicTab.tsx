@@ -21,7 +21,7 @@ export const GatherTopicTab = () => {
 
       {tabs.map((tab) => (
         <Tabs.Content key={tab.categoryName} categoryId={tab.categoryId}>
-          <GatherTopicContent categoryName={tab.categoryName} />
+          <GatherTopicContent categoryId={tab.categoryId} />
         </Tabs.Content>
       ))}
     </Tabs>
