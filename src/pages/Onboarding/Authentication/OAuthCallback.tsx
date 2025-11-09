@@ -1,23 +1,22 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { apiClient } from '../../../utils/apiClient';
-import { OAUTH_ENDPOINTS } from '../../../api/endpoints';
+import { useOAuthToken } from '../../../hooks/useOAuthToken';
+import { ROUTES } from '../../../routes/routes';
 
 export const OAuthCallback = () => {
   const navigate = useNavigate();
+  const mutation = useOAuthToken();
 
   useEffect(() => {
-    const fetchAccessToken = async () => {
-      try {
-        await apiClient.OAuthToken(OAUTH_ENDPOINTS.OAUTH_JWT_HEADER);
-        navigate('/onboarding/Nameinput');
-      } catch (error) {
-        navigate('/onboarding/Login');
-      }
-    };
-
-    fetchAccessToken();
-  }, [navigate]);
+    mutation.mutate(undefined, {
+      onSuccess: () => {
+        navigate(ROUTES.ONBOARDING_NAME_INPUT);
+      },
+      onError: () => {
+        navigate(ROUTES.ONBOARDING_LOGIN);
+      },
+    });
+  }, []);
 
   return (
     <div className="flex items-center justify-center min-h-screen">

@@ -7,7 +7,17 @@ export const useOnboardingNavigation = () => {
 
   const handleNext = () => {
     const currentPath = location.pathname;
-    const nextPath = ONBOARDING_FLOW[currentPath];
+
+    let nextPath = ONBOARDING_FLOW[currentPath];
+
+    if (!nextPath) {
+      const normalizedPath = Object.keys(ONBOARDING_FLOW).find(
+        (key) => key.toLowerCase() === currentPath.toLowerCase(),
+      );
+      if (normalizedPath) {
+        nextPath = ONBOARDING_FLOW[normalizedPath];
+      }
+    }
 
     if (nextPath) {
       navigate(nextPath);

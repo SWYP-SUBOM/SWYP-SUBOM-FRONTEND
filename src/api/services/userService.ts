@@ -1,6 +1,6 @@
 import { apiClient } from '../../utils/apiClient';
 import { USER_ENDPOINTS } from '../endpoints';
-import type { namingRequest, namingResponse } from '../types/user';
+import type { namingResponse } from '../types/user';
 
 export const getUserName = async (): Promise<string> => {
   const response = await apiClient.get<namingResponse>(USER_ENDPOINTS.GET_NAMING);
@@ -11,8 +11,10 @@ export const getUserName = async (): Promise<string> => {
 };
 
 export const postUserName = async (name: string): Promise<void> => {
-  const request: namingRequest = { name };
-  await apiClient.post<namingResponse>(USER_ENDPOINTS.NAMING, request);
+  await apiClient.post<namingResponse>(
+    `${USER_ENDPOINTS.NAMING}?name=${encodeURIComponent(name)}`,
+    {},
+  );
 };
 
 export const userService = {

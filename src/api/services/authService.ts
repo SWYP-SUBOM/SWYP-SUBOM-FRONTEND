@@ -8,3 +8,8 @@ export const kakaoLoginUrl = (): string => {
 export const OAuthToken = async (): Promise<string> => {
   return apiClient.OAuthToken(OAUTH_ENDPOINTS.OAUTH_JWT_HEADER);
 };
+
+export const authService = {
+  kakaoLoginUrl,
+  OAuthToken,
+};

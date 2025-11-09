@@ -16,7 +16,7 @@ const createAxiosInstance = (): AxiosInstance => {
     (config: InternalAxiosRequestConfig) => {
       const token = getAccessToken();
 
-      if (config.url === 'onboarding/Login') {
+      if (config.url === '/') {
         delete config.headers?.Authorization;
         return config;
       }
@@ -40,6 +40,7 @@ const createAxiosInstance = (): AxiosInstance => {
         window.location.href = '/onboarding/Login';
         return Promise.reject(new Error('인증이 만료되었습니다.'));
       }
+      return Promise.reject(error);
     },
   );
 

@@ -57,7 +57,7 @@ export const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: 'onboarding/Nameinput',
+        path: 'onboarding/NameInput',
         element: <NameInput />,
       },
       {
@@ -65,23 +65,23 @@ export const router = createBrowserRouter([
         element: <OAuthCallback />,
       },
       {
-        path: 'onboarding/splashmessage',
+        path: 'onboarding/splashMessage',
         element: <SplashMessage />,
       },
       {
-        path: 'onboarding/guidescreen1',
+        path: 'onboarding/guideScreen1',
         element: <GuideScreen1 />,
       },
       {
-        path: 'onboarding/guidescreen2',
+        path: 'onboarding/guideScreen2',
         element: <GuideScreen2 />,
       },
       {
-        path: 'onboarding/guidescreen3',
+        path: 'onboarding/guideScreen3',
         element: <GuideScreen3 />,
       },
       {
-        path: 'onboarding/guidescreen4',
+        path: 'onboarding/guideScreen4',
         element: <GuideScreen4 />,
       },
 
@@ -115,10 +115,10 @@ export const router = createBrowserRouter([
         path: 'feed',
         element: <Feed />,
       },
-      {
-        path: '/postdetail/:postId',
-        element: <PostDetail />,
-      },
+      // {
+      //   path: '/postdetail/:postId',
+      //   element: <PostDetail />,
+      // },
     ],
   },
   {
