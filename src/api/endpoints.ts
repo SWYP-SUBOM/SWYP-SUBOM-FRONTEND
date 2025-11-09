@@ -8,6 +8,10 @@ export const USER_ENDPOINTS = {
   GET_NAMING: '/api/naming',
 } as const;
 
+export const HOME_ENDPOINTS = {
+  HOME: '/api/home',
+} as const;
+
 export const ENDPOINTS = {
   ...OAUTH_ENDPOINTS,
   ...USER_ENDPOINTS,

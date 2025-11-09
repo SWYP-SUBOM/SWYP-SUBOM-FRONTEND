@@ -15,11 +15,11 @@ export const HomeBannerTitle = ({ children, textColor }: HomeBannerTitleProps) =
 
 export const HomeBannerItem: Record<HomeBannerStatus, HomeBannerItemType> = {
   NOT_STARTED: {
-    description: (
+    description: (streak: number) => (
       <>
         <div className="flex items-center gap-1">
           <div className="w-[50px] h-[26px] flex items-center justify-center bg-[#146EFF] px-2 py-1 rounded-[20px]">
-            <span className="B03_B text-white">3일째</span>
+            <span className="B03_B text-white">{streak}일째</span>
           </div>
           <span className="B03_B text-[#146EFF]">꾸준히 진행 중 </span>
         </div>

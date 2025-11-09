@@ -13,7 +13,7 @@ export type HomeBannerStatus =
   | 'GUEST';
 
 export type HomeBannerItemType = {
-  description: ReactNode;
+  description: ((streak: number) => React.ReactNode) | React.ReactNode;
   title: string | ((username: string) => string);
   img: string;
   bgColor: string;
