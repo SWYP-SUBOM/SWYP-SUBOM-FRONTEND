@@ -5,21 +5,15 @@ export const TabList = ({ children }: { children: ReactNode }) => {
   return <div className="flex w-full gap-5 px-2">{children}</div>;
 };
 
-export const Trigger = ({
-  children,
-  categoryName,
-}: {
-  children: ReactNode;
-  categoryName: string;
-}) => {
+export const Trigger = ({ children, categoryId }: { children: ReactNode; categoryId: number }) => {
   const setIsActive = useTabStore((state) => state.setIsActive);
   const activeTab = useTabStore((state) => state.activeTab);
 
-  const isActive = activeTab === categoryName;
+  const isActive = activeTab === categoryId;
 
   return (
     <button
-      onClick={() => setIsActive(categoryName)}
+      onClick={() => setIsActive(categoryId)}
       className={`cursor-pointer items-center relative pb-[3px] text-center transition-colors
       ${
         isActive
@@ -38,15 +32,9 @@ export const Trigger = ({
   );
 };
 
-export const Content = ({
-  children,
-  categoryName,
-}: {
-  children: ReactNode;
-  categoryName: string;
-}) => {
+export const Content = ({ children, categoryId }: { children: ReactNode; categoryId: number }) => {
   const activeTab = useTabStore((state) => state.activeTab);
-  if (activeTab !== categoryName) return null;
+  if (activeTab !== categoryId) return null;
   return <div>{children}</div>;
 };
 
