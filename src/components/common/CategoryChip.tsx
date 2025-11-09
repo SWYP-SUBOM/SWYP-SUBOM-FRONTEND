@@ -15,7 +15,7 @@ interface CategoryChipProps {
 export const CategoryChip = ({ categoryName }: CategoryChipProps) => {
   return (
     <div
-      className={`w-[49px] B03_B rounded-lg px-3 py-[6px] text-white ${CategoryChipMap[categoryName]}`}
+      className={`inline-block B03_B rounded-lg px-3 py-[6px] text-white ${CategoryChipMap[categoryName]}`}
     >
       {categoryName}
     </div>

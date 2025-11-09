@@ -5,8 +5,6 @@ export type CategoryBoxItemType = {
   icon: string;
   size: 'large' | 'small';
   column: number;
-  categoryName: string;
-  topicName: string;
 };
 
 export type QuestiondataType = {
@@ -15,5 +13,3 @@ export type QuestiondataType = {
 };
 
 export type CategoryBoxPropsType = Omit<CategoryBoxItemType, 'column'>;
-
-export type CategoryBoxType = Omit<CategoryBoxItemType, 'categoryName' | 'topicName'>;

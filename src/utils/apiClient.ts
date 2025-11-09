@@ -1,5 +1,5 @@
-import axios, { AxiosError } from 'axios';
 import type { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosError } from 'axios';
 import { getAccessToken, removeAccessToken, setAccessToken } from './api';
 
 const createAxiosInstance = (): AxiosInstance => {

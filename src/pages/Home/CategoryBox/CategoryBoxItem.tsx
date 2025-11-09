@@ -3,9 +3,9 @@ import daily from '../../../assets/CategoryBox/daily.png';
 import hobby from '../../../assets/CategoryBox/hobby.png';
 import relationship from '../../../assets/CategoryBox/relationship.png';
 import value from '../../../assets/CategoryBox/value.png';
-import type { CategoryBoxType } from './CategoryBox.types';
+import type { CategoryBoxItemType } from './CategoryBox.types';
 
-export const CategoryBoxItem: Record<string, CategoryBoxType> = {
+export const CategoryBoxItem: Record<string, CategoryBoxItemType> = {
   일상: {
     categoryId: 1,
     title: '일상',
