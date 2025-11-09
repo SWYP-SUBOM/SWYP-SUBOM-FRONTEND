@@ -1,4 +1,5 @@
 import folded from '../../../assets/HomeBanner/folded.svg';
+import { useGetUserName } from '../../../hooks/useGetUserName';
 import type { HomeBannerTitleProps } from './HomeBanner.types';
 import { HomeBannerItem } from './HomeBannerItem';
 
@@ -6,14 +7,15 @@ export const HomeBannerTitle = ({ children, textColor }: HomeBannerTitleProps) =
   return <div className={`${textColor} T02_B`}>{children}</div>;
 };
 
-/*todo.사용자 이름 불러오기 API 호출*/
-const username = '지수';
-
-const bannerStatus = HomeBannerItem['NOT_STARTED'];
-const titleContent =
-  typeof bannerStatus.title === 'function' ? bannerStatus.title(username) : bannerStatus.title;
-
 export const HomeBanner = () => {
+  const { data: userName } = useGetUserName();
+
+  const bannerStatus = HomeBannerItem['NOT_STARTED'];
+  const titleContent =
+    typeof bannerStatus.title === 'function'
+      ? bannerStatus.title(userName ?? '유저')
+      : bannerStatus.title;
+
   return (
     <div
       className={`
