@@ -7,18 +7,19 @@ import { Feed } from '../pages/Feed';
 import { FeedBack } from '../pages/Feedback';
 import { GatherTopic } from '../pages/GatherTopic';
 import Home from '../pages/Home';
-import { SplashScreen } from '../pages/Onboarding/Introduction/SplashScreen';
-import { ServiceIntro1 } from '../pages/Onboarding/Introduction/ServiceIntro1';
-import { ServiceIntro2 } from '../pages/Onboarding/Introduction/ServiceIntro2';
 import { Login } from '../pages/Onboarding/Authentication/Login';
 import { NameInput } from '../pages/Onboarding/Authentication/NameInput';
 import { OAuthCallback } from '../pages/Onboarding/Authentication/OAuthCallback';
-import { SplashMessage } from '../pages/Onboarding/FeatureTour/SplashMessage';
 import { GuideScreen1 } from '../pages/Onboarding/FeatureTour/GuideScreen1';
 import { GuideScreen2 } from '../pages/Onboarding/FeatureTour/GuideScreen2';
 import { GuideScreen3 } from '../pages/Onboarding/FeatureTour/GuideScreen3';
 import { GuideScreen4 } from '../pages/Onboarding/FeatureTour/GuideScreen4';
+import { SplashMessage } from '../pages/Onboarding/FeatureTour/SplashMessage';
+import { ServiceIntro1 } from '../pages/Onboarding/Introduction/ServiceIntro1';
+import { ServiceIntro2 } from '../pages/Onboarding/Introduction/ServiceIntro2';
+import { SplashScreen } from '../pages/Onboarding/Introduction/SplashScreen';
 
+import { PostDetail } from '../pages/PostDetail';
 import Profile from '../pages/Profile';
 import { Write } from '../pages/Write';
 import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
@@ -84,11 +85,6 @@ export const router = createBrowserRouter([
         path: 'onboarding/guideScreen4',
         element: <GuideScreen4 />,
       },
-
-      {
-        path: 'feed',
-        element: <Feed />,
-      },
       {
         path: 'calendar',
         element: <Calendar />,
@@ -115,10 +111,10 @@ export const router = createBrowserRouter([
         path: 'feed',
         element: <Feed />,
       },
-      // {
-      //   path: '/postdetail/:postId',
-      //   element: <PostDetail />,
-      // },
+      {
+        path: '/postdetail/:postId',
+        element: <PostDetail />,
+      },
     ],
   },
   {

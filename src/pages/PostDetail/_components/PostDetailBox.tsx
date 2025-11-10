@@ -12,7 +12,7 @@ interface reactionsType {
 
 interface PostDetailBoxProps {
   content: string;
-  createdAt: string;
+  updatedAt: string;
   writer: string;
   isMe: boolean;
   reactions: reactionsType[];
@@ -27,7 +27,7 @@ export const reactionIconMap: Record<number, string> = {
 
 export const PostDetailBox = ({
   content,
-  createdAt,
+  updatedAt,
   writer,
   reactions,
   viewCount,
@@ -37,7 +37,7 @@ export const PostDetailBox = ({
       <div>
         <div className="flex justify-between">
           <div className="B01_M text-gray-900 ">By {writer}</div>
-          <div className="C01_SB text-gray-700 translate-y-1/7">{DateFormatter(createdAt)}</div>
+          <div className="C01_SB text-gray-700 translate-y-1/7">{DateFormatter(updatedAt)}</div>
         </div>
         <div className="border-t border-[#E0E4E7] my-4"></div>
         <div className="B03_M text-gray-800 ">{content}</div>
