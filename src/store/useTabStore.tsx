@@ -1,11 +1,11 @@
 import { create } from 'zustand';
 
 interface TabState {
-  activeTab: string;
-  setIsActive: (category: string) => void;
+  activeTab: number;
+  setIsActive: (categoryId: number) => void;
 }
 
 export const useTabStore = create<TabState>((set) => ({
-  activeTab: '일상',
-  setIsActive: (category) => set({ activeTab: category }),
+  activeTab: 1,
+  setIsActive: (categoryId) => set({ activeTab: categoryId }),
 }));

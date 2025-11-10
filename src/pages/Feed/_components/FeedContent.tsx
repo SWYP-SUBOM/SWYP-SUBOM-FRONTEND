@@ -5,7 +5,7 @@ import { TodayTopicBoxSkeleton } from '../Skeleton/TodayTopicBoxSkeleton';
 import { PostBox } from './PostBox';
 import { TodayTopicBox } from './TodayTopicBox';
 
-const FeedContent = ({ categoryName }: { categoryName: string }) => {
+const FeedContent = ({ categoryId }: { categoryId: number }) => {
   /* categoryName에 해당하는 api 연결*/
   const topic = {
     topicId: 'uuid-topic-1',
