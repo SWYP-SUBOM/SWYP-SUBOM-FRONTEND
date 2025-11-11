@@ -63,6 +63,27 @@ export const post = async <T>(
   return response.data;
 };
 
+export const put = async <T>(
+  endpoint: string,
+  data?: unknown,
+  config?: InternalAxiosRequestConfig,
+): Promise<T> => {
+  const response = await axiosInstance.put<T>(endpoint, data, config);
+  return response.data;
+};
+
+export const remove = async <T>(
+  endpoint: string,
+  data?: unknown,
+  config?: InternalAxiosRequestConfig,
+): Promise<T> => {
+  const response = await axiosInstance.delete<T>(endpoint, {
+    ...config,
+    data,
+  });
+  return response.data;
+};
+
 export const postForm = async <T>(
   endpoint: string,
   data: Record<string, string>,
@@ -108,6 +129,8 @@ export const OAuthToken = async (endpoint: string): Promise<string> => {
 export const apiClient = {
   get,
   post,
+  put,
+  remove,
   postForm,
   OAuthToken,
 };
