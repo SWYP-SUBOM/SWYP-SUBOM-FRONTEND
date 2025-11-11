@@ -20,7 +20,7 @@ const FeedContent = ({ categoryId }: { categoryId: number }) => {
 
   const items = [
     {
-      postId: 'uuid-1',
+      postId: 2,
       user: {
         userId: 'uuid-user-A',
         nickname: '귀여운 코알라',
@@ -35,7 +35,7 @@ const FeedContent = ({ categoryId }: { categoryId: number }) => {
     },
 
     {
-      postId: 'uuid-2',
+      postId: 3,
       user: {
         userId: 'uuid-user-A',
         nickname: '귀여운 코알라',
@@ -51,7 +51,7 @@ const FeedContent = ({ categoryId }: { categoryId: number }) => {
   ];
 
   const navigate = useNavigate();
-  const movetoDetail = (postId: string) => {
+  const movetoDetail = (postId: number) => {
     navigate(`/postdetail/${postId}`);
   };
 

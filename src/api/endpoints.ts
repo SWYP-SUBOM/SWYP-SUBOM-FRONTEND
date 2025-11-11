@@ -16,9 +16,14 @@ export const CATEGORY_ENDPOINTS = {
   GET_CATEGORY: '/api/categories',
 } as const;
 
+export const POST_ENDPOINTS = {
+  GET_POST: '/api/posts',
+} as const;
+
 export const ENDPOINTS = {
   ...OAUTH_ENDPOINTS,
   ...USER_ENDPOINTS,
   ...HOME_ENDPOINTS,
   ...CATEGORY_ENDPOINTS,
+  ...POST_ENDPOINTS,
 } as const;

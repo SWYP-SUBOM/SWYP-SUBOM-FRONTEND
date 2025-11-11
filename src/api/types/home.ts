@@ -1,6 +1,6 @@
 import type { HomeBannerStatus } from '../../pages/Home/HomeBanner/HomeBanner.types';
 
-export type homeResponse = {
+export interface homeResponse {
   success: boolean;
   code: string;
   message: string;
@@ -17,9 +17,9 @@ export type homeResponse = {
       postStatus: HomeBannerStatus;
     };
   } | null;
-};
+}
 
-export type dailyQuestionResponse = {
+export interface dailyQuestionResponse {
   success: boolean;
   code: string;
   message: string;
@@ -27,4 +27,4 @@ export type dailyQuestionResponse = {
     categoryName: string;
     topicName: string;
   };
-};
+}
