@@ -19,6 +19,7 @@ import { ServiceIntro1 } from '../pages/Onboarding/Introduction/ServiceIntro1';
 import { ServiceIntro2 } from '../pages/Onboarding/Introduction/ServiceIntro2';
 import { SplashScreen } from '../pages/Onboarding/Introduction/SplashScreen';
 
+import { Complete } from '../pages/Complete';
 import { PostDetail } from '../pages/PostDetail';
 import Profile from '../pages/Profile';
 import { Write } from '../pages/Write';
@@ -100,6 +101,10 @@ export const router = createBrowserRouter([
       {
         path: 'loadingfeedback',
         element: <FeedbackLoading />,
+      },
+      {
+        path: 'complete',
+        element: <Complete />,
       },
     ],
   },
