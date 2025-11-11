@@ -1,4 +1,4 @@
-export type TopicsResponse = {
+export interface TopicsResponse {
   success: boolean;
   code: string;
   message: string;
@@ -14,4 +14,4 @@ export type TopicsResponse = {
       usedAt: string;
     }[];
   };
-};
+}

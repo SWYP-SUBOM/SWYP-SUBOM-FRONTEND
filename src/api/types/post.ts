@@ -1,4 +1,4 @@
-export type PostResponse = {
+export interface PostResponse {
   success: boolean;
   code: string;
   message: string;
@@ -16,4 +16,4 @@ export type PostResponse = {
     }[];
     viewCount: number;
   };
-};
+}
