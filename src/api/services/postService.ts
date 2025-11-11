@@ -4,8 +4,8 @@ import type { PostResponse } from '../types/post';
 
 export const getPost = async (postId: number, context?: string): Promise<PostResponse['data']> => {
   const url = context
-    ? `${POST_ENDPOINTS.GET_CATEGORY}/${postId}?context=${encodeURIComponent(context)}`
-    : `${POST_ENDPOINTS.GET_CATEGORY}/${postId}`;
+    ? `${POST_ENDPOINTS.GET_POST}/${postId}?context=${encodeURIComponent(context)}`
+    : `${POST_ENDPOINTS.GET_POST}/${postId}`;
 
   const response = await apiClient.get<PostResponse>(url);
   if (!response.data) {

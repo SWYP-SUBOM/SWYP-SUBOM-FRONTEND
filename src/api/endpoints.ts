@@ -17,7 +17,7 @@ export const CATEGORY_ENDPOINTS = {
 } as const;
 
 export const POST_ENDPOINTS = {
-  GET_CATEGORY: '/api/posts',
+  GET_POST: '/api/posts',
 } as const;
 
 export const ENDPOINTS = {
