@@ -26,5 +26,7 @@ export interface dailyQuestionResponse {
   data: {
     categoryName: string;
     topicName: string;
+    topicId: number;
+    categoryId: number;
   };
 }

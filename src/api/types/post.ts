@@ -17,3 +17,25 @@ export interface PostResponse {
     viewCount: number;
   };
 }
+
+export interface savePostResponse {
+  success: boolean;
+  code: string;
+  message: string;
+  data: {
+    postId: number;
+    nickname: string;
+  };
+}
+
+export interface saveAndUpdatePostResponse {
+  success: boolean;
+  code: string;
+  message: string;
+  data: {
+    postId: number;
+    status: string;
+    updatedAt: string;
+    content: string;
+  };
+}

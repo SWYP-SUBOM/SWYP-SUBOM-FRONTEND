@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryChip } from '../../components/common/CategoryChip';
+import { useSavePost } from '../../hooks/Post/useSavePost';
+import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { WriteLayout } from '../../layout/WriteLayout';
 import { SpeechBubble } from './_components/SpeechBubble';
 
@@ -8,19 +10,23 @@ export const Write = () => {
   const location = useLocation();
 
   const categoryName = location.state.categoryName;
+  const categoryId = location.state.categoryId;
   const topicName = location.state.topicName;
+  const topicId = location.state.topicId;
 
   const [opinion, setOpinion] = useState('');
   const [isBubbleOpen, setIsBubbleOpen] = useState(false);
   const hasClosedBubble = useRef(false);
   const [isDirty, setIsDirty] = useState(false);
 
+  const saveMutation = useSavePost();
+  const updateAndSaveMutation = useUpdateAndSavePost();
+
+  const [currentPostId, setCurrentPostId] = useState(0);
+  const [isFirst, setIsFirst] = useState(true);
+
   const isWriteOpinion = () => {
     return opinion.trim() !== '';
-  };
-
-  const handleSubmit = () => {
-    console.log(opinion);
   };
 
   useEffect(() => {
@@ -49,7 +55,29 @@ export const Write = () => {
   };
 
   const handleSavePost = () => {
-    console.log('임시저장 버튼 누름', opinion);
+    if (isFirst) {
+      saveMutation.mutate(
+        { categoryId: categoryId, topicId: topicId, content: opinion },
+        {
+          onSuccess: (response) => {
+            const postId = response.postId;
+            setCurrentPostId(postId);
+            setIsFirst(false);
+          },
+          onError: (error: Error) => {
+            console.error('임시저장 에러:', error);
+          },
+        },
+      );
+    } else {
+      updateAndSaveMutation.mutate(
+        { postId: currentPostId, status: 'DRAFT', content: opinion },
+        {
+          onSuccess: () => console.log('수정 후 임시저장 완료'),
+          onError: (error) => console.error('수정 후 임시저장 에러:', error),
+        },
+      );
+    }
   };
 
   return (
@@ -60,7 +88,7 @@ export const Write = () => {
             <CategoryChip categoryName={categoryName}></CategoryChip>
             <div className="py-[10px] B01_B">{topicName}</div>
           </div>
-          <form onSubmit={handleSubmit}>
+          <form>
             <div className="relative w-[328px]">
               <textarea
                 placeholder="내 의견을 논리적으로 작성해보세요!"
