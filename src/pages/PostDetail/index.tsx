@@ -24,7 +24,7 @@ export const PostDetail = () => {
       )}
       <div className="justify-end flex gap-[22px] pt-4">
         {ReactionButtons.map((reactionButton) => (
-          <button key={reactionButton.reactionName} className="flex flex-col items-center gap-1">
+          <div key={reactionButton.reactionName} className="flex flex-col items-center gap-1">
             <ReactionButton
               reactionName={reactionButton.reactionName}
               icon={reactionButton.icon}
@@ -32,7 +32,7 @@ export const PostDetail = () => {
               isReactioned={false}
               reactionValue={reactionButton.reactionValue}
             ></ReactionButton>
-          </button>
+          </div>
         ))}
       </div>
     </div>
