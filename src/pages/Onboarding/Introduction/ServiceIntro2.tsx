@@ -1,7 +1,7 @@
 import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
 import { ProgressIndicator } from '../_components/ProgressIndicator';
 import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
-import onboardingServiceIntro2 from '../../../assets/onboarding/onboardingServiceIntro2.gif';
+import onboardingServiceIntro2 from '../../../assets/Onboarding/onboardingServiceIntro2.gif';
 
 export const ServiceIntro2 = () => {
   const { handleNext, handleSkip } = useOnboardingNavigation();

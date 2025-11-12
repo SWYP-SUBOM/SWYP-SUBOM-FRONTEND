@@ -8,6 +8,8 @@ import { TodayTopicBox } from './TodayTopicBox';
 const FeedContent = ({ categoryId: _categoryId }: { categoryId: number }) => {
   /* categoryName에 해당하는 api 연결*/
 
+  void _categoryId;
+
   const topic = {
     topicId: 'uuid-topic-1',
     topicText: '카공에 대해 어떻게 생각하나요?',
