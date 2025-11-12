@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { CategoryChip } from '../../components/common/CategoryChip';
 import type { CategoryNameType } from '../../constants/Category';
 import { useGetAIFeedBack } from '../../hooks/FeedBack/uesGetAIFeedBack';
@@ -53,12 +53,28 @@ export const Complement = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const navigate = useNavigate();
   const handleSaveComplementPost = () => {
     updateAndSaveMutation.mutate(
       { postId, status: 'DRAFT', content: opinion },
       {
         onSuccess: () => console.log('보완하기에서 수정 후 임시저장 완료'),
         onError: (error) => console.error('보완하기에서 수정 후 임시저장 에러:', error),
+      },
+    );
+  };
+
+  const handlePublishPost = () => {
+    updateAndSaveMutation.mutate(
+      { postId, status: 'PUBLISHED', content: opinion },
+      {
+        onSuccess: () => {
+          try {
+            navigate('/complete');
+          } catch (err) {
+            console.error('작성완료 실패:', err);
+          }
+        },
       },
     );
   };
@@ -103,10 +119,16 @@ export const Complement = () => {
             }`}
           >
             <div className="flex gap-2 w-[340px]">
-              <button className="cursor-pointer flex-2 h-14 bg-gray-300 text-gray-800 rounded-xl B02_B">
+              <button
+                onClick={handlePublishPost}
+                className="cursor-pointer flex-2 h-14 bg-gray-300 text-gray-800 rounded-xl B02_B"
+              >
                 작성완료
               </button>
-              <button className="cursor-pointer flex-3 h-14 bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white rounded-xl B02_B">
+              <button
+                onClick={handlePublishPost}
+                className="cursor-pointer flex-3 h-14 bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white rounded-xl B02_B"
+              >
                 보완하기
               </button>
             </div>

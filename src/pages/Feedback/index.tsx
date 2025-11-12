@@ -1,6 +1,8 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import type { CategoryNameType } from '../../constants/Category';
 import { useGetAIFeedBack } from '../../hooks/FeedBack/uesGetAIFeedBack';
+import { useGetPost } from '../../hooks/Post/useGetPost';
+import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { WriteLayout } from '../../layout/WriteLayout';
 import { FeedbackLoading } from '../Write/FeedbackLoading';
 import { FeedbackBanner } from './_components/FeedbackBanner';
@@ -14,6 +16,10 @@ export const FeedBack = () => {
   };
 
   const { data: AIFeedBackData, isLoading } = useGetAIFeedBack(postId, aiFeedbackId);
+  const updateAndSaveMutation = useUpdateAndSavePost();
+  const { data: postData } = useGetPost(postId);
+
+  const content = postData?.content ?? '';
 
   const isProcessing = AIFeedBackData?.status === 'PROCESSING';
 
@@ -33,6 +39,21 @@ export const FeedBack = () => {
     });
   };
 
+  const handlePublishPost = () => {
+    updateAndSaveMutation.mutate(
+      { postId, status: 'PUBLISHED', content },
+      {
+        onSuccess: () => {
+          try {
+            navigate('/complete');
+          } catch (err) {
+            console.error('작성완료 실패:', err);
+          }
+        },
+      },
+    );
+  };
+
   return (
     <>
       <WriteLayout isSaveDisabled={true}>
@@ -49,7 +70,10 @@ export const FeedBack = () => {
           </div>
           <div className="sticky bottom-0 left-0 right-0 flex justify-center bg-[#F3F5F8] pb-7 pt-4 transition-shadow duration-300">
             <div className="flex gap-2 w-[340px]">
-              <button className="cursor-pointer flex-2 h-14 bg-gray-300 text-gray-800 rounded-xl B02_B">
+              <button
+                onClick={handlePublishPost}
+                className="cursor-pointer flex-2 h-14 bg-gray-300 text-gray-800 rounded-xl B02_B"
+              >
                 작성완료
               </button>
               <button
