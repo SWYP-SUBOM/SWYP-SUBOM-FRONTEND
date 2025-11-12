@@ -31,8 +31,8 @@ export const WithButtons: Story = {
   render: () => (
     <div className="p-4 space-y-4">
       <div className="space-y-3">
-        <Button label="Primary Button" primary={true} />
-        <Button label="Secondary Button" primary={false} />
+        <Button label="Primary Button" />
+        <Button label="Secondary Button" />
       </div>
     </div>
   ),

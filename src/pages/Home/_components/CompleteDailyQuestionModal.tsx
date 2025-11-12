@@ -11,7 +11,7 @@ export const CompleteDailyQuestionModal = () => {
             이미 글쓰기를 완료했어요 <br />
             내일 다시 만나요!
           </Modal.Description>
-          <Modal.Trigger>알겠어요</Modal.Trigger>
+          <Modal.Trigger handleClickButton={() => {}}>알겠어요</Modal.Trigger>
         </Modal.Content>
       </Modal.Overlay>
     </Modal>
