@@ -1,7 +1,7 @@
 import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
 import { ProgressIndicator } from '../_components/ProgressIndicator';
 import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
-import guide4 from '../../../assets/onboarding/Guide4.png';
+import guide4 from '../../../assets/Onboarding/guide4.png';
 
 export const GuideScreen4 = () => {
   const { handleNext } = useOnboardingNavigation();

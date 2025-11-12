@@ -1,7 +1,7 @@
 import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
 import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
 import { kakaoLoginUrl } from '../../../api/services/authService';
-import onboardingLogin from '../../../assets/onboarding/onboardingLogin.gif';
+import onboardingLogin from '../../../assets/Onboarding/onboardingLogin.gif';
 import kakao from '../../../assets/Onboarding/kakao.png';
 
 export const Login = () => {
