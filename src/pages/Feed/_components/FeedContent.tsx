@@ -5,8 +5,9 @@ import { TodayTopicBoxSkeleton } from '../Skeleton/TodayTopicBoxSkeleton';
 import { PostBox } from './PostBox';
 import { TodayTopicBox } from './TodayTopicBox';
 
-const FeedContent = ({ categoryId }: { categoryId: number }) => {
+const FeedContent = ({ categoryId: _categoryId }: { categoryId: number }) => {
   /* categoryName에 해당하는 api 연결*/
+
   const topic = {
     topicId: 'uuid-topic-1',
     topicText: '카공에 대해 어떻게 생각하나요?',
@@ -16,7 +17,7 @@ const FeedContent = ({ categoryId }: { categoryId: number }) => {
     },
   };
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
 
   const items = [
     {
