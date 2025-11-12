@@ -5,11 +5,13 @@ import { usePostAIFeedBack } from '../../hooks/FeedBack/usePostAIFeedBack';
 import { useSavePost } from '../../hooks/Post/useSavePost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { WriteLayout } from '../../layout/WriteLayout';
+import { useBottomSheetStore } from '../../store/useBottomSheetStore';
 import { SpeechBubble } from './_components/SpeechBubble';
 import { FeedbackLoading } from './FeedbackLoading';
 
 export const Write = () => {
   const location = useLocation();
+  const { closeBottomSheet } = useBottomSheetStore();
 
   const categoryName = location.state.categoryName;
   const categoryId = location.state.categoryId;
@@ -87,6 +89,7 @@ export const Write = () => {
             const postId = response.postId;
             setCurrentPostId(postId);
             setIsFirst(false);
+            closeBottomSheet();
           },
           onError: (error: Error) => {
             console.error('임시저장 에러:', error);
@@ -97,7 +100,10 @@ export const Write = () => {
       updateAndSaveMutation.mutate(
         { postId: currentPostId, status: 'DRAFT', content: opinion },
         {
-          onSuccess: () => console.log('수정 후 임시저장 완료'),
+          onSuccess: () => {
+            console.log('수정 후 임시저장 완료');
+            closeBottomSheet();
+          },
           onError: (error) => console.error('수정 후 임시저장 에러:', error),
         },
       );

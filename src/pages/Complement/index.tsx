@@ -6,11 +6,13 @@ import { useGetAIFeedBack } from '../../hooks/FeedBack/uesGetAIFeedBack';
 import { useGetPost } from '../../hooks/Post/useGetPost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { WriteLayout } from '../../layout/WriteLayout';
+import { useBottomSheetStore } from '../../store/useBottomSheetStore';
 import { FeedbackBanner } from '../Feedback/_components/FeedbackBanner';
 import { FeedbackBox } from '../Feedback/_components/FeedbackBox';
 
 export const Complement = () => {
   const location = useLocation();
+  const { closeBottomSheet } = useBottomSheetStore();
   const { categoryName, topicName } = useParams<{
     categoryName: CategoryNameType;
     topicName: string;
@@ -58,7 +60,10 @@ export const Complement = () => {
     updateAndSaveMutation.mutate(
       { postId, status: 'DRAFT', content: opinion },
       {
-        onSuccess: () => console.log('보완하기에서 수정 후 임시저장 완료'),
+        onSuccess: () => {
+          console.log('보완하기에서 수정 후 임시저장 완료');
+          closeBottomSheet();
+        },
         onError: (error) => console.error('보완하기에서 수정 후 임시저장 에러:', error),
       },
     );

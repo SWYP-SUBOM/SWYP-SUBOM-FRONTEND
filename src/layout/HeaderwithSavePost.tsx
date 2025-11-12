@@ -18,7 +18,7 @@ export const HeaderwithSavePost = ({
   const { openBottomSheet, BottomContent } = useBottomSheet();
   const handleBack = () => {
     if (isDirty) {
-      openBottomSheet(<IsDirtyBottomSheet />);
+      openBottomSheet(<IsDirtyBottomSheet handleClickSaveButton={handleClickSaveButton} />);
     } else {
       navigate(-1);
     }
