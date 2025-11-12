@@ -28,7 +28,9 @@ export const FeedBack = () => {
 
   const navigate = useNavigate();
   const movetoComplement = () => {
-    navigate(`/complement/${categoryName}/${encodedTopicName}`);
+    navigate(`/complement/${categoryName}/${encodedTopicName}`, {
+      state: { postId, aiFeedbackId },
+    });
   };
 
   return (
@@ -50,7 +52,7 @@ export const FeedBack = () => {
               </button>
               <button
                 onClick={movetoComplement}
-                className="cursor-pointer  flex-3 h-14 bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white rounded-xl B02_B"
+                className="cursor-pointer flex-3 h-14 bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white rounded-xl B02_B"
               >
                 보완하기
               </button>
