@@ -28,7 +28,12 @@ export const Complement = () => {
   if (!categoryName) return null;
 
   const initialOpinion = postData?.content ?? '';
+
   const [opinion, setOpinion] = useState(initialOpinion);
+  useEffect(() => {
+    setOpinion(initialOpinion);
+  }, [initialOpinion]);
+
   const [isScrolled, setIsScrolled] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDirty, setIsDirty] = useState(false);
@@ -69,7 +74,6 @@ export const Complement = () => {
           <div className="px-4">
             <div className="relative w-[328px]">
               <textarea
-                placeholder="내 의견을 논리적으로 작성해보세요!"
                 value={opinion}
                 onChange={(e) => setOpinion(e.target.value)}
                 className="B03_M px-4 pt-4 py-10 w-full h-[360px] border border-gray-500 rounded-xl resize-none bg-white"
