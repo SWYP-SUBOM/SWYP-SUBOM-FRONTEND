@@ -1,0 +1,29 @@
+export const OAUTH_ENDPOINTS = {
+  KAKAO_LOGIN: '/oauth2/authorization/kakao',
+  OAUTH_JWT_HEADER: '/api/oauth2-jwt-header',
+} as const;
+
+export const USER_ENDPOINTS = {
+  NAMING: '/api/naming',
+  GET_NAMING: '/api/naming',
+} as const;
+
+export const HOME_ENDPOINTS = {
+  HOME: '/api/home',
+} as const;
+
+export const CATEGORY_ENDPOINTS = {
+  GET_CATEGORY: '/api/categories',
+} as const;
+
+export const POST_ENDPOINTS = {
+  GET_POST: '/api/posts',
+} as const;
+
+export const ENDPOINTS = {
+  ...OAUTH_ENDPOINTS,
+  ...USER_ENDPOINTS,
+  ...HOME_ENDPOINTS,
+  ...CATEGORY_ENDPOINTS,
+  ...POST_ENDPOINTS,
+} as const;

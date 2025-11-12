@@ -1,8 +1,12 @@
+import { RouterProvider } from 'react-router-dom';
+import { BottomSheetProvider } from './components/BottomSheet/BottomSheetProvider';
+import { router } from './routes/router';
+
 function App() {
   return (
-    <>
-      <h1 className="text-3xl font-bold underline text-blue-100">SUBOM</h1>
-    </>
+    <BottomSheetProvider>
+      <RouterProvider router={router} />
+    </BottomSheetProvider>
   );
 }
 
