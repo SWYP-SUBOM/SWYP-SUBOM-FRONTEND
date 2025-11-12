@@ -37,7 +37,7 @@ export const HomeBannerItem: Record<HomeBannerStatus, HomeBannerItemType> = {
     img: penDraft,
     bgColor: 'bg-[var(--color-b3)]',
   },
-  COMPLETE: {
+  PUBLISHED: {
     description: <span className="B03_B text-[#D7ECFF]">내일은 어떤 주제가 나올까? </span>,
     title: '오늘의 글쓰기 완료!',
     titleTextColor: 'text-white',
