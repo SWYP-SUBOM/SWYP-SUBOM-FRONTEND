@@ -9,6 +9,7 @@ export interface PostResponse {
       name: string;
       isMe: boolean;
     };
+    myReaction: string;
     reactions: {
       reactionId: number;
       reactionName: string;

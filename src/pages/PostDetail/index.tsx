@@ -10,6 +10,8 @@ export const PostDetail = () => {
 
   const { data: postData } = useGetPost(postId);
 
+  const myReaction = postData?.myReaction;
+
   return (
     <div className="px-4 pt-10">
       {postData && (
@@ -29,7 +31,7 @@ export const PostDetail = () => {
               reactionName={reactionButton.reactionName}
               icon={reactionButton.icon}
               officon={reactionButton.officon}
-              isReactioned={false}
+              isReactioned={myReaction === reactionButton.reactionValue}
               reactionValue={reactionButton.reactionValue}
             ></ReactionButton>
           </div>
