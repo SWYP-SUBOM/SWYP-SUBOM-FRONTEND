@@ -74,9 +74,16 @@ export const Description = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const Trigger = ({ children }: { children: ReactNode }) => {
+export const Trigger = ({
+  children,
+  handleClickButton,
+}: {
+  children: ReactNode;
+  handleClickButton: () => void;
+}) => {
   return (
     <button
+      onClick={handleClickButton}
       className="cursor-pointer rounded-xl 
     bg-[var(--color-b7)] active:bg-[var(--color-b8)]
     hover:bg-[var(--color-b8)] w-full h-14 B02_B text-white"

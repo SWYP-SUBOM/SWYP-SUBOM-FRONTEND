@@ -5,8 +5,6 @@ export type CategoryBoxItemType = {
   icon: string;
   size: 'large' | 'small';
   column: number;
-  categoryName: string;
-  topicName: string;
 };
 
 export type QuestiondataType = {

@@ -2,20 +2,29 @@ import { createBrowserRouter } from 'react-router-dom';
 import { HomeLayout } from '../layout/HomeLayout';
 import { MobileLayout } from '../layout/MobileLayout';
 import Calendar from '../pages/Calendar';
-import Feed from '../pages/Feed';
+import { Complement } from '../pages/Complement';
+import { Feed } from '../pages/Feed';
+import { FeedBack } from '../pages/Feedback';
+import { GatherTopic } from '../pages/GatherTopic';
 import Home from '../pages/Home';
-import Profile from '../pages/Profile';
-import { SplashScreen } from '../pages/Onboarding/Introduction/SplashScreen';
-import { ServiceIntro1 } from '../pages/Onboarding/Introduction/ServiceIntro1';
-import { ServiceIntro2 } from '../pages/Onboarding/Introduction/ServiceIntro2';
-import { NameInput } from '../pages/Onboarding/Authentication/NameInput';
 import { Login } from '../pages/Onboarding/Authentication/Login';
-import { SplashMessage } from '../pages/Onboarding/FeatureTour/SplashMessage';
+import { NameInput } from '../pages/Onboarding/Authentication/NameInput';
+import { OAuthCallback } from '../pages/Onboarding/Authentication/OAuthCallback';
 import { GuideScreen1 } from '../pages/Onboarding/FeatureTour/GuideScreen1';
 import { GuideScreen2 } from '../pages/Onboarding/FeatureTour/GuideScreen2';
 import { GuideScreen3 } from '../pages/Onboarding/FeatureTour/GuideScreen3';
 import { GuideScreen4 } from '../pages/Onboarding/FeatureTour/GuideScreen4';
-3;
+import { SplashMessage } from '../pages/Onboarding/FeatureTour/SplashMessage';
+import { ServiceIntro1 } from '../pages/Onboarding/Introduction/ServiceIntro1';
+import { ServiceIntro2 } from '../pages/Onboarding/Introduction/ServiceIntro2';
+import { SplashScreen } from '../pages/Onboarding/Introduction/SplashScreen';
+
+import { Complete } from '../pages/Complete';
+import { PostDetail } from '../pages/PostDetail';
+import Profile from '../pages/Profile';
+import { Write } from '../pages/Write';
+import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
+
 export const router = createBrowserRouter([
   // 홈 페이지
   {
@@ -53,21 +62,91 @@ export const router = createBrowserRouter([
         element: <ServiceIntro1 />,
       },
       {
-        path: '2',
+        path: 'onboarding/intro2',
+        element: <ServiceIntro2 />,
+      },
+      {
+        path: 'onboarding/Login',
         element: <Login />,
       },
       {
-        path: '3',
+        path: 'onboarding/NameInput',
+        element: <NameInput />,
+      },
+      {
+        path: 'oauth2-jwt-header',
+        element: <OAuthCallback />,
+      },
+      {
+        path: 'onboarding/splashMessage',
+        element: <SplashMessage />,
+      },
+      {
+        path: 'onboarding/guideScreen1',
+        element: <GuideScreen1 />,
+      },
+      {
+        path: 'onboarding/guideScreen2',
+        element: <GuideScreen2 />,
+      },
+      {
+        path: 'onboarding/guideScreen3',
         element: <GuideScreen3 />,
       },
       {
-        path: '4',
-        element: <NameInput />,
+        path: 'onboarding/guideScreen4',
+        element: <GuideScreen4 />,
       },
-
+      {
+        path: 'calendar',
+        element: <Calendar />,
+      },
       {
         path: 'profile',
         element: <Profile />,
+      },
+      {
+        path: 'gathertopic',
+        element: <GatherTopic />,
+      },
+      {
+        path: 'loadingfeedback',
+        element: <FeedbackLoading />,
+      },
+      {
+        path: 'complete',
+        element: <Complete />,
+      },
+    ],
+  },
+  {
+    path: '/',
+    element: <MobileLayout showNavBar={true} />,
+    children: [
+      {
+        path: 'feed',
+        element: <Feed />,
+      },
+      {
+        path: '/postdetail/:postId',
+        element: <PostDetail />,
+      },
+    ],
+  },
+  {
+    path: '/',
+    children: [
+      {
+        path: 'write',
+        element: <Write />,
+      },
+      {
+        path: '/feedback/:categoryName/:topicName',
+        element: <FeedBack />,
+      },
+      {
+        path: '/complement/:categoryName/:topicName',
+        element: <Complement />,
       },
     ],
   },

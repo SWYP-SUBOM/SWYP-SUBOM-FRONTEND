@@ -2,10 +2,10 @@ import type { OnboardingLayoutType } from '../../pages/Onboarding/Onboarding.typ
 
 export const OnboardingLayout = ({ title, subtitle, image }: OnboardingLayoutType) => {
   return (
-    <>
+    <div className="">
       <div
         className={
-          'flex flex-col  mt-[100px] sm:mt-[154px] justify-center items-center text-center T02_B text-gray-900'
+          'flex flex-col  pt-[100px] sm:pt-[154px] justify-center items-center text-center T02_B text-gray-900'
         }
       >
         {title}
@@ -19,6 +19,6 @@ export const OnboardingLayout = ({ title, subtitle, image }: OnboardingLayoutTyp
           className={`object-contain ${image.className || ''}`}
         />
       </div>
-    </>
+    </div>
   );
 };

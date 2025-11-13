@@ -1,9 +1,9 @@
-const Feed = () => {
+import { FeedTab } from './_components/FeedTab';
+
+export const Feed = () => {
   return (
-    <>
-      <p>feed</p>
-    </>
+    <div className="pt-10">
+      <FeedTab />
+    </div>
   );
 };
-
-export default Feed;

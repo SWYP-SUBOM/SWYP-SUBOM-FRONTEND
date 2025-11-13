@@ -1,5 +1,13 @@
-import onboardingLogo from '../../../assets/onboarding/onboardingLogo.png';
+import onboardingLogo from '../../../assets/Onboarding/onboardingLogo.png';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 export const SplashScreen = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    setTimeout(() => {
+      navigate('/onboarding/intro1');
+    }, 2000);
+  }, []);
   return (
     <div className="h-screen bg-b7 flex flex-col items-center justify-center text-white">
       <div className="flex flex-col items-center">
