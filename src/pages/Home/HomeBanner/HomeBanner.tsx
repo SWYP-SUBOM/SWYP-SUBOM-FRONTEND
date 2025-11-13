@@ -21,6 +21,7 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
   const userName = userNameData ?? '써봄';
   const postStatus = accessToken ? (homeData?.todayPost?.postStatus ?? 'NOT_STARTED') : 'GUEST';
   const streak = homeData?.streak?.current ?? 0;
+  const aiFeedbackId = homeData?.todayPost.aiFeedbackId;
 
   const bannerStatus = HomeBannerItem[postStatus];
   const titleContent =
@@ -37,16 +38,33 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
   const handleBannerClick = () => {
     switch (postStatus) {
       case 'DRAFT':
-        navigate('/write', {
-          state: {
-            categoryName: homeData?.todayPost.categoryName,
-            topicName: homeData?.todayPost.topicName,
-            topicId: homeData?.todayPost.topicId,
-            categoryId: homeData?.todayPost.categoryId,
-            draftPostId: homeData?.todayPost.postId,
-            isTodayDraft: isTodayDraft,
-          },
-        });
+        if (aiFeedbackId) {
+          navigate(
+            `/complement/${homeData?.todayPost.categoryName}/${homeData?.todayPost.topicName}`,
+            {
+              state: {
+                categoryName: homeData?.todayPost.categoryName,
+                topicName: homeData?.todayPost.topicName,
+                topicId: homeData?.todayPost.topicId,
+                categoryId: homeData?.todayPost.categoryId,
+                postId: homeData?.todayPost.postId,
+                isTodayDraft: isTodayDraft,
+                aiFeedbackId: aiFeedbackId,
+              },
+            },
+          );
+        } else {
+          navigate('/write', {
+            state: {
+              categoryName: homeData?.todayPost.categoryName,
+              topicName: homeData?.todayPost.topicName,
+              topicId: homeData?.todayPost.topicId,
+              categoryId: homeData?.todayPost.categoryId,
+              draftPostId: homeData?.todayPost.postId,
+              isTodayDraft: isTodayDraft,
+            },
+          });
+        }
         break;
       case 'COMPLETE_WITHCLICK':
         navigate('/feed');

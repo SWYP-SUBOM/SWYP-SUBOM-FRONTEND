@@ -20,6 +20,7 @@ const Home = () => {
   const topicName = homeData?.todayPost.topicName;
   const categoryId = homeData?.todayPost.categoryId;
   const topicId = homeData?.todayPost.topicId;
+  const aiFeedbackId = homeData?.todayPost.aiFeedbackId;
 
   useEffect(() => {
     if (isTodayDraft && draftPostId && categoryName && topicName && categoryId && topicId) {
@@ -31,6 +32,7 @@ const Home = () => {
           topicName={topicName}
           categoryId={categoryId}
           topicId={topicId}
+          aiFeedbackId={aiFeedbackId}
         />,
       );
     }

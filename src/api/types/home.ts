@@ -19,6 +19,7 @@ export interface homeResponse {
       categoryName: string | null;
       topicId: number | null;
       topicName: string | null;
+      aiFeedbackId: number | null;
     };
   } | null;
 }
