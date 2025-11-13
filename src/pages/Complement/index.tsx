@@ -1,3 +1,4 @@
+import { useScroll } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { CategoryChip } from '../../components/common/CategoryChip';
@@ -36,7 +37,6 @@ export const Complement = () => {
     setOpinion(initialOpinion);
   }, [initialOpinion]);
 
-  const [isScrolled, setIsScrolled] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDirty, setIsDirty] = useState(false);
 
@@ -44,16 +44,7 @@ export const Complement = () => {
     setIsDirty(opinion !== initialOpinion);
   }, [opinion, initialOpinion]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-      setIsScrolled(scrollTop > 0);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const isScrolled = useScroll();
 
   const navigate = useNavigate();
   const handleSaveComplementPost = () => {
