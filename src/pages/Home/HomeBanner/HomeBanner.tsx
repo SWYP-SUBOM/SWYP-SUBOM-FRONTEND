@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import type { homeResponse } from '../../../api/types/home';
 import type { namingResponse } from '../../../api/types/user';
 import folded from '../../../assets/HomeBanner/folded.svg';
@@ -30,12 +31,41 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
       ? bannerStatus.description(streak)
       : bannerStatus.description;
 
+  const isTodayDraft = homeData?.todayPost.postStatus === 'DRAFT';
+  const navigate = useNavigate();
+
+  const handleBannerClick = () => {
+    switch (postStatus) {
+      case 'DRAFT':
+        navigate('/write', {
+          state: {
+            categoryName: homeData?.todayPost.categoryName,
+            topicName: homeData?.todayPost.topicName,
+            topicId: homeData?.todayPost.topicId,
+            categoryId: homeData?.todayPost.categoryId,
+            draftPostId: homeData?.todayPost.postId,
+            isTodayDraft: isTodayDraft,
+          },
+        });
+        break;
+      case 'COMPLETE_WITHCLICK':
+        navigate('/feed');
+        break;
+      case 'GUEST':
+        navigate('/onboarding/Login');
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div
       className={`
-          relative mt-[14px] flex h-[134px] py-[22px] px-4 justify-between rounded-2xl
+          cursor-pointer relative mt-[14px] flex h-[134px] py-[22px] px-4 justify-between rounded-2xl
           ${HomeBannerItem[postStatus].bgColor} 
         `}
+      onClick={handleBannerClick}
     >
       <div>
         <div className="flex items-center gap-[10px]">{descriptionContent}</div>
