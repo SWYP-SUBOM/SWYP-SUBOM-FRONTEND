@@ -29,7 +29,7 @@ export const Complement = () => {
 
   if (!categoryName) return null;
 
-  const initialOpinion = postData?.content ?? '';
+  const [initialOpinion, setInitialOpinion] = useState(postData?.content ?? '');
 
   const [opinion, setOpinion] = useState(initialOpinion);
   useEffect(() => {
@@ -63,6 +63,8 @@ export const Complement = () => {
         onSuccess: () => {
           console.log('보완하기에서 수정 후 임시저장 완료');
           closeBottomSheet();
+          setInitialOpinion(opinion);
+          setIsDirty(false);
         },
         onError: (error) => console.error('보완하기에서 수정 후 임시저장 에러:', error),
       },
