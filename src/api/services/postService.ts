@@ -1,6 +1,11 @@
 import { apiClient } from '../../utils/apiClient';
 import { POST_ENDPOINTS } from '../endpoints';
-import type { PostResponse, saveAndUpdatePostResponse, savePostResponse } from '../types/post';
+import type {
+  deletePostResponse,
+  PostResponse,
+  saveAndUpdatePostResponse,
+  savePostResponse,
+} from '../types/post';
 
 export const getPost = async (postId: number, context?: string): Promise<PostResponse['data']> => {
   const url = context
@@ -43,8 +48,20 @@ export const updateAndSavePost = async (
   return response.data;
 };
 
+export const deletePost = async (postId: number): Promise<deletePostResponse> => {
+  const response = await apiClient.remove<deletePostResponse>(
+    `${POST_ENDPOINTS.GET_POST}/${postId}`,
+    {
+      postId,
+    },
+  );
+
+  return response;
+};
+
 export const postService = {
   getPost,
   savePost,
   updateAndSavePost,
+  deletePost,
 };
