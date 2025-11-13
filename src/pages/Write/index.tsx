@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryChip } from '../../components/common/CategoryChip';
 import { usePostAIFeedBack } from '../../hooks/FeedBack/usePostAIFeedBack';
+import { useGetPost } from '../../hooks/Post/useGetPost';
 import { useSavePost } from '../../hooks/Post/useSavePost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { WriteLayout } from '../../layout/WriteLayout';
@@ -17,32 +18,47 @@ export const Write = () => {
   const categoryId = location.state.categoryId;
   const topicName = location.state.topicName;
   const topicId = location.state.topicId;
+  const draftPostId = location.state.draftPostId;
+  const isTodayDraft = location.state.isTodayDraft;
 
   const [opinion, setOpinion] = useState('');
+  const [initialOpinion, setInitialOpiniont] = useState('');
   const [isBubbleOpen, setIsBubbleOpen] = useState(false);
   const hasClosedBubble = useRef(false);
   const [isDirty, setIsDirty] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [currentPostId, setCurrentPostId] = useState(0);
+  const [isFirst, setIsFirst] = useState(true);
+
   const saveMutation = useSavePost();
   const updateAndSaveMutation = useUpdateAndSavePost();
   const postAIFeedBackMutation = usePostAIFeedBack();
+  const { data: draftPostData } = useGetPost(draftPostId, 'edit', {
+    enabled: !!draftPostId && isTodayDraft,
+  });
 
-  const [currentPostId, setCurrentPostId] = useState(0);
-  const [isFirst, setIsFirst] = useState(true);
+  useEffect(() => {
+    if (draftPostData && isTodayDraft) {
+      setOpinion(draftPostData.content);
+      setInitialOpiniont(draftPostData.content);
+      setIsFirst(false);
+      setCurrentPostId(draftPostId);
+    }
+  }, [draftPostData, isTodayDraft]);
 
   const isWriteOpinion = () => {
     return opinion.trim() !== '';
   };
 
   useEffect(() => {
-    if (isWriteOpinion()) {
-      setIsDirty(true);
+    if (draftPostData) {
+      const hasChanged = opinion.trim() !== initialOpinion.trim();
+      setIsDirty(hasChanged);
+    } else {
+      setIsDirty(isWriteOpinion());
     }
-    if (!isWriteOpinion()) {
-      setIsDirty(false);
-    }
-  }, [opinion]);
+  }, [opinion, initialOpinion, draftPostData]);
 
   useEffect(() => {
     if (isWriteOpinion() && !hasClosedBubble.current) {
@@ -89,6 +105,7 @@ export const Write = () => {
             const postId = response.postId;
             setCurrentPostId(postId);
             setIsFirst(false);
+            setIsDirty(false);
             closeBottomSheet();
           },
           onError: (error: Error) => {
@@ -103,6 +120,7 @@ export const Write = () => {
           onSuccess: () => {
             console.log('수정 후 임시저장 완료');
             closeBottomSheet();
+            setIsDirty(false);
           },
           onError: (error) => console.error('수정 후 임시저장 에러:', error),
         },

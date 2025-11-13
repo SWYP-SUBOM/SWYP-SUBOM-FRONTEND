@@ -1,13 +1,30 @@
 import { useNavigate } from 'react-router-dom';
 import { BottomSheet, Xbutton } from '../../../components/BottomSheet/BottomSheet';
 import { useDeletePost } from '../../../hooks/Post/useDeletePost';
+import { useBottomSheet } from '../../../hooks/useBottomSheet';
 
-export const IsDraftBottomSheet = ({ postId }: { postId: number }) => {
+export const IsDraftBottomSheet = ({
+  draftPostId,
+  isTodayDraft,
+  categoryName,
+  topicName,
+  categoryId,
+  topicId,
+}: {
+  draftPostId: number;
+  isTodayDraft: boolean;
+  categoryName: string;
+  topicName: string;
+  categoryId: number;
+  topicId: number;
+}) => {
   const deleteMutation = useDeletePost();
   const navigate = useNavigate();
+  const { closeBottomSheet } = useBottomSheet();
   const handleResetTodayPost = () => {
+    closeBottomSheet();
     deleteMutation.mutate(
-      { postId },
+      { postId: draftPostId },
       {
         onSuccess: () => {
           navigate('/home');
@@ -16,6 +33,20 @@ export const IsDraftBottomSheet = ({ postId }: { postId: number }) => {
         onError: (error) => console.error('삭제 에러:', error),
       },
     );
+  };
+
+  const handleMoveContinuing = () => {
+    closeBottomSheet();
+    navigate('/write', {
+      state: {
+        categoryName: categoryName,
+        topicName: topicName,
+        topicId: topicId,
+        categoryId: categoryId,
+        draftPostId: draftPostId,
+        isTodayDraft: isTodayDraft,
+      },
+    });
   };
   return (
     <BottomSheet>
@@ -28,7 +59,7 @@ export const IsDraftBottomSheet = ({ postId }: { postId: number }) => {
             leftText="새로 쓰기"
             rightText="이어쓰기"
             onLeftClick={handleResetTodayPost}
-            onRightClick={() => console.log('이어쓰기')}
+            onRightClick={handleMoveContinuing}
           />
         </BottomSheet.Content>
       </BottomSheet.Overlay>

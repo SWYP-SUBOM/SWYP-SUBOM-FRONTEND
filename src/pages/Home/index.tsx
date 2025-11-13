@@ -15,13 +15,26 @@ const Home = () => {
   const { data: homeData } = useGetHome();
 
   const isTodayDraft = homeData?.todayPost.postStatus === 'DRAFT';
-  const todayPostId = homeData?.todayPost.postId;
+  const draftPostId = homeData?.todayPost.postId;
+  const categoryName = homeData?.todayPost.categoryName;
+  const topicName = homeData?.todayPost.topicName;
+  const categoryId = homeData?.todayPost.categoryId;
+  const topicId = homeData?.todayPost.topicId;
 
   useEffect(() => {
-    if (isTodayDraft && todayPostId) {
-      openBottomSheet(<IsDraftBottomSheet postId={todayPostId} />);
+    if (isTodayDraft && draftPostId && categoryName && topicName && categoryId && topicId) {
+      openBottomSheet(
+        <IsDraftBottomSheet
+          draftPostId={draftPostId}
+          isTodayDraft={isTodayDraft}
+          categoryName={categoryName}
+          topicName={topicName}
+          categoryId={categoryId}
+          topicId={topicId}
+        />,
+      );
     }
-  }, [isTodayDraft, todayPostId, openBottomSheet]);
+  }, [isTodayDraft, draftPostId, openBottomSheet]);
   return (
     <>
       <div className="flex flex-col overflow-hidden h-full px-4 bg-[#F3F5F8]">

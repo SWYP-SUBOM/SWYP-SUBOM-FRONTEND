@@ -15,6 +15,10 @@ export interface homeResponse {
     todayPost: {
       postId: number | null;
       postStatus: HomeBannerStatus;
+      categoryId: number | null;
+      categoryName: string | null;
+      topicId: number | null;
+      topicName: string | null;
     };
   } | null;
 }
