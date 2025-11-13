@@ -8,7 +8,7 @@ export type HomeBannerTitleProps = {
 export type HomeBannerStatus =
   | 'NOT_STARTED'
   | 'DRAFT'
-  | 'COMPLETE'
+  | 'PUBLISHED'
   | 'COMPLETE_WITHCLICK'
   | 'GUEST';
 

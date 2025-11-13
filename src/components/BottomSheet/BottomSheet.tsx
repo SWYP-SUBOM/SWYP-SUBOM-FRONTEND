@@ -75,7 +75,7 @@ export const Trigger = ({
   return (
     <div className="flex w-full gap-3">
       <button
-        className="flex-1 h-14 bg-[#E7EBEE] rounded-xl text-gray-750 font-medium"
+        className="flex-1 h-14 cursor-pointer bg-[#E7EBEE] rounded-xl text-gray-750 font-medium"
         onClick={onLeftClick}
       >
         {leftText}

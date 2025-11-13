@@ -18,6 +18,8 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
       state: {
         categoryName: dailyQuestionData?.categoryName,
         topicName: dailyQuestionData?.topicName,
+        topicId: dailyQuestionData?.topicId,
+        categoryId: dailyQuestionData?.categoryId,
       },
     });
   };

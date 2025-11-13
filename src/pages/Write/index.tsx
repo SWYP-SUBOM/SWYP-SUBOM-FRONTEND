@@ -1,36 +1,64 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryChip } from '../../components/common/CategoryChip';
+import { usePostAIFeedBack } from '../../hooks/FeedBack/usePostAIFeedBack';
+import { useGetPost } from '../../hooks/Post/useGetPost';
+import { useSavePost } from '../../hooks/Post/useSavePost';
+import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { WriteLayout } from '../../layout/WriteLayout';
+import { useBottomSheetStore } from '../../store/useBottomSheetStore';
 import { SpeechBubble } from './_components/SpeechBubble';
+import { FeedbackLoading } from './FeedbackLoading';
 
 export const Write = () => {
   const location = useLocation();
+  const { closeBottomSheet } = useBottomSheetStore();
 
   const categoryName = location.state.categoryName;
+  const categoryId = location.state.categoryId;
   const topicName = location.state.topicName;
+  const topicId = location.state.topicId;
+  const draftPostId = location.state.draftPostId;
+  const isTodayDraft = location.state.isTodayDraft;
 
   const [opinion, setOpinion] = useState('');
+  const [initialOpinion, setInitialOpiniont] = useState('');
   const [isBubbleOpen, setIsBubbleOpen] = useState(false);
   const hasClosedBubble = useRef(false);
   const [isDirty, setIsDirty] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [currentPostId, setCurrentPostId] = useState(0);
+  const [isFirst, setIsFirst] = useState(true);
+
+  const saveMutation = useSavePost();
+  const updateAndSaveMutation = useUpdateAndSavePost();
+  const postAIFeedBackMutation = usePostAIFeedBack();
+  const { data: draftPostData } = useGetPost(draftPostId, 'edit', {
+    enabled: !!draftPostId && isTodayDraft,
+  });
+
+  useEffect(() => {
+    if (draftPostData && isTodayDraft) {
+      setOpinion(draftPostData.content);
+      setInitialOpiniont(draftPostData.content);
+      setIsFirst(false);
+      setCurrentPostId(draftPostId);
+    }
+  }, [draftPostData, isTodayDraft]);
 
   const isWriteOpinion = () => {
     return opinion.trim() !== '';
   };
 
-  const handleSubmit = () => {
-    console.log(opinion);
-  };
-
   useEffect(() => {
-    if (isWriteOpinion()) {
-      setIsDirty(true);
+    if (draftPostData) {
+      const hasChanged = opinion.trim() !== initialOpinion.trim();
+      setIsDirty(hasChanged);
+    } else {
+      setIsDirty(isWriteOpinion());
     }
-    if (!isWriteOpinion()) {
-      setIsDirty(false);
-    }
-  }, [opinion]);
+  }, [opinion, initialOpinion, draftPostData]);
 
   useEffect(() => {
     if (isWriteOpinion() && !hasClosedBubble.current) {
@@ -44,12 +72,60 @@ export const Write = () => {
   };
 
   const navigate = useNavigate();
+
   const movetoGetFeedback = () => {
-    navigate(`/feedback/${categoryName}/${topicName}`);
+    setIsLoading(true);
+    postAIFeedBackMutation.mutate(currentPostId, {
+      onSuccess: (response) => {
+        const aiFeedbackId = response.aiFeedbackId;
+        try {
+          navigate(
+            `/feedback/${encodeURIComponent(categoryName)}/${encodeURIComponent(topicName)}`,
+            {
+              state: { postId: currentPostId, aiFeedbackId },
+            },
+          );
+        } catch (err) {
+          console.error('AI 피드백 요청 실패:', err);
+        }
+      },
+      onError: (error: Error) => {
+        console.error('AI 피드백 요청 에러:', error);
+        setIsLoading(false);
+      },
+    });
   };
 
   const handleSavePost = () => {
-    console.log('임시저장 버튼 누름', opinion);
+    if (isFirst) {
+      saveMutation.mutate(
+        { categoryId: categoryId, topicId: topicId, content: opinion },
+        {
+          onSuccess: (response) => {
+            const postId = response.postId;
+            setCurrentPostId(postId);
+            setIsFirst(false);
+            setIsDirty(false);
+            closeBottomSheet();
+          },
+          onError: (error: Error) => {
+            console.error('임시저장 에러:', error);
+          },
+        },
+      );
+    } else {
+      updateAndSaveMutation.mutate(
+        { postId: currentPostId, status: 'DRAFT', content: opinion },
+        {
+          onSuccess: () => {
+            console.log('수정 후 임시저장 완료');
+            closeBottomSheet();
+            setIsDirty(false);
+          },
+          onError: (error) => console.error('수정 후 임시저장 에러:', error),
+        },
+      );
+    }
   };
 
   return (
@@ -60,28 +136,25 @@ export const Write = () => {
             <CategoryChip categoryName={categoryName}></CategoryChip>
             <div className="py-[10px] B01_B">{topicName}</div>
           </div>
-          <form onSubmit={handleSubmit}>
-            <div className="relative w-[328px]">
-              <textarea
-                placeholder="내 의견을 논리적으로 작성해보세요!"
-                value={opinion}
-                onChange={(e) => setOpinion(e.target.value)}
-                className="B03_M px-4 pt-4 py-10 w-full min-h-[360px] border border-gray-500 rounded-xl resize-none"
-              />
-              <div className="C01_SB absolute bottom-6 right-4 text-gray-700">
-                {opinion.length} / 700
-              </div>
+          <div className="relative w-[328px]">
+            <textarea
+              placeholder="내 의견을 논리적으로 작성해보세요!"
+              value={opinion}
+              onChange={(e) => setOpinion(e.target.value)}
+              className="B03_M px-4 pt-4 py-10 w-full min-h-[360px] border border-gray-500 rounded-xl resize-none"
+            />
+            <div className="C01_SB absolute bottom-6 right-4 text-gray-700">
+              {opinion.length} / 700
             </div>
-            <button
-              type="submit"
-              onClick={movetoGetFeedback}
-              disabled={!isWriteOpinion()}
-              className={`cursor-pointer rounded-xl max-w-[328px] w-full h-14 B02_B fixed bottom-7 left-1/2 -translate-x-1/2
+          </div>
+          <button
+            onClick={movetoGetFeedback}
+            disabled={!isWriteOpinion()}
+            className={`cursor-pointer rounded-xl max-w-[328px] w-full h-14 B02_B fixed bottom-7 left-1/2 -translate-x-1/2
                 ${!isWriteOpinion() ? 'bg-gray-600 text-white' : 'bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white'}`}
-            >
-              피드백 받기
-            </button>
-          </form>
+          >
+            피드백 받기
+          </button>
           {isBubbleOpen && (
             <SpeechBubble
               className="fixed bottom-[80px] left-1/2 -translate-x-[10%] flex flex-col items-end z-50"
@@ -91,6 +164,7 @@ export const Write = () => {
           )}
         </div>
       </WriteLayout>
+      {isLoading && <FeedbackLoading />}
     </>
   );
 };
