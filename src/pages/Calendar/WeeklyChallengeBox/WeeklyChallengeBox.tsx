@@ -53,7 +53,7 @@ const ProgressCircle = ({ status }: ProgressCircleProps) => {
 
 export const WeeklyChallengeBox = ({ title, goal, days }: WeeklyChallengeProps) => {
   return (
-    <div className="h-[168px] absolute top-35 left-4 rounded-xl pt-5 pb-5 z-2 border border-[#E7EBEE] shadow-[0_0_30px_0_#D0D2D9] bg-[#F9F9F9]">
+    <div className="h-[168px] absolute top-33 left-4 rounded-xl pt-5 pb-5 z-2 border border-[#E7EBEE] shadow-[0_0_30px_0_#D0D2D9] bg-[#F9F9F9]">
       {/* 헤더 섹션 - 연한 파란색 배경 */}
       <div className="  px-4.5 ">
         <h2 className="B02_B text-gray-900 text-left mb-3">{title}</h2>
