@@ -22,7 +22,7 @@ export const Write = () => {
   const isTodayDraft = location.state.isTodayDraft;
 
   const [opinion, setOpinion] = useState('');
-  const [initialOpinion, setInitialOpiniont] = useState('');
+  const [initialOpinion, setInitialOpinion] = useState('');
   const [isBubbleOpen, setIsBubbleOpen] = useState(false);
   const hasClosedBubble = useRef(false);
   const [isDirty, setIsDirty] = useState(false);
@@ -41,7 +41,7 @@ export const Write = () => {
   useEffect(() => {
     if (draftPostData && isTodayDraft) {
       setOpinion(draftPostData.content);
-      setInitialOpiniont(draftPostData.content);
+      setInitialOpinion(draftPostData.content);
       setIsFirst(false);
       setCurrentPostId(draftPostId);
     }
