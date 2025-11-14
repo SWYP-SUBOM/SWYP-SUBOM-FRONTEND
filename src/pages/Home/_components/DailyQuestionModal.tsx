@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { Modal, Xbutton } from '../../../components/Modal/Modal';
 import { useGetDailyQuestion } from '../../../hooks/Home/useGetDailyQuestion';
@@ -39,7 +40,7 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
       } else {
         try {
           await deleteMutation.mutateAsync({ postId: draftPostId });
-          console.log('삭제 완료');
+          toast.success('삭제 완료');
           navigate('/write', {
             state: {
               categoryName: dailyQuestionData?.categoryName,

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryChip } from '../../components/common/CategoryChip';
 import { usePostAIFeedBack } from '../../hooks/FeedBack/usePostAIFeedBack';
@@ -108,6 +109,7 @@ export const Write = () => {
             setIsDirty(false);
             closeBottomSheet();
             if (shouldNavigateHome) navigate('/home');
+            toast.success('임시저장 성공');
           },
           onError: (error: Error) => {
             console.error('임시저장 에러:', error);
@@ -119,7 +121,7 @@ export const Write = () => {
         { postId: currentPostId, status: 'DRAFT', content: opinion },
         {
           onSuccess: () => {
-            console.log('수정 후 임시저장 완료');
+            toast.success('임시저장 성공');
             closeBottomSheet();
             setIsDirty(false);
             console.log(shouldNavigateHome);

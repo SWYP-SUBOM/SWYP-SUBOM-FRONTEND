@@ -1,5 +1,6 @@
 import { useScroll } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { CategoryChip } from '../../components/common/CategoryChip';
 import type { CategoryNameType } from '../../constants/Category';
@@ -52,7 +53,7 @@ export const Complement = () => {
       { postId, status: 'DRAFT', content: opinion },
       {
         onSuccess: () => {
-          console.log('보완하기에서 수정 후 임시저장 완료');
+          toast.success('임시저장 성공');
           closeBottomSheet();
           setInitialOpinion(opinion);
           setIsDirty(false);

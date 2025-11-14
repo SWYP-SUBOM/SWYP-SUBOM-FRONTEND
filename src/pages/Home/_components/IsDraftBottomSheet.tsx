@@ -1,4 +1,5 @@
 import { useQueryClient } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { BottomSheet, Xbutton } from '../../../components/BottomSheet/BottomSheet';
 import { useDeletePost } from '../../../hooks/Post/useDeletePost';
@@ -28,7 +29,7 @@ export const IsDraftBottomSheet = ({
   const handleResetTodayPost = async () => {
     try {
       await deleteMutation.mutateAsync({ postId: draftPostId });
-      console.log('삭제 완료');
+      toast.success('삭제 완료');
       queryClient.invalidateQueries({ queryKey: ['home'] });
       navigate('/home');
     } catch (error) {
