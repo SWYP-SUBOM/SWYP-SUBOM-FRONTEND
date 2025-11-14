@@ -18,6 +18,26 @@ export interface PostResponse {
   };
 }
 
+export interface PostWithEditResponse {
+  success: boolean;
+  code: string;
+  message: string;
+  data: {
+    postId: number;
+    topicId: number;
+    nickname: string;
+    topicInfo: {
+      topicName: string;
+      categoryName: string;
+    };
+    content: string;
+    status: string;
+    updatedAt: string;
+    aiFeedbackInfo: string | null;
+    revised: boolean;
+  };
+}
+
 export interface savePostResponse {
   success: boolean;
   code: string;
