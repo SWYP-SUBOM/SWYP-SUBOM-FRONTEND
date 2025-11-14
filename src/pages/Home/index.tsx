@@ -3,6 +3,7 @@ import { useGetHome } from '../../hooks/Home/useGetHome';
 import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { useGetUserName } from '../../hooks/useGetUserName';
 import { useModal } from '../../hooks/useModal';
+import { useHomeDraftSheetStore } from '../../store/useHomeDraftSheetStore';
 import { useTodayPostInfoStore } from '../../store/useTodayPostInfo';
 import { IsDraftBottomSheet } from './_components/IsDraftBottomSheet';
 import { CategoryBoxGrid } from './CategoryBox/CategoryBoxGrid';
@@ -11,6 +12,7 @@ import { HomeBanner } from './HomeBanner/HomeBanner';
 const Home = () => {
   const { isOpen, Content } = useModal();
   const { openBottomSheet, BottomContent } = useBottomSheet();
+  const { isDraftSheetOpened, setDraftSheetOpened } = useHomeDraftSheetStore();
 
   const { data: userNameData } = useGetUserName();
   const { data: homeData } = useGetHome();
@@ -29,6 +31,8 @@ const Home = () => {
   }
 
   useEffect(() => {
+    if (isDraftSheetOpened) return;
+
     if (isTodayDraft && draftPostId && categoryName && topicName && categoryId && topicId) {
       openBottomSheet(
         <IsDraftBottomSheet
@@ -41,6 +45,7 @@ const Home = () => {
           aiFeedbackId={aiFeedbackId}
         />,
       );
+      setDraftSheetOpened(true);
     }
   }, [isTodayDraft, draftPostId, openBottomSheet]);
   return (
