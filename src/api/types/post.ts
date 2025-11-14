@@ -44,5 +44,4 @@ export interface deletePostResponse {
   success: boolean;
   code: string;
   message: string;
-  data: string;
 }
