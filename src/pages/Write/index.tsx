@@ -96,7 +96,7 @@ export const Write = () => {
     });
   };
 
-  const handleSavePost = () => {
+  const handleSavePost = (shouldNavigateHome = false) => {
     if (isFirst) {
       saveMutation.mutate(
         { categoryId: categoryId, topicId: topicId, content: opinion },
@@ -107,6 +107,7 @@ export const Write = () => {
             setIsFirst(false);
             setIsDirty(false);
             closeBottomSheet();
+            if (shouldNavigateHome) navigate('/home');
           },
           onError: (error: Error) => {
             console.error('임시저장 에러:', error);
@@ -121,6 +122,8 @@ export const Write = () => {
             console.log('수정 후 임시저장 완료');
             closeBottomSheet();
             setIsDirty(false);
+            console.log(shouldNavigateHome);
+            if (shouldNavigateHome) navigate('/home');
           },
           onError: (error) => console.error('수정 후 임시저장 에러:', error),
         },
