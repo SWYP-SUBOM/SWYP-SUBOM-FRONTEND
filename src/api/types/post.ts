@@ -12,7 +12,7 @@ export interface PostResponse {
     myReaction: {
       reactionId: number;
       reactionName: string;
-    };
+    } | null;
     reactions: {
       reactionId: number;
       reactionName: string;

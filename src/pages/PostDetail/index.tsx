@@ -12,7 +12,7 @@ export const PostDetail = () => {
 
   const { data: postData } = useGetPost(postId);
 
-  const myReaction = postData?.myReaction.reactionName;
+  const myReaction = postData?.myReaction?.reactionName;
 
   return (
     <>
