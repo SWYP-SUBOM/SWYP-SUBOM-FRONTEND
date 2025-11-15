@@ -1,4 +1,4 @@
-import onboardingLogo from '../../../assets/onboarding/onboardingLogo.png';
+import onboardingLogo from '../../../assets/Onboarding/onboardingLogo.png';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 export const SplashScreen = () => {

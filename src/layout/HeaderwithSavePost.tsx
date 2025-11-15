@@ -4,7 +4,7 @@ import { useBottomSheet } from '../hooks/useBottomSheet';
 import { IsDirtyBottomSheet } from '../pages/Write/_components/IsDirtyBottomSheet';
 
 export type HeaderwithSavePostProps = {
-  handleClickSaveButton?: () => void;
+  handleClickSaveButton?: (shouldNavigateHome: boolean) => void;
   isSaveDisabled?: boolean;
   isDirty?: boolean;
 };
@@ -18,7 +18,7 @@ export const HeaderwithSavePost = ({
   const { openBottomSheet, BottomContent } = useBottomSheet();
   const handleBack = () => {
     if (isDirty) {
-      openBottomSheet(<IsDirtyBottomSheet />);
+      openBottomSheet(<IsDirtyBottomSheet handleClickSaveButton={handleClickSaveButton} />);
     } else {
       navigate(-1);
     }
@@ -32,7 +32,7 @@ export const HeaderwithSavePost = ({
         </button>
         <div className="B02_B text-gray-900 translate-x-1/4">오늘의 주제</div>
         <button
-          onClick={handleClickSaveButton}
+          onClick={() => handleClickSaveButton?.(false)}
           disabled={isSaveDisabled}
           className={`B03_B px-[10px] py-2 rounded-[99px] border cursor-pointer transition
             ${

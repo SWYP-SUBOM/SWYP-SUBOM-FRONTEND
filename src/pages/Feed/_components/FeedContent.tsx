@@ -5,13 +5,7 @@ import { PostBox } from './PostBox';
 import { TodayTopicBox } from './TodayTopicBox';
 
 const FeedContent = ({ categoryId }: { categoryId: number }) => {
-  const {
-    data: feedData,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isFetching,
-  } = useGetFeed(categoryId);
+  const { data: feedData, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetFeed(categoryId);
 
   const allPosts = feedData?.pages.flatMap((page) => page.postList) ?? [];
 
@@ -27,7 +21,6 @@ const FeedContent = ({ categoryId }: { categoryId: number }) => {
     rootMargin: '300px',
   });
 
-  console.log('isLoading', isFetching);
   return (
     <>
       {feedData && (

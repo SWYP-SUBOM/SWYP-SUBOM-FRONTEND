@@ -1,4 +1,6 @@
 import { useModal } from '../../../hooks/useModal';
+import { useTodayPostInfoStore } from '../../../store/useTodayPostInfo';
+import { CompleteDailyQuestionModal } from '../_components/CompleteDailyQuestionModal';
 import { DailyQuestionModal } from '../_components/DailyQuestionModal';
 import type { CategoryBoxPropsType } from './CategoryBox.types';
 
@@ -11,8 +13,15 @@ export const CategoryBox = ({
 }: CategoryBoxPropsType) => {
   const { openModal } = useModal();
 
+  const todayPost = useTodayPostInfoStore((state) => state.todayPost);
+  const isTodayPublished = todayPost.postStatus === 'PUBLISHED';
+
   const handleModalOpen = (categoryId: number) => {
-    openModal(<DailyQuestionModal categoryId={categoryId} />);
+    if (isTodayPublished) {
+      openModal(<CompleteDailyQuestionModal />);
+    } else {
+      openModal(<DailyQuestionModal categoryId={categoryId} />);
+    }
   };
 
   return (
