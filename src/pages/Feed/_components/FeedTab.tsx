@@ -1,4 +1,7 @@
+import { Suspense } from 'react';
 import { Tabs } from '../../../components/Tabs/UnderlineTab/Tabs';
+import { PostBoxSkeleton } from '../Skeleton/PostBoxSkeleton';
+import { TodayTopicBoxSkeleton } from '../Skeleton/TodayTopicBoxSkeleton';
 import FeedContent from './FeedContent';
 
 export const FeedTab = () => {
@@ -25,7 +28,20 @@ export const FeedTab = () => {
         <div className="flex-1 overflow-y-auto min-h-0 overflow-hidden">
           {tabs.map((tab) => (
             <Tabs.Content key={tab.categoryId} categoryId={tab.categoryId}>
-              <FeedContent categoryId={tab.categoryId} />
+              <Suspense
+                fallback={
+                  <>
+                    <TodayTopicBoxSkeleton />
+                    <div className="mx-4 h-6 w-48 bg-gray-300 rounded mt-6 mb-3 animate-pulse"></div>
+                    <div className="flex flex-col gap-4 px-4 pb-24">
+                      <PostBoxSkeleton />
+                      <PostBoxSkeleton />
+                    </div>
+                  </>
+                }
+              >
+                <FeedContent categoryId={tab.categoryId} />
+              </Suspense>
             </Tabs.Content>
           ))}
         </div>
