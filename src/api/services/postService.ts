@@ -3,21 +3,27 @@ import { POST_ENDPOINTS } from '../endpoints';
 import type {
   deletePostResponse,
   PostResponse,
+  PostWithEditResponse,
   saveAndUpdatePostResponse,
   savePostResponse,
 } from '../types/post';
 
-export const getPost = async (postId: number, context?: string): Promise<PostResponse['data']> => {
+export function getPost(postId: number): Promise<PostResponse['data']>;
+export function getPost(postId: number, context: string): Promise<PostWithEditResponse['data']>;
+export async function getPost(
+  postId: number,
+  context?: string,
+): Promise<PostResponse['data'] | PostWithEditResponse['data']> {
   const url = context
     ? `${POST_ENDPOINTS.GET_POST}/${postId}?context=${encodeURIComponent(context)}`
     : `${POST_ENDPOINTS.GET_POST}/${postId}`;
 
-  const response = await apiClient.get<PostResponse>(url);
+  const response = await apiClient.get<PostResponse | PostWithEditResponse>(url);
   if (!response.data) {
     throw new Error('게시글을 조회할 수 없습니다');
   }
   return response.data;
-};
+}
 
 export const savePost = async (
   categoryId: number,

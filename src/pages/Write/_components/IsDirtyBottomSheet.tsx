@@ -5,11 +5,10 @@ import { useBottomSheetStore } from '../../../store/useBottomSheetStore';
 export const IsDirtyBottomSheet = ({
   handleClickSaveButton,
 }: {
-  handleClickSaveButton?: () => void;
+  handleClickSaveButton?: (shouldNavigateHome: boolean) => void;
 }) => {
   const navigate = useNavigate();
   const { closeBottomSheet } = useBottomSheetStore();
-
   const handleMoveOut = () => {
     navigate('/home');
     closeBottomSheet();
@@ -26,7 +25,7 @@ export const IsDirtyBottomSheet = ({
             leftText="나가기"
             rightText="임시저장"
             onLeftClick={handleMoveOut}
-            onRightClick={handleClickSaveButton}
+            onRightClick={() => handleClickSaveButton?.(true)}
           />
         </BottomSheet.Content>
       </BottomSheet.Overlay>
