@@ -40,6 +40,10 @@ export const router = createBrowserRouter([
             path: '',
             element: <Home />,
           },
+          {
+            path: '',
+            element: <Profile />,
+          },
         ],
       },
       // 앱 메인 (하단 바 포함)
@@ -96,10 +100,6 @@ export const router = createBrowserRouter([
             element: <Calendar />,
           },
           {
-            path: 'profile',
-            element: <Profile />,
-          },
-          {
             path: 'gathertopic',
             element: <GatherTopic />,
           },
@@ -124,6 +124,10 @@ export const router = createBrowserRouter([
           {
             path: '/postdetail/:postId',
             element: <PostDetail />,
+          },
+          {
+            path: 'profile',
+            element: <Profile />,
           },
         ],
       },
