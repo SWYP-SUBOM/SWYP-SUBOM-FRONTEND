@@ -40,6 +40,10 @@ export const router = createBrowserRouter([
             path: '',
             element: <Home />,
           },
+          {
+            path: 'profile',
+            element: <Profile />,
+          },
         ],
       },
       // 앱 메인 (하단 바 포함)
