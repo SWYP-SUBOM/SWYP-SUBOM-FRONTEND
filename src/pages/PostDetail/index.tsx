@@ -22,7 +22,7 @@ export const PostDetail = () => {
             <PostDetailBox
               content={postData.content}
               updatedAt={postData.updatedAt}
-              isMe={postData.writer.isMe}
+              isMe={postData.writer.me}
               writer={postData.writer.name}
               reactions={postData.reactions}
               viewCount={postData.viewCount}

@@ -1,18 +1,18 @@
 import { useEffect, useRef } from 'react';
 
-interface UseInfiniteScrollProps<T> {
+interface UseInfiniteScrollProps {
   fetchNextPage: () => void;
   hasNextPage?: boolean;
   isFetchingNextPage?: boolean;
   rootMargin?: string;
 }
 
-export const useInfiniteScroll = <T>({
+export const useInfiniteScroll = ({
   fetchNextPage,
   hasNextPage,
   isFetchingNextPage,
   rootMargin = '200px',
-}: UseInfiniteScrollProps<T>) => {
+}: UseInfiniteScrollProps) => {
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {

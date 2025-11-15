@@ -3,22 +3,22 @@ export interface PostResponse {
   code: string;
   message: string;
   data: {
-    content: string;
-    updatedAt: string;
-    writer: {
-      name: string;
-      isMe: boolean;
-    };
-    myReaction: {
-      reactionId: number;
-      reactionName: string;
-    } | null;
     reactions: {
       reactionId: number;
       reactionName: string;
       reactionCount: number;
     }[];
     viewCount: number;
+    myReaction: {
+      reactionId: number;
+      reactionName: string;
+    } | null;
+    content: string;
+    updatedAt: string;
+    writer: {
+      name: string;
+      me: boolean;
+    };
   };
 }
 
