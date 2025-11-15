@@ -10,20 +10,26 @@ export const FeedTab = () => {
     { categoryName: '취미·취향', categoryId: 5 },
   ];
   return (
-    <Tabs>
-      <Tabs.TabList>
-        {tabs.map((tab) => (
-          <Tabs.Trigger key={tab.categoryId} categoryId={tab.categoryId}>
-            {tab.categoryName}
-          </Tabs.Trigger>
-        ))}
-      </Tabs.TabList>
+    <>
+      <Tabs>
+        <div className="sticky top-[65px] z-100 bg-[var(--color-white)]">
+          <Tabs.TabList>
+            {tabs.map((tab) => (
+              <Tabs.Trigger key={tab.categoryId} categoryId={tab.categoryId}>
+                {tab.categoryName}
+              </Tabs.Trigger>
+            ))}
+          </Tabs.TabList>
+        </div>
 
-      {tabs.map((tab) => (
-        <Tabs.Content key={tab.categoryId} categoryId={tab.categoryId}>
-          <FeedContent categoryId={tab.categoryId} />
-        </Tabs.Content>
-      ))}
-    </Tabs>
+        <div className="flex-1 overflow-y-auto min-h-0 overflow-hidden">
+          {tabs.map((tab) => (
+            <Tabs.Content key={tab.categoryId} categoryId={tab.categoryId}>
+              <FeedContent categoryId={tab.categoryId} />
+            </Tabs.Content>
+          ))}
+        </div>
+      </Tabs>
+    </>
   );
 };

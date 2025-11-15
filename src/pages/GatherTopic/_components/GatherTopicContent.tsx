@@ -18,19 +18,17 @@ export const GatherTopicContent = ({ categoryId }: { categoryId: number }) => {
 
   return (
     <>
-      <div className="pt-[26px] flex justify-end">
+      <div className="pt-[26px] flex justify-end ">
         <SelectBox label={selectedSort.label} onClick={() => setIsBottomSheetOpen(true)} />
       </div>
       <div className="flex flex-col gap-[10px] pt-[14px]">
         {!isLoading &&
           TopicsData?.topics.map((Topic) => (
-            <>
-              <div key={Topic.topicId}>
-                <div className="B03_M text-gray-900 pb-[14px]">{Topic.topicName}</div>
-                <div className="C01_SB text-gray-700 text-right mt-1">{Topic.usedAt}</div>
-                <div className="border-t border-[#E0E4E7] my-4"></div>
-              </div>
-            </>
+            <div key={Topic.topicId}>
+              <div className="B03_M text-gray-900 pb-[14px]">{Topic.topicName}</div>
+              <div className="C01_SB text-gray-700 text-right mt-1">{Topic.usedAt}</div>
+              <div className="border-t border-[#E0E4E7] my-4"></div>
+            </div>
           ))}
       </div>
       {isBottomSheetOpen && (

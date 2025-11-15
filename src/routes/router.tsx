@@ -95,30 +95,12 @@ export const router = createBrowserRouter([
         element: <Profile />,
       },
       {
-        path: 'gathertopic',
-        element: <GatherTopic />,
-      },
-      {
         path: 'loadingfeedback',
         element: <FeedbackLoading />,
       },
       {
         path: 'complete',
         element: <Complete />,
-      },
-    ],
-  },
-  {
-    path: '/',
-    element: <MobileLayout showNavBar={true} />,
-    children: [
-      {
-        path: 'feed',
-        element: <Feed />,
-      },
-      {
-        path: '/postdetail/:postId',
-        element: <PostDetail />,
       },
     ],
   },
@@ -136,6 +118,18 @@ export const router = createBrowserRouter([
       {
         path: '/complement/:categoryName/:topicName',
         element: <Complement />,
+      },
+      {
+        path: 'feed',
+        element: <Feed />,
+      },
+      {
+        path: '/postdetail/:postId',
+        element: <PostDetail />,
+      },
+      {
+        path: 'gathertopic',
+        element: <GatherTopic />,
       },
     ],
   },
