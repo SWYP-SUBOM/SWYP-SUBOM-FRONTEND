@@ -12,7 +12,7 @@ export const PostDetail = () => {
 
   const { data: postData } = useGetPost(postId);
 
-  const myReaction = postData?.myReaction;
+  const myReaction = postData?.myReaction.reactionName;
 
   return (
     <>
@@ -37,6 +37,7 @@ export const PostDetail = () => {
                   officon={reactionButton.officon}
                   isReactioned={myReaction === reactionButton.reactionValue}
                   reactionValue={reactionButton.reactionValue}
+                  postId={postId}
                 ></ReactionButton>
               </div>
             ))}
