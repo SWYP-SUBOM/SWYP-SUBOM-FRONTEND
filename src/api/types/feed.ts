@@ -15,3 +15,24 @@ export interface TopicsResponse {
     }[];
   };
 }
+
+export interface FeedResponse {
+  success: boolean;
+  code: string;
+  message: string;
+  data: {
+    topicName: string;
+    categoryName: string;
+    postList: {
+      postId: number;
+      nickname: string;
+      summary: string;
+      updatedAt: string;
+      totalReactions: number;
+      postViews: number;
+    }[];
+    curUpdatedAt: string;
+    curPostId: number;
+    hasMore: boolean;
+  };
+}

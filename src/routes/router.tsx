@@ -144,6 +144,18 @@ export const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: 'feed',
+        element: <Feed />,
+      },
+      {
+        path: '/postdetail/:postId',
+        element: <PostDetail />,
+      },
+      {
+        path: 'gathertopic',
+        element: <GatherTopic />,
+      },
     ],
   },
 ]);

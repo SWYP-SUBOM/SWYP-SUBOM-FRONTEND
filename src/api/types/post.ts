@@ -3,18 +3,22 @@ export interface PostResponse {
   code: string;
   message: string;
   data: {
-    content: string;
-    updatedAt: string;
-    writer: {
-      name: string;
-      isMe: boolean;
-    };
     reactions: {
       reactionId: number;
       reactionName: string;
       reactionCount: number;
     }[];
     viewCount: number;
+    myReaction: {
+      reactionId: number;
+      reactionName: string;
+    } | null;
+    content: string;
+    updatedAt: string;
+    writer: {
+      name: string;
+      me: boolean;
+    };
   };
 }
 
@@ -64,4 +68,18 @@ export interface deletePostResponse {
   success: boolean;
   code: string;
   message: string;
+}
+
+export interface PostReactionResponse {
+  success: boolean;
+  code: string;
+  message: string;
+  data: {
+    postId: number;
+    metrics: {
+      totalReactions: number;
+      countsByType: Record<string, number>;
+    };
+    currentUserReaction: string;
+  };
 }

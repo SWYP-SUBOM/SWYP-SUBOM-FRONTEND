@@ -2,6 +2,7 @@ import { apiClient } from '../../utils/apiClient';
 import { POST_ENDPOINTS } from '../endpoints';
 import type {
   deletePostResponse,
+  PostReactionResponse,
   PostResponse,
   PostWithEditResponse,
   saveAndUpdatePostResponse,
@@ -65,8 +66,32 @@ export const deletePost = async (postId: number): Promise<deletePostResponse> =>
   return response;
 };
 
+export const putPostReaction = async (
+  postId: number,
+  reactionTypeName: string,
+): Promise<PostReactionResponse['data']> => {
+  const response = await apiClient.put<PostReactionResponse>(
+    `${POST_ENDPOINTS.GET_POST}/${postId}/reaction`,
+    {
+      reactionTypeName: reactionTypeName,
+    },
+  );
+
+  return response.data;
+};
+
+export const deletePostReaction = async (postId: number): Promise<PostReactionResponse['data']> => {
+  const response = await apiClient.remove<PostReactionResponse>(
+    `${POST_ENDPOINTS.GET_POST}/${postId}/reaction`,
+  );
+
+  return response.data;
+};
+
 export const postService = {
   getPost,
+  putPostReaction,
+  deletePostReaction,
   savePost,
   updateAndSavePost,
   deletePost,

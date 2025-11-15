@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { CategoryChip } from '../../components/common/CategoryChip';
 import { usePostAIFeedBack } from '../../hooks/FeedBack/usePostAIFeedBack';
-import { useGetPost } from '../../hooks/Post/useGetPost';
+import { useGetDraftPost } from '../../hooks/Post/useGetPost';
 import { useSavePost } from '../../hooks/Post/useSavePost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { WriteLayout } from '../../layout/WriteLayout';
@@ -35,7 +35,7 @@ export const Write = () => {
   const saveMutation = useSavePost();
   const updateAndSaveMutation = useUpdateAndSavePost();
   const postAIFeedBackMutation = usePostAIFeedBack();
-  const { data: draftPostData } = useGetPost(draftPostId, 'edit', {
+  const { data: draftPostData } = useGetDraftPost(draftPostId, 'edit', {
     enabled: !!draftPostId && isTodayDraft,
   });
 
@@ -124,7 +124,6 @@ export const Write = () => {
             toast.success('임시저장 성공');
             closeBottomSheet();
             setIsDirty(false);
-            console.log(shouldNavigateHome);
             if (shouldNavigateHome) navigate('/home');
           },
           onError: (error) => console.error('수정 후 임시저장 에러:', error),
