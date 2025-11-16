@@ -36,6 +36,7 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
       : bannerStatus.description;
 
   const isTodayDraft = homeData?.todayPost?.postStatus === 'DRAFT';
+
   const navigate = useNavigate();
 
   const handleBannerClick = () => {
@@ -51,7 +52,6 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
                 topicId: homeData?.todayPost?.topicId,
                 categoryId: homeData?.todayPost?.categoryId,
                 postId: homeData?.todayPost?.postId,
-                isTodayDraft: isTodayDraft,
                 aiFeedbackId: aiFeedbackId,
               },
             },
