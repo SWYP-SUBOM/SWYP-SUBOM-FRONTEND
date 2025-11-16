@@ -2,7 +2,7 @@ export const OAUTH_ENDPOINTS = {
   KAKAO_LOGIN: '/oauth2/authorization/kakao',
   OAUTH_JWT_HEADER: '/api/oauth2-jwt-header',
   REISSUE: '/api/reissue',
-  LOGOUT: '/logout',
+  LOGOUT: '/api/logout',
 } as const;
 
 export const USER_ENDPOINTS = {
