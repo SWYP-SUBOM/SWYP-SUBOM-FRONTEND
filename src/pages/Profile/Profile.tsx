@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { ProfileContents } from './_components/Profilecontents';
 import profile from '../../assets/Profile/profile.png';
@@ -7,6 +8,7 @@ import { useGetUserName } from '../../hooks/useGetUserName';
 import { useGetHome } from '../../hooks/Home/useGetHome';
 
 const Profile = () => {
+  const navigate = useNavigate();
   const { data: userName, isLoading: isUserNameLoading } = useGetUserName();
   const { data: homeData, isLoading: isHomeDataLoading } = useGetHome();
 
@@ -31,7 +33,11 @@ const Profile = () => {
       </div>
 
       <div className="pt-3 ">
-        <ProfileContents title="내 정보 관리" righticon={true} onClick={() => {}} />
+        <ProfileContents
+          title="내 정보 관리"
+          righticon={true}
+          onClick={() => navigate('/profile/myinfo')}
+        />
 
         <div className="B02_B text-gray-900 mx-8 mt-10">내 활동 관리</div>
         <div className="flex flex-col gap-2 mt-4">
