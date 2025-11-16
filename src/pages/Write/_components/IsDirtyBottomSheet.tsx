@@ -1,6 +1,19 @@
+import { useNavigate } from 'react-router-dom';
 import { BottomSheet, Xbutton } from '../../../components/BottomSheet/BottomSheet';
+import { useBottomSheetStore } from '../../../store/useBottomSheetStore';
 
-export const IsDirtyBottomSheet = () => {
+export const IsDirtyBottomSheet = ({
+  handleClickSaveButton,
+}: {
+  handleClickSaveButton?: (shouldNavigateHome: boolean) => void;
+}) => {
+  const navigate = useNavigate();
+  const { closeBottomSheet } = useBottomSheetStore();
+  const handleMoveOut = () => {
+    navigate('/home');
+    closeBottomSheet();
+  };
+
   return (
     <BottomSheet>
       <BottomSheet.Overlay>
@@ -11,8 +24,8 @@ export const IsDirtyBottomSheet = () => {
           <BottomSheet.Trigger
             leftText="나가기"
             rightText="임시저장"
-            onLeftClick={() => console.log('나가기')}
-            onRightClick={() => console.log('임시저장')}
+            onLeftClick={handleMoveOut}
+            onRightClick={() => handleClickSaveButton?.(true)}
           />
         </BottomSheet.Content>
       </BottomSheet.Overlay>

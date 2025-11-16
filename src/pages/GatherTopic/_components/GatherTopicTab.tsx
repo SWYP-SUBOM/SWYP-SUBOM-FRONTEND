@@ -10,20 +10,24 @@ export const GatherTopicTab = () => {
     { categoryName: '취미·취향', categoryId: 5 },
   ];
   return (
-    <Tabs>
-      <Tabs.TabList>
-        {tabs.map((tab) => (
-          <Tabs.Trigger key={tab.categoryName} categoryId={tab.categoryId}>
-            {tab.categoryName}
-          </Tabs.Trigger>
-        ))}
-      </Tabs.TabList>
+    <div className="flex flex-col flex-1">
+      <Tabs>
+        <Tabs.TabList>
+          {tabs.map((tab) => (
+            <Tabs.Trigger key={tab.categoryName} categoryId={tab.categoryId}>
+              {tab.categoryName}
+            </Tabs.Trigger>
+          ))}
+        </Tabs.TabList>
 
-      {tabs.map((tab) => (
-        <Tabs.Content key={tab.categoryName} categoryId={tab.categoryId}>
-          <GatherTopicContent categoryId={tab.categoryId} />
-        </Tabs.Content>
-      ))}
-    </Tabs>
+        <div className="flex-1 overflow-y-auto">
+          {tabs.map((tab) => (
+            <Tabs.Content key={tab.categoryName} categoryId={tab.categoryId}>
+              <GatherTopicContent categoryId={tab.categoryId} />
+            </Tabs.Content>
+          ))}
+        </div>
+      </Tabs>
+    </div>
   );
 };
