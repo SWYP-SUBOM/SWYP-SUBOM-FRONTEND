@@ -1,7 +1,7 @@
 import type { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import axios, { AxiosError } from 'axios';
-import { getAccessToken, setAccessToken } from './api';
 import { useAuthStore } from '../store/useAuthStore';
+import { getAccessToken, setAccessToken } from './api';
 import { OAUTH_ENDPOINTS } from '../api/endpoints';
 
 // 리프레시 토큰 재발급 중복 방지
