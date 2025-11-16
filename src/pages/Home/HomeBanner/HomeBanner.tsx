@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import type { homeResponse } from '../../../api/types/home';
 import type { namingResponse } from '../../../api/types/user';
 import folded from '../../../assets/HomeBanner/folded.svg';
@@ -20,6 +21,7 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
   const userName = userNameData ?? '써봄';
   const postStatus = accessToken ? (homeData?.todayPost?.postStatus ?? 'NOT_STARTED') : 'GUEST';
   const streak = homeData?.streak?.current ?? 0;
+  const aiFeedbackId = homeData?.todayPost.aiFeedbackId;
 
   const bannerStatus = HomeBannerItem[postStatus];
   const titleContent =
@@ -30,12 +32,58 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
       ? bannerStatus.description(streak)
       : bannerStatus.description;
 
+  const isTodayDraft = homeData?.todayPost.postStatus === 'DRAFT';
+  const navigate = useNavigate();
+
+  const handleBannerClick = () => {
+    switch (postStatus) {
+      case 'DRAFT':
+        if (aiFeedbackId) {
+          navigate(
+            `/complement/${homeData?.todayPost.categoryName}/${homeData?.todayPost.topicName}`,
+            {
+              state: {
+                categoryName: homeData?.todayPost.categoryName,
+                topicName: homeData?.todayPost.topicName,
+                topicId: homeData?.todayPost.topicId,
+                categoryId: homeData?.todayPost.categoryId,
+                postId: homeData?.todayPost.postId,
+                isTodayDraft: isTodayDraft,
+                aiFeedbackId: aiFeedbackId,
+              },
+            },
+          );
+        } else {
+          navigate('/write', {
+            state: {
+              categoryName: homeData?.todayPost.categoryName,
+              topicName: homeData?.todayPost.topicName,
+              topicId: homeData?.todayPost.topicId,
+              categoryId: homeData?.todayPost.categoryId,
+              draftPostId: homeData?.todayPost.postId,
+              isTodayDraft: isTodayDraft,
+            },
+          });
+        }
+        break;
+      case 'COMPLETE_WITHCLICK':
+        navigate('/feed');
+        break;
+      case 'GUEST':
+        navigate('/onboarding/Login');
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div
       className={`
-          relative mt-[14px] flex h-[134px] py-[22px] px-4 justify-between rounded-2xl
+          cursor-pointer relative mt-[14px] flex h-[134px] py-[22px] px-4 justify-between rounded-2xl
           ${HomeBannerItem[postStatus].bgColor} 
         `}
+      onClick={handleBannerClick}
     >
       <div>
         <div className="flex items-center gap-[10px]">{descriptionContent}</div>

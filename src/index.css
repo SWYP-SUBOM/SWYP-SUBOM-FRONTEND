@@ -229,7 +229,7 @@ body {
 
 /* 모바일 레이아웃 스타일 */
 .mobile-layout {
-  max-width: 360px;
+  max-width: 380px;
   margin: 0 auto;
   height: 100vh;
   height: -webkit-fill-available;
@@ -250,4 +250,48 @@ body,
   height: -webkit-fill-available;
   min-height: 100dvh;
   overflow: hidden;
+}
+
+/* React Calendar 스타일 - Tailwind @apply 사용 */
+.react-calendar {
+  @apply border-none bg-transparent;
+  font-family: inherit;
+}
+
+.react-calendar__navigation {
+  @apply hidden;
+}
+
+.react-calendar__month-view__weekdays {
+  @apply text-center  text-black mb-2;
+  text-transform: none;
+  font-size: 14px;
+  font-size: var(--font-size-body-03);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  @apply py-2;
+}
+
+.react-calendar__month-view__days {
+  font-size: var(--font-size-body-03);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+
+.react-calendar__tile {
+  @apply border-none bg-transparent text-center w-10 h-10 flex items-center justify-center relative;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus,
+.react-calendar__tile--now:enabled:hover,
+.react-calendar__tile--now:enabled:focus {
+  @apply bg-transparent;
+}
+
+.react-calendar__tile--now {
+  @apply bg-transparent;
 }

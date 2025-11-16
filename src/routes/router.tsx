@@ -19,99 +19,151 @@ import { ServiceIntro1 } from '../pages/Onboarding/Introduction/ServiceIntro1';
 import { ServiceIntro2 } from '../pages/Onboarding/Introduction/ServiceIntro2';
 import { SplashScreen } from '../pages/Onboarding/Introduction/SplashScreen';
 
+import { RootLayout } from '../layout/RootLayout';
 import { Complete } from '../pages/Complete';
 import { PostDetail } from '../pages/PostDetail';
-import Profile from '../pages/Profile';
+import MyInfo from '../pages/Profile/MyInfo';
+import MyReactions from '../pages/Profile/MyReactions';
+import MyPosts from '../pages/Profile/MyPosts';
+import Profile from '../pages/Profile/Profile';
 import { Write } from '../pages/Write';
 import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
 
 export const router = createBrowserRouter([
   // 홈 페이지
   {
-    path: '/home',
-    element: <HomeLayout />,
-    children: [
-      {
-        path: '',
-        element: <Home />,
-      },
-    ],
-  },
-  // 앱 메인 (하단 바 포함)
-  {
     path: '/',
-    element: <MobileLayout showNavBar={false} />,
+    element: <RootLayout />,
     children: [
       {
-        path: '',
-        element: <SplashScreen />,
+        path: '/home',
+        element: <HomeLayout />,
+        children: [
+          {
+            path: '',
+            element: <Home />,
+          },
+          {
+            path: '',
+            element: <Profile />,
+          },
+        ],
+      },
+      // 앱 메인 (하단 바 포함)
+      {
+        path: '/',
+        element: <MobileLayout showNavBar={false} />,
+        children: [
+          {
+            path: '',
+            element: <SplashScreen />,
+          },
+          {
+            path: 'onboarding/intro1',
+            element: <ServiceIntro1 />,
+          },
+          {
+            path: 'onboarding/intro2',
+            element: <ServiceIntro2 />,
+          },
+          {
+            path: 'onboarding/Login',
+            element: <Login />,
+          },
+          {
+            path: 'onboarding/NameInput',
+            element: <NameInput />,
+          },
+          {
+            path: 'oauth2-jwt-header',
+            element: <OAuthCallback />,
+          },
+          {
+            path: 'onboarding/splashMessage',
+            element: <SplashMessage />,
+          },
+          {
+            path: 'onboarding/guideScreen1',
+            element: <GuideScreen1 />,
+          },
+          {
+            path: 'onboarding/guideScreen2',
+            element: <GuideScreen2 />,
+          },
+          {
+            path: 'onboarding/guideScreen3',
+            element: <GuideScreen3 />,
+          },
+          {
+            path: 'onboarding/guideScreen4',
+            element: <GuideScreen4 />,
+          },
+
+          {
+            path: 'gathertopic',
+            element: <GatherTopic />,
+          },
+          {
+            path: 'loadingfeedback',
+            element: <FeedbackLoading />,
+          },
+          {
+            path: 'complete',
+            element: <Complete />,
+          },
+          {
+            path: 'profile/myinfo',
+            element: <MyInfo />,
+          },
+        ],
       },
       {
-        path: 'onboarding/intro1',
-        element: <ServiceIntro1 />,
+        path: '/',
+        element: <MobileLayout showNavBar={true} />,
+        children: [
+          {
+            path: 'feed',
+            element: <Feed />,
+          },
+          {
+            path: '/postdetail/:postId',
+            element: <PostDetail />,
+          },
+          {
+            path: 'calendar',
+            element: <Calendar />,
+          },
+          {
+            path: 'profile',
+            element: <Profile />,
+          },
+          {
+            path: 'profile/reactions',
+            element: <MyReactions />,
+          },
+          {
+            path: 'profile/posts',
+            element: <MyPosts />,
+          },
+        ],
       },
       {
-        path: 'onboarding/intro2',
-        element: <ServiceIntro2 />,
+        path: '/',
+        children: [
+          {
+            path: 'write',
+            element: <Write />,
+          },
+          {
+            path: '/feedback/:categoryName/:topicName',
+            element: <FeedBack />,
+          },
+          {
+            path: '/complement/:categoryName/:topicName',
+            element: <Complement />,
+          },
+        ],
       },
-      {
-        path: 'onboarding/Login',
-        element: <Login />,
-      },
-      {
-        path: 'onboarding/NameInput',
-        element: <NameInput />,
-      },
-      {
-        path: 'oauth2-jwt-header',
-        element: <OAuthCallback />,
-      },
-      {
-        path: 'onboarding/splashMessage',
-        element: <SplashMessage />,
-      },
-      {
-        path: 'onboarding/guideScreen1',
-        element: <GuideScreen1 />,
-      },
-      {
-        path: 'onboarding/guideScreen2',
-        element: <GuideScreen2 />,
-      },
-      {
-        path: 'onboarding/guideScreen3',
-        element: <GuideScreen3 />,
-      },
-      {
-        path: 'onboarding/guideScreen4',
-        element: <GuideScreen4 />,
-      },
-      {
-        path: 'calendar',
-        element: <Calendar />,
-      },
-      {
-        path: 'profile',
-        element: <Profile />,
-      },
-      {
-        path: 'gathertopic',
-        element: <GatherTopic />,
-      },
-      {
-        path: 'loadingfeedback',
-        element: <FeedbackLoading />,
-      },
-      {
-        path: 'complete',
-        element: <Complete />,
-      },
-    ],
-  },
-  {
-    path: '/',
-    element: <MobileLayout showNavBar={true} />,
-    children: [
       {
         path: 'feed',
         element: <Feed />,
@@ -120,22 +172,9 @@ export const router = createBrowserRouter([
         path: '/postdetail/:postId',
         element: <PostDetail />,
       },
-    ],
-  },
-  {
-    path: '/',
-    children: [
       {
-        path: 'write',
-        element: <Write />,
-      },
-      {
-        path: '/feedback/:categoryName/:topicName',
-        element: <FeedBack />,
-      },
-      {
-        path: '/complement/:categoryName/:topicName',
-        element: <Complement />,
+        path: 'gathertopic',
+        element: <GatherTopic />,
       },
     ],
   },

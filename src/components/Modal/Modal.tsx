@@ -31,7 +31,7 @@ export const Overlay = ({ children }: { children: ReactNode }) => {
     <FadeOverlay>
       <div
         onClick={closeModal}
-        className="absolute inset-0 mx-auto bg-[#121212]/50 max-w-[360px] flex items-center justify-center"
+        className="absolute inset-0 mx-auto bg-[#121212]/50 max-w-[380px] flex items-center justify-center"
       >
         <div onClick={(e) => e.stopPropagation()}>{children}</div>
       </div>
@@ -55,7 +55,7 @@ export const Xbutton = () => {
 export const Content = ({ children }: { children: ReactNode }) => {
   return (
     <ScaleContent>
-      <div className="relative bg-[#F9F9F9] w-[328px] max-h-[288px] py-6 rounded-2xl px-5">
+      <div className="relative bg-[#F9F9F9] w-[328px] max-h-[320px] py-6 rounded-2xl px-5">
         {children}
       </div>
     </ScaleContent>
@@ -68,7 +68,7 @@ export const Title = ({ children }: { children: ReactNode }) => {
 
 export const Description = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="inline-block items-center justify-center text-center max-w-[240px] break-normal whitespace-normal B01_M pt-[10px] pb-[31px] text-gray-800">
+    <div className="inline-block items-center justify-center text-center max-w-[260px] break-normal whitespace-normal B01_M pt-[10px] pb-[31px] text-gray-800">
       {children}
     </div>
   );
