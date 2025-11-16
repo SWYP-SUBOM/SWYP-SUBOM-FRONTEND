@@ -22,7 +22,7 @@ const MyInfo = () => {
 
   return (
     <div className="flex flex-col min-h-screen pt-10">
-      <TitleHeader title="내 정보 관리" showDateHeader={true} />
+      <TitleHeader title="내 정보 관리" headerWithNoalarm={true} />
 
       <div className="px-4 mt-4 space-y-3">
         <InfoCard label="로그인 계정" value="카카오 계정으로 로그인됨" />
