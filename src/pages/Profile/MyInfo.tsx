@@ -1,11 +1,15 @@
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { useGetMe } from '../../hooks/useGetMe';
+import { useLogout } from '../../hooks/useLogout';
+import { useUnregister } from '../../hooks/useUnregister';
 import { InfoCard } from './_components/InfoCard';
 import { ActionButtons } from './_components/ActionButtons';
 import { InfoNotice } from './_components/InfoNotice';
 
 const MyInfo = () => {
   const { data: meData, isLoading } = useGetMe();
+  const logoutMutation = useLogout();
+  const unregisterMutation = useUnregister();
 
   const formatJoinDate = (dateString: string | undefined): string => {
     if (!dateString) return '';
@@ -16,9 +20,13 @@ const MyInfo = () => {
 
   const handleNameChange = () => {};
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    logoutMutation.mutate();
+  };
 
-  const handleWithdraw = () => {};
+  const handleWithdraw = () => {
+    unregisterMutation.mutate();
+  };
 
   return (
     <div className="flex flex-col min-h-screen pt-10">
