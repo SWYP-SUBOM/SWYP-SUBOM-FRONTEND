@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { TitleHeader } from '../../components/common/TitleHeader.tsx';
-import { useGetMyWritings } from '../../hooks/Profile/useGetMyWritings.ts';
+import { useGetMyReactions } from '../../hooks/Profile/useGetMyReactions.ts';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll.ts';
 import { FilterBar } from './_components/MyReactions/_components/FilterBar.tsx';
 import { SortFilterModal } from './_components/MyReactions/_components/SortFilterModal.tsx';
@@ -26,7 +26,7 @@ const MyReactions = () => {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetMyWritings({
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetMyReactions({
     size: 10,
     sort: sort === 'latest' ? 'latest' : 'oldest',
   });
@@ -157,8 +157,8 @@ const MyReactions = () => {
             {allPosts.map((post) => (
               <ReactionPostCard
                 key={post.postId}
-                category={post.categoryName}
-                question={post.topicName}
+                category={post.topicInfo.categoryName}
+                question={post.topicInfo.topicName}
                 reaction={post.summary}
                 date={formatDate(post.updatedAt)}
                 onClick={() => navigate(`/postdetail/${post.postId}`)}
