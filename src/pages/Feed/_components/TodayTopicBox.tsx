@@ -5,6 +5,7 @@ import hobby from '../../../assets/CategoryBox/hobby.png';
 import relationship from '../../../assets/CategoryBox/relationship.png';
 import value from '../../../assets/CategoryBox/value.png';
 import right from '../../../assets/Feed/right.svg';
+import { useAuthStore } from '../../../store/useAuthStore';
 
 export const TodayTopicBoxMap = {
   일상: {
@@ -48,6 +49,7 @@ export const TodayTopicBox = ({
 }) => {
   type CategoryKey = keyof typeof TodayTopicBoxMap;
   const categoryData = TodayTopicBoxMap[categoryText as CategoryKey];
+  const { isLoggedIn } = useAuthStore();
 
   const navigate = useNavigate();
   const movetoGatherTopic = () => {
@@ -60,13 +62,15 @@ export const TodayTopicBox = ({
         <div className="B01_B text-gray-900 pb-3">오늘의 주제</div>
         <div className="B01_B text-gray-800 pb-[23px]">{topicText}</div>
         <img src={categoryData.icon} className="absolute right-5 bottom-5 w-[87px] h-[86px]"></img>
-        <div
-          className="absolute bottom-5 left-4 flex items-center gap-1 cursor-pointer"
-          onClick={movetoGatherTopic}
-        >
-          <button className="B03-1_M text-gray-750 cursor-pointer">주제 모아보기</button>
-          <img src={right} className="w-6 h-6" />
-        </div>
+        {isLoggedIn && (
+          <div
+            className="absolute bottom-5 left-4 flex items-center gap-1 cursor-pointer"
+            onClick={movetoGatherTopic}
+          >
+            <button className="B03-1_M text-gray-750 cursor-pointer">주제 모아보기</button>
+            <img src={right} className="w-6 h-6" />
+          </div>
+        )}
       </div>
     </>
   );
