@@ -6,13 +6,18 @@ type NavBarTypes = {
   menuName: string;
   path: string;
   active?: boolean;
+  onClick?: () => void;
 };
 
-export const NavBarIcon = ({ icon, active, iconActive, menuName, path }: NavBarTypes) => {
+export const NavBarIcon = ({ icon, active, iconActive, menuName, path, onClick }: NavBarTypes) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(path);
+    if (onClick) {
+      onClick();
+    } else {
+      navigate(path);
+    }
   };
 
   return (
