@@ -1,7 +1,26 @@
 import type { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import axios, { AxiosError } from 'axios';
-import { getAccessToken, setAccessToken } from './api';
 import { useAuthStore } from '../store/useAuthStore';
+import { getAccessToken, setAccessToken } from './api';
+import { OAUTH_ENDPOINTS } from '../api/endpoints';
+
+// 리프레시 토큰 재발급 중복 방지
+let isRefreshing = false;
+let failedQueue: Array<{
+  resolve: (value?: unknown) => void;
+  reject: (error?: unknown) => void;
+}> = [];
+
+const processQueue = (error: Error | null, token: string | null = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
 
 const createAxiosInstance = (): AxiosInstance => {
   const axiosInstance = axios.create({
@@ -16,6 +35,12 @@ const createAxiosInstance = (): AxiosInstance => {
   axiosInstance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
       const token = getAccessToken();
+
+      // 리프레시 토큰 요청 시 Authorization 헤더 제거
+      if (config.url === OAUTH_ENDPOINTS.REISSUE) {
+        delete config.headers?.Authorization;
+        return config;
+      }
 
       if (config.url === '/') {
         delete config.headers?.Authorization;
@@ -35,13 +60,81 @@ const createAxiosInstance = (): AxiosInstance => {
     (response) => {
       return response;
     },
-    (error: AxiosError) => {
-      if (error.response?.status === 401) {
-        const { logout } = useAuthStore.getState();
-        logout();
-        window.location.href = '/onboarding/Login';
-        return Promise.reject(new Error('인증이 만료되었습니다.'));
+    async (error: AxiosError) => {
+      const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+
+      // 401 에러이고 리프레시 토큰 요청이 아닌 경우
+      if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
+        // 리프레시 토큰 요청 자체가 401이면 무한 루프 방지
+        if (originalRequest.url === OAUTH_ENDPOINTS.REISSUE) {
+          const { logout } = useAuthStore.getState();
+          logout();
+          return Promise.reject(new Error('인증이 만료되었습니다.'));
+        }
+
+        // 이미 리프레시 중이면 대기
+        if (isRefreshing) {
+          return new Promise((resolve, reject) => {
+            failedQueue.push({ resolve, reject });
+          })
+            .then((token) => {
+              if (originalRequest.headers && token) {
+                originalRequest.headers.Authorization = `Bearer ${token}`;
+              }
+              return axiosInstance(originalRequest);
+            })
+            .catch((err) => {
+              return Promise.reject(err);
+            });
+        }
+
+        originalRequest._retry = true;
+        isRefreshing = true;
+
+        try {
+          // 리프레시 토큰 API 호출
+          const response = await axiosInstance.post(
+            OAUTH_ENDPOINTS.REISSUE,
+            {},
+            {
+              headers: {
+                Authorization: undefined,
+              },
+            },
+          );
+
+          // 응답 헤더에서 새 토큰 확인
+          const authorizationHeader =
+            response.headers.authorization || response.headers.Authorization;
+          if (authorizationHeader) {
+            const newToken =
+              typeof authorizationHeader === 'string'
+                ? authorizationHeader.replace('Bearer ', '')
+                : authorizationHeader[0]?.replace('Bearer ', '') || '';
+
+            if (newToken) {
+              setAccessToken(newToken);
+              isRefreshing = false;
+              processQueue(null, newToken);
+
+              // 원래 요청 재시도
+              if (originalRequest.headers) {
+                originalRequest.headers.Authorization = `Bearer ${newToken}`;
+              }
+              return axiosInstance(originalRequest);
+            }
+          }
+
+          throw new Error('토큰 재발급 실패');
+        } catch (refreshError) {
+          isRefreshing = false;
+          processQueue(refreshError as Error, null);
+          const { logout } = useAuthStore.getState();
+          logout();
+          return Promise.reject(new Error('인증이 만료되었습니다.'));
+        }
       }
+
       return Promise.reject(error);
     },
   );

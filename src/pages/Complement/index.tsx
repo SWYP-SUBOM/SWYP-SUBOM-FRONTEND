@@ -48,7 +48,7 @@ export const Complement = () => {
   const isScrolled = useScroll();
 
   const navigate = useNavigate();
-  const handleSaveComplementPost = () => {
+  const handleSaveComplementPost = (shouldNavigateHome = false) => {
     updateAndSaveMutation.mutate(
       { postId, status: 'DRAFT', content: opinion },
       {
@@ -57,6 +57,7 @@ export const Complement = () => {
           closeBottomSheet();
           setInitialOpinion(opinion);
           setIsDirty(false);
+          if (shouldNavigateHome) navigate('/home');
         },
         onError: (error) => console.error('보완하기에서 수정 후 임시저장 에러:', error),
       },
