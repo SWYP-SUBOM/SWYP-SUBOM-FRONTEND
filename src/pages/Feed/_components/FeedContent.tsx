@@ -1,17 +1,26 @@
 import { useNavigate } from 'react-router-dom';
+import { GuestBottomSheet } from '../../../components/common/GuestBottomSheet';
 import { useGetFeed } from '../../../hooks/Feed/useGetFeed';
+import { useBottomSheet } from '../../../hooks/useBottomSheet';
 import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
+import { useAuthStore } from '../../../store/useAuthStore';
 import { PostBox } from './PostBox';
 import { TodayTopicBox } from './TodayTopicBox';
 
 const FeedContent = ({ categoryId }: { categoryId: number }) => {
+  const { isLoggedIn } = useAuthStore();
+  const { openBottomSheet } = useBottomSheet();
   const { data: feedData, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetFeed(categoryId);
 
   const allPosts = feedData?.pages.flatMap((page) => page.postList) ?? [];
 
   const navigate = useNavigate();
   const movetoDetail = (postId: number) => {
-    navigate(`/postdetail/${postId}`);
+    if (isLoggedIn) {
+      navigate(`/postdetail/${postId}`);
+    } else {
+      openBottomSheet(<GuestBottomSheet />);
+    }
   };
 
   const loadMoreRef = useInfiniteScroll({

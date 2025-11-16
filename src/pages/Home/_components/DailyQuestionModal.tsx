@@ -4,6 +4,7 @@ import { Modal, Xbutton } from '../../../components/Modal/Modal';
 import { useGetDailyQuestion } from '../../../hooks/Home/useGetDailyQuestion';
 import { useDeletePost } from '../../../hooks/Post/useDeletePost';
 import { useModal } from '../../../hooks/useModal';
+import { useAuthStore } from '../../../store/useAuthStore';
 import { useTodayPostInfoStore } from '../../../store/useTodayPostInfo';
 
 interface TopicPropsType {
@@ -20,6 +21,7 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
   const todaycategoryId = todayPost.categoryId;
   const draftPostId = todayPost.postId;
   const isTodayDraft = todayPost.postStatus === 'DRAFT';
+  const { isLoggedIn } = useAuthStore();
 
   /* 임시저장일때 -> 기존에 임시저장하던 카테고리와 같으면 이어서 쓰고, 다르면 기존 데이터 삭제 후 write페이지로 이동 */
   const onMoveToWrite = async () => {
@@ -65,6 +67,11 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
     }
   };
 
+  const onMoveLogin = () => {
+    closeModal();
+    navigate('/onboarding/Login');
+  };
+
   return (
     <Modal>
       <Modal.Overlay>
@@ -74,7 +81,9 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
           <Modal.Description>
             {isLoading ? '로딩중...' : dailyQuestionData?.topicName}
           </Modal.Description>
-          <Modal.Trigger handleClickButton={onMoveToWrite}>글 쓰러가기</Modal.Trigger>
+          <Modal.Trigger handleClickButton={isLoggedIn ? onMoveToWrite : onMoveLogin}>
+            {isLoggedIn ? '글 쓰러가기' : '로그인 후 작성하기'}
+          </Modal.Trigger>
         </Modal.Content>
       </Modal.Overlay>
     </Modal>
