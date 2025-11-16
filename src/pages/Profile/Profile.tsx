@@ -45,9 +45,14 @@ const Profile = () => {
             icon={reaction}
             title="내가 반응 남긴 글"
             righticon={true}
-            onClick={() => {}}
+            onClick={() => navigate('/profile/reactions')}
           />
-          <ProfileContents icon={post} title="내가 쓴 글" righticon={true} onClick={() => {}} />
+          <ProfileContents
+            icon={post}
+            title="내가 쓴 글"
+            righticon={true}
+            onClick={() => navigate('/profile/posts')}
+          />
         </div>
       </div>
     </>

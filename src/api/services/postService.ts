@@ -2,6 +2,10 @@ import { apiClient } from '../../utils/apiClient';
 import { POST_ENDPOINTS } from '../endpoints';
 import type {
   deletePostResponse,
+  MyReactionsRequest,
+  MyReactionsResponse,
+  MyWritingsRequest,
+  MyWritingsResponse,
   PostReactionResponse,
   PostResponse,
   PostWithEditResponse,
@@ -88,6 +92,42 @@ export const deletePostReaction = async (postId: number): Promise<PostReactionRe
   return response.data;
 };
 
+export const getMyWritings = async (
+  params: MyWritingsRequest = {},
+): Promise<MyWritingsResponse['data']> => {
+  const queryParams = new URLSearchParams();
+  if (params.cursorId !== undefined) queryParams.append('cursorId', params.cursorId.toString());
+  if (params.size !== undefined) queryParams.append('size', params.size.toString());
+  if (params.startDate) queryParams.append('startDate', params.startDate);
+  if (params.endDate) queryParams.append('endDate', params.endDate);
+  if (params.sort) queryParams.append('sort', params.sort);
+
+  const url = `${POST_ENDPOINTS.MY_WRITINGS}${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+  const response = await apiClient.get<MyWritingsResponse>(url);
+  if (!response.data) {
+    throw new Error('내가 쓴 글을 조회할 수 없습니다.');
+  }
+  return response.data;
+};
+
+export const getMyReactions = async (
+  params: MyReactionsRequest = {},
+): Promise<MyReactionsResponse['data']> => {
+  const queryParams = new URLSearchParams();
+  if (params.cursorId !== undefined) queryParams.append('cursorId', params.cursorId.toString());
+  if (params.size !== undefined) queryParams.append('size', params.size.toString());
+  if (params.startDate) queryParams.append('startDate', params.startDate);
+  if (params.endDate) queryParams.append('endDate', params.endDate);
+  if (params.sort) queryParams.append('sort', params.sort);
+
+  const url = `${POST_ENDPOINTS.MY_REACTIONS}${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+  const response = await apiClient.get<MyReactionsResponse>(url);
+  if (!response.data) {
+    throw new Error('내가 반응한 글을 조회할 수 없습니다.');
+  }
+  return response.data;
+};
+
 export const postService = {
   getPost,
   putPostReaction,
@@ -95,4 +135,6 @@ export const postService = {
   savePost,
   updateAndSavePost,
   deletePost,
+  getMyWritings,
+  getMyReactions,
 };

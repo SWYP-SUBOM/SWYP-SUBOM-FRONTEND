@@ -24,6 +24,8 @@ import { Complete } from '../pages/Complete';
 import { PostDetail } from '../pages/PostDetail';
 import Profile from '../pages/Profile/Profile';
 import MyInfo from '../pages/Profile/MyInfo';
+import MyReactions from '../pages/Profile/MyReactions';
+import MyPosts from '../pages/Profile/MyPosts';
 import { Write } from '../pages/Write';
 import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
 
@@ -133,6 +135,14 @@ export const router = createBrowserRouter([
           {
             path: 'profile',
             element: <Profile />,
+          },
+          {
+            path: 'profile/reactions',
+            element: <MyReactions />,
+          },
+          {
+            path: 'profile/posts',
+            element: <MyPosts />,
           },
         ],
       },

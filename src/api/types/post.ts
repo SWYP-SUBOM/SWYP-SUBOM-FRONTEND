@@ -83,3 +83,70 @@ export interface PostReactionResponse {
     currentUserReaction: string;
   };
 }
+
+export interface MyWritingsRequest {
+  cursorId?: number;
+  size?: number;
+  startDate?: string;
+  endDate?: string;
+  sort?: string;
+}
+
+export interface MyWritingsResponse {
+  success: boolean;
+  code: string;
+  message: string;
+  data: {
+    items: {
+      postId: number;
+      topicInfo: Record<string, unknown>;
+      topicName: string;
+      categoryName: string;
+      summary: string;
+      status: string;
+      updatedAt: string;
+      revised: boolean;
+    }[];
+    sliceInfo: {
+      hasNext: boolean;
+      nextCursorId: number;
+    };
+  } | null;
+}
+
+export interface MyReactionsRequest {
+  cursorId?: number;
+  size?: number;
+  startDate?: string;
+  endDate?: string;
+  sort?: string;
+}
+
+export interface MyReactionsResponse {
+  success: boolean;
+  code: string;
+  message: string;
+  data: {
+    items: {
+      postId: number;
+      topicInfo: {
+        topicName: string;
+        categoryName: string;
+      };
+      summary: string;
+      reactionInfo: {
+        currentUserReaction: string;
+        metrics: {
+          totalReactions: number;
+          countsByType: Record<string, number>;
+        };
+      };
+      status: string;
+      updatedAt: string;
+    }[];
+    sliceInfo: {
+      hasNext: boolean;
+      nextCursorId: number;
+    };
+  } | null;
+}
