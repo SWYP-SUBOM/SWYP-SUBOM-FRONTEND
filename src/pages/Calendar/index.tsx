@@ -6,6 +6,7 @@ import { MonthlyCalendar } from './MonthlyCalendar/MonthlyCalendar';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { useGetCalendar } from '../../hooks/Calendar/useGetCalendar';
 import type { CalendarDateStatus } from './MonthlyCalendar/MonthlyCalendar.types';
+import { format, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay, isAfter } from 'date-fns';
 
 const Calendar = () => {
   const navigate = useNavigate();
@@ -38,6 +39,41 @@ const Calendar = () => {
       }));
   }, [calendarData, getCategoryColor]);
 
+  const weeklyChallengeData = useMemo(() => {
+    const today = new Date();
+    const weekStart = startOfWeek(today, { weekStartsOn: 0 });
+    const weekEnd = endOfWeek(today, { weekStartsOn: 0 });
+    const weekDays = eachDayOfInterval({ start: weekStart, end: weekEnd });
+
+    const streakDatesSet = new Set(calendarData?.streakDates || []);
+    const dayLabels = ['일', '월', '화', '수', '목', '금', '토'];
+
+    const days = weekDays.map((day) => {
+      const dayOfWeek = day.getDay();
+      const dayLabel = dayLabels[dayOfWeek];
+      const dateStr = format(day, 'yyyy-MM-dd');
+      const hasWriting = streakDatesSet.has(dateStr);
+
+      let status: 'completed-active' | 'completed-inactive' | 'incomplete';
+      if (hasWriting) {
+        status = isSameDay(day, today) ? 'completed-active' : 'completed-inactive';
+      } else {
+        status = isAfter(day, today) ? 'incomplete' : 'completed-inactive';
+      }
+
+      return {
+        dayLabel,
+        status,
+      };
+    });
+
+    return {
+      title: '이번 주 챌린지',
+      goal: '일주일에 5번 이상 글 쓰면 성공!',
+      days,
+    };
+  }, [calendarData?.streakDates]);
+
   const handleDateClick = (date: Date) => {
     const clickedDate = datesWithStatus.find(
       (item) =>
@@ -49,20 +85,6 @@ const Calendar = () => {
     if (clickedDate?.postId) {
       navigate(`/postdetail/${clickedDate.postId}`);
     }
-  };
-
-  const weeklyChallengeData = {
-    title: '이번 주 챌린지',
-    goal: '일주일에 5번 이상 글 쓰면 성공!',
-    days: [
-      { dayLabel: '일', status: 'completed-inactive' as const },
-      { dayLabel: '월', status: 'completed-inactive' as const },
-      { dayLabel: '화', status: 'completed-active' as const },
-      { dayLabel: '수', status: 'completed-active' as const },
-      { dayLabel: '목', status: 'completed-active' as const },
-      { dayLabel: '금', status: 'incomplete' as const },
-      { dayLabel: '토', status: 'incomplete' as const },
-    ],
   };
 
   return (
