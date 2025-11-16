@@ -1,12 +1,14 @@
 export const OAUTH_ENDPOINTS = {
   KAKAO_LOGIN: '/oauth2/authorization/kakao',
   OAUTH_JWT_HEADER: '/api/oauth2-jwt-header',
+  LOGOUT: '/logout',
 } as const;
 
 export const USER_ENDPOINTS = {
   NAMING: '/api/naming',
   GET_NAMING: '/api/naming',
   ME: '/api/me',
+  UNREGISTER: '/api/unregister',
 } as const;
 
 export const HOME_ENDPOINTS = {
