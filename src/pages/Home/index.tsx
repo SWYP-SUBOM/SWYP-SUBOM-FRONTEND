@@ -18,13 +18,13 @@ const Home = () => {
   const { data: homeData } = useGetHome();
   const setTodayPostInfo = useTodayPostInfoStore((state) => state.setTodayPostInfo);
 
-  const isTodayDraft = homeData?.todayPost.postStatus === 'DRAFT';
-  const draftPostId = homeData?.todayPost.postId;
-  const categoryName = homeData?.todayPost.categoryName;
-  const topicName = homeData?.todayPost.topicName;
-  const categoryId = homeData?.todayPost.categoryId;
-  const topicId = homeData?.todayPost.topicId;
-  const aiFeedbackId = homeData?.todayPost.aiFeedbackId;
+  const isTodayDraft = homeData?.todayPost?.postStatus === 'DRAFT';
+  const draftPostId = homeData?.todayPost?.postId;
+  const categoryName = homeData?.todayPost?.categoryName;
+  const topicName = homeData?.todayPost?.topicName;
+  const categoryId = homeData?.todayPost?.categoryId;
+  const topicId = homeData?.todayPost?.topicId;
+  const aiFeedbackId = homeData?.todayPost?.aiFeedbackId;
 
   useEffect(() => {
     if (homeData?.todayPost) {

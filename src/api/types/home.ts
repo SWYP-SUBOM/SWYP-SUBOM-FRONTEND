@@ -20,8 +20,8 @@ export interface homeResponse {
       topicId: number | null;
       topicName: string | null;
       aiFeedbackId: number | null;
-    };
-  } | null;
+    } | null;
+  };
 }
 
 export interface dailyQuestionResponse {
