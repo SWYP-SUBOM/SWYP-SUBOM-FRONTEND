@@ -22,7 +22,8 @@ import { SplashScreen } from '../pages/Onboarding/Introduction/SplashScreen';
 import { RootLayout } from '../layout/RootLayout';
 import { Complete } from '../pages/Complete';
 import { PostDetail } from '../pages/PostDetail';
-import Profile from '../pages/Profile';
+import Profile from '../pages/Profile/Profile';
+import MyInfo from '../pages/Profile/MyInfo';
 import { Write } from '../pages/Write';
 import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
 
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
           {
             path: '',
             element: <Home />,
+          },
+          {
+            path: '',
+            element: <Profile />,
           },
         ],
       },
@@ -96,10 +101,6 @@ export const router = createBrowserRouter([
             element: <Calendar />,
           },
           {
-            path: 'profile',
-            element: <Profile />,
-          },
-          {
             path: 'gathertopic',
             element: <GatherTopic />,
           },
@@ -110,6 +111,10 @@ export const router = createBrowserRouter([
           {
             path: 'complete',
             element: <Complete />,
+          },
+          {
+            path: 'profile/myinfo',
+            element: <MyInfo />,
           },
         ],
       },
@@ -124,6 +129,10 @@ export const router = createBrowserRouter([
           {
             path: '/postdetail/:postId',
             element: <PostDetail />,
+          },
+          {
+            path: 'profile',
+            element: <Profile />,
           },
         ],
       },
