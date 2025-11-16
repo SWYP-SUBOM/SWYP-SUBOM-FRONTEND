@@ -1,3 +1,4 @@
+import type { InternalAxiosRequestConfig } from 'axios';
 import { OAUTH_ENDPOINTS, USER_ENDPOINTS } from '../endpoints';
 import { apiClient } from '../../utils/apiClient';
 
@@ -39,7 +40,9 @@ export const reissueToken = async (): Promise<string | null> => {
 };
 
 export const logout = async (): Promise<LogoutResponse> => {
-  return apiClient.post<LogoutResponse>(OAUTH_ENDPOINTS.LOGOUT, {});
+  return apiClient.post<LogoutResponse>(OAUTH_ENDPOINTS.LOGOUT, {}, {
+    withCredentials: true,
+  } as InternalAxiosRequestConfig);
 };
 
 export const unregister = async (): Promise<UnregisterResponse> => {
