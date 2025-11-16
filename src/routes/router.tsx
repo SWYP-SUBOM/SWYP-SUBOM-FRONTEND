@@ -98,10 +98,7 @@ export const router = createBrowserRouter([
             path: 'onboarding/guideScreen4',
             element: <GuideScreen4 />,
           },
-          {
-            path: 'calendar',
-            element: <Calendar />,
-          },
+
           {
             path: 'gathertopic',
             element: <GatherTopic />,
@@ -131,6 +128,10 @@ export const router = createBrowserRouter([
           {
             path: '/postdetail/:postId',
             element: <PostDetail />,
+          },
+          {
+            path: 'calendar',
+            element: <Calendar />,
           },
           {
             path: 'profile',

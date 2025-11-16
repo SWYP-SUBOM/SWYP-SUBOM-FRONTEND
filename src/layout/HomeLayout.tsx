@@ -4,9 +4,10 @@ import { NavBar } from './NavBar/NavBar';
 
 interface HomeLayoutProps {
   children?: React.ReactNode;
+  showHeaderVar?: boolean;
 }
 
-export const HomeLayout: React.FC<HomeLayoutProps> = ({ children }) => {
+export const HomeLayout: React.FC<HomeLayoutProps> = ({ children, showHeaderVar = true }) => {
   return (
     <div
       className="
@@ -21,9 +22,7 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({ children }) => {
         overflow-hidden
         "
     >
-      <div className="pt-[14px] bg-[#F3F5F8]">
-        <Header />
-      </div>
+      <div className="bg-[#F3F5F8]">{showHeaderVar && <Header />}</div>
       <main
         className="flex-1 overflow-hidden"
         style={{

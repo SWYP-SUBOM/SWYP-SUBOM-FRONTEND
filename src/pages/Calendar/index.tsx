@@ -1,7 +1,90 @@
+import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { WeeklyChallengeBox } from './WeeklyChallengeBox/WeeklyChallengeBox';
+import { MonthlyTrainingStatusBox } from './MonthlyTrainingStatusBox/MonthlyTrainingStatusBox';
+import { MonthlyCalendar } from './MonthlyCalendar/MonthlyCalendar';
+import { TitleHeader } from '../../components/common/TitleHeader';
+import { useGetCalendar } from '../../hooks/Calendar/useGetCalendar';
+import type { CalendarDateStatus } from './MonthlyCalendar/MonthlyCalendar.types';
+
 const Calendar = () => {
+  const navigate = useNavigate();
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth() + 1; // getMonth()는 0부터 시작하므로 +1
+
+  const { data: calendarData } = useGetCalendar({ year, month });
+
+  const getCategoryColor = (categoryName: string): CalendarDateStatus['color'] => {
+    const colorMap: Record<string, CalendarDateStatus['color']> = {
+      일상: 'red',
+      취미·취향: 'blue',
+      관계: 'purple',
+      가치관: 'yellow',
+      문화·트렌드: 'green',
+    };
+    return colorMap[categoryName] || 'blue';
+  };
+
+  const datesWithStatus = useMemo(() => {
+    if (!calendarData?.days) return [];
+
+    return calendarData.days
+      .filter((day) => day.hasWriting)
+      .map((day) => ({
+        date: new Date(day.date),
+        color: getCategoryColor(day.category.categoryName),
+        postId: day.postId,
+      }));
+  }, [calendarData, getCategoryColor]);
+
+  const handleDateClick = (date: Date) => {
+    const clickedDate = datesWithStatus.find(
+      (item) =>
+        item.date.getDate() === date.getDate() &&
+        item.date.getMonth() === date.getMonth() &&
+        item.date.getFullYear() === date.getFullYear(),
+    );
+
+    if (clickedDate?.postId) {
+      navigate(`/postdetail/${clickedDate.postId}`);
+    }
+  };
+
+  const weeklyChallengeData = {
+    title: '이번 주 챌린지',
+    goal: '일주일에 5번 이상 글 쓰면 성공!',
+    days: [
+      { dayLabel: '일', status: 'completed-inactive' as const },
+      { dayLabel: '월', status: 'completed-inactive' as const },
+      { dayLabel: '화', status: 'completed-active' as const },
+      { dayLabel: '수', status: 'completed-active' as const },
+      { dayLabel: '목', status: 'completed-active' as const },
+      { dayLabel: '금', status: 'incomplete' as const },
+      { dayLabel: '토', status: 'incomplete' as const },
+    ],
+  };
+
   return (
     <>
-      <p>Calendar</p>
+      <div className="flex flex-col h-full ">
+        <div className="  h-[218px] bg-b7  pt-10 ">
+          <TitleHeader title="캘린더" />
+        </div>
+
+        <WeeklyChallengeBox {...weeklyChallengeData} />
+        <div className=" B01_B mt-[108px]  px-4">이번달 글쓰기 훈련 상황</div>
+        <MonthlyTrainingStatusBox
+          totalWritingCount={calendarData?.summary.totalWritingCount ?? 0}
+          totalWeeklyChallengeCount={calendarData?.summary.totalWeeklyChallengeCount ?? 0}
+        />
+        <MonthlyCalendar
+          datesWithStatus={datesWithStatus}
+          currentDate={currentDate}
+          onDateChange={setCurrentDate}
+          onDateClick={handleDateClick}
+        />
+      </div>
     </>
   );
 };
