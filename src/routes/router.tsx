@@ -22,10 +22,10 @@ import { SplashScreen } from '../pages/Onboarding/Introduction/SplashScreen';
 import { RootLayout } from '../layout/RootLayout';
 import { Complete } from '../pages/Complete';
 import { PostDetail } from '../pages/PostDetail';
-import Profile from '../pages/Profile/Profile';
 import MyInfo from '../pages/Profile/MyInfo';
 import MyReactions from '../pages/Profile/MyReactions';
 import MyPosts from '../pages/Profile/MyPosts';
+import Profile from '../pages/Profile/Profile';
 import { Write } from '../pages/Write';
 import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
 

@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { useTabStore } from '../../../store/useTabStore';
 
 export const TabList = ({ children }: { children: ReactNode }) => {
-  return <div className="flex w-full gap-5 px-2">{children}</div>;
+  return <div className="flex w-full gap-5 px-4">{children}</div>;
 };
 
 export const Trigger = ({ children, categoryId }: { children: ReactNode; categoryId: number }) => {

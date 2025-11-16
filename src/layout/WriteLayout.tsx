@@ -17,7 +17,7 @@ export const WriteLayout = ({
   return (
     <div
       className="
-        max-w-[360px]
+        max-w-[380px]
         mx-auto
         h-[100vh]
         min-h-[100dvh]

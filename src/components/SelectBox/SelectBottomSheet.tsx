@@ -11,7 +11,7 @@ export const SelectBottomSheet = ({ title, children, onClose }: SelectBottomShee
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 flex max-w-[360px] mx-auto bg-black/50 justify-center items-end z-50"
+      className="fixed inset-0 flex max-w-[380px] mx-auto bg-black/50 justify-center items-end z-200"
     >
       <motion.div
         onClick={(e) => e.stopPropagation()}

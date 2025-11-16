@@ -10,7 +10,7 @@ export const CategoryBoxGrid = () => {
   return (
     <div
       className="flex h-full gap-[7px] flex-1 object-contain"
-      style={{ paddingBottom: `calc(60px + env(safe-area-inset-bottom))` }}
+      style={{ paddingBottom: `calc(90px + env(safe-area-inset-bottom))` }}
     >
       <div className="flex flex-col flex-1 gap-1 justify-between h-full ">
         {largeCategoryBoxes.map((largeCategoryBox) => (
