@@ -69,7 +69,6 @@ const createAxiosInstance = (): AxiosInstance => {
         if (originalRequest.url === OAUTH_ENDPOINTS.REISSUE) {
           const { logout } = useAuthStore.getState();
           logout();
-          window.location.href = '/onboarding/Login';
           return Promise.reject(new Error('인증이 만료되었습니다.'));
         }
 
@@ -132,7 +131,6 @@ const createAxiosInstance = (): AxiosInstance => {
           processQueue(refreshError as Error, null);
           const { logout } = useAuthStore.getState();
           logout();
-          window.location.href = '/onboarding/Login';
           return Promise.reject(new Error('인증이 만료되었습니다.'));
         }
       }
