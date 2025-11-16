@@ -1,6 +1,7 @@
 import type { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import axios, { AxiosError } from 'axios';
-import { getAccessToken, removeAccessToken, setAccessToken } from './api';
+import { getAccessToken, setAccessToken } from './api';
+import { useAuthStore } from '../store/useAuthStore';
 
 const createAxiosInstance = (): AxiosInstance => {
   const axiosInstance = axios.create({
@@ -36,7 +37,8 @@ const createAxiosInstance = (): AxiosInstance => {
     },
     (error: AxiosError) => {
       if (error.response?.status === 401) {
-        removeAccessToken();
+        const { logout } = useAuthStore.getState();
+        logout();
         window.location.href = '/onboarding/Login';
         return Promise.reject(new Error('인증이 만료되었습니다.'));
       }

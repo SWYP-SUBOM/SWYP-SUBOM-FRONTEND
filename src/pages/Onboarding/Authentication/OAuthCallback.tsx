@@ -2,14 +2,20 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useOAuthToken } from '../../../hooks/useOAuthToken';
 import { ROUTES } from '../../../routes/routes';
+import { useAuthStore } from '../../../store/useAuthStore';
 
 export const OAuthCallback = () => {
   const navigate = useNavigate();
   const mutation = useOAuthToken();
+  const setToken = useAuthStore((state) => state.setToken);
 
   useEffect(() => {
     mutation.mutate(undefined, {
-      onSuccess: () => {
+      onSuccess: (token) => {
+        // 로그인 성공 시 토큰을 store에 저장
+        if (token) {
+          setToken(token);
+        }
         navigate(ROUTES.ONBOARDING_NAME_INPUT);
       },
       onError: () => {
