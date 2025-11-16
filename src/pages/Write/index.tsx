@@ -73,28 +73,50 @@ export const Write = () => {
   };
 
   const navigate = useNavigate();
-
+  /* 피드백 받기 요청 보낼때 저장을 안했으면 저장 후 피드백 요청*/
   const movetoGetFeedback = () => {
-    setIsLoading(true);
-    postAIFeedBackMutation.mutate(currentPostId, {
-      onSuccess: (response) => {
-        const aiFeedbackId = response.aiFeedbackId;
-        try {
+    const saveAndRequestFeedback = (postId: number) => {
+      setIsLoading(true);
+      postAIFeedBackMutation.mutate(postId, {
+        onSuccess: (response) => {
+          const aiFeedbackId = response.aiFeedbackId;
           navigate(
             `/feedback/${encodeURIComponent(categoryName)}/${encodeURIComponent(topicName)}`,
-            {
-              state: { postId: currentPostId, aiFeedbackId },
-            },
+            { state: { postId, aiFeedbackId } },
           );
-        } catch (err) {
-          console.error('AI 피드백 요청 실패:', err);
-        }
-      },
-      onError: (error: Error) => {
-        console.error('AI 피드백 요청 에러:', error);
-        setIsLoading(false);
-      },
-    });
+        },
+        onError: () => setIsLoading(false),
+      });
+    };
+
+    if (isFirst || isDirty) {
+      if (isFirst) {
+        saveMutation.mutate(
+          { categoryId, topicId, content: opinion },
+          {
+            onSuccess: (res) => {
+              const postId = res.postId;
+              setCurrentPostId(postId);
+              setIsFirst(false);
+              setIsDirty(false);
+              saveAndRequestFeedback(postId);
+            },
+          },
+        );
+      } else {
+        updateAndSaveMutation.mutate(
+          { postId: currentPostId, status: 'DRAFT', content: opinion },
+          {
+            onSuccess: () => {
+              setIsDirty(false);
+              saveAndRequestFeedback(currentPostId!);
+            },
+          },
+        );
+      }
+    } else {
+      saveAndRequestFeedback(currentPostId!);
+    }
   };
 
   const handleSavePost = (shouldNavigateHome = false) => {
