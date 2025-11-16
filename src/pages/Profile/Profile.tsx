@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { ProfileContents } from './_components/Profilecontents';
-import profile from '../../assets/Profile/profile.png';
+import profile from '../../assets/Profile/Profile.png';
 import reaction from '../../assets/Profile/reaction.svg';
 import post from '../../assets/Profile/post.svg';
 import { useGetUserName } from '../../hooks/useGetUserName';
