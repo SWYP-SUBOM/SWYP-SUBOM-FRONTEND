@@ -6,10 +6,13 @@ interface ActionButtonsProps {
 export const ActionButtons = ({ onLogout, onWithdraw }: ActionButtonsProps) => {
   return (
     <div className="px-4 mt-auto space-y-4">
-      <button onClick={onLogout} className="B03_1_M text-gray-700 w-full text-left">
+      <button onClick={onLogout} className="B03_1_M text-gray-700 w-full text-left cursor-pointer">
         로그아웃
       </button>
-      <button onClick={onWithdraw} className="B03_1_M text-gray-700 w-full text-left">
+      <button
+        onClick={onWithdraw}
+        className="B03_1_M text-gray-700 w-full text-left cursor-pointer"
+      >
         회원탈퇴
       </button>
     </div>
