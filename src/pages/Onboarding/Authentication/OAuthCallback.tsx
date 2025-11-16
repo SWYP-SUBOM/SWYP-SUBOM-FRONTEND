@@ -1,11 +1,12 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useOAuthToken } from '../../../hooks/useOAuthToken';
 import { ROUTES } from '../../../routes/routes';
 import { useAuthStore } from '../../../store/useAuthStore';
 
 export const OAuthCallback = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const mutation = useOAuthToken();
   const setToken = useAuthStore((state) => state.setToken);
 
@@ -16,13 +17,22 @@ export const OAuthCallback = () => {
         if (token) {
           setToken(token);
         }
-        navigate(ROUTES.ONBOARDING_NAME_INPUT);
+
+        // URL 쿼리 파라미터에서 name 가져오기
+        const name = searchParams.get('name');
+
+        // username이 "no"면 닉네임 입력 페이지로, 아니면 홈으로
+        if (name === 'no') {
+          navigate(ROUTES.ONBOARDING_NAME_INPUT);
+        } else {
+          navigate(ROUTES.HOME);
+        }
       },
       onError: () => {
         navigate(ROUTES.ONBOARDING_LOGIN);
       },
     });
-  }, []);
+  }, [searchParams]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
