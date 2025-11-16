@@ -19,9 +19,12 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
   const accessToken = getAccessToken();
 
   const userName = userNameData ?? '써봄';
-  const postStatus = accessToken ? (homeData?.todayPost?.postStatus ?? 'NOT_STARTED') : 'GUEST';
+  const todayPost = homeData?.todayPost;
+  const postStatus =
+    !accessToken || todayPost === null ? 'GUEST' : (todayPost?.postStatus ?? 'NOT_STARTED');
+
   const streak = homeData?.streak?.current ?? 0;
-  const aiFeedbackId = homeData?.todayPost.aiFeedbackId;
+  const aiFeedbackId = homeData?.todayPost?.aiFeedbackId;
 
   const bannerStatus = HomeBannerItem[postStatus];
   const titleContent =
@@ -32,7 +35,8 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
       ? bannerStatus.description(streak)
       : bannerStatus.description;
 
-  const isTodayDraft = homeData?.todayPost.postStatus === 'DRAFT';
+  const isTodayDraft = homeData?.todayPost?.postStatus === 'DRAFT';
+
   const navigate = useNavigate();
 
   const handleBannerClick = () => {
@@ -40,15 +44,14 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
       case 'DRAFT':
         if (aiFeedbackId) {
           navigate(
-            `/complement/${homeData?.todayPost.categoryName}/${homeData?.todayPost.topicName}`,
+            `/complement/${homeData?.todayPost?.categoryName}/${homeData?.todayPost?.topicName}`,
             {
               state: {
-                categoryName: homeData?.todayPost.categoryName,
-                topicName: homeData?.todayPost.topicName,
-                topicId: homeData?.todayPost.topicId,
-                categoryId: homeData?.todayPost.categoryId,
-                postId: homeData?.todayPost.postId,
-                isTodayDraft: isTodayDraft,
+                categoryName: homeData?.todayPost?.categoryName,
+                topicName: homeData?.todayPost?.topicName,
+                topicId: homeData?.todayPost?.topicId,
+                categoryId: homeData?.todayPost?.categoryId,
+                postId: homeData?.todayPost?.postId,
                 aiFeedbackId: aiFeedbackId,
               },
             },
@@ -56,11 +59,11 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
         } else {
           navigate('/write', {
             state: {
-              categoryName: homeData?.todayPost.categoryName,
-              topicName: homeData?.todayPost.topicName,
-              topicId: homeData?.todayPost.topicId,
-              categoryId: homeData?.todayPost.categoryId,
-              draftPostId: homeData?.todayPost.postId,
+              categoryName: homeData?.todayPost?.categoryName,
+              topicName: homeData?.todayPost?.topicName,
+              topicId: homeData?.todayPost?.topicId,
+              categoryId: homeData?.todayPost?.categoryId,
+              draftPostId: homeData?.todayPost?.postId,
               isTodayDraft: isTodayDraft,
             },
           });
