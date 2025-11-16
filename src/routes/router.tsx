@@ -22,8 +22,8 @@ import { SplashScreen } from '../pages/Onboarding/Introduction/SplashScreen';
 import { RootLayout } from '../layout/RootLayout';
 import { Complete } from '../pages/Complete';
 import { PostDetail } from '../pages/PostDetail';
-import Profile from '../pages/Profile/Profile';
 import MyInfo from '../pages/Profile/MyInfo';
+import Profile from '../pages/Profile/Profile';
 import { Write } from '../pages/Write';
 import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
 

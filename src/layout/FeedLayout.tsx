@@ -11,7 +11,7 @@ export const FeedLayout = ({ children, header, showNavbar = false }: FeedLayoutP
   return (
     <div
       className="
-        max-w-[360px]
+        max-w-[380px]
         mx-auto
         bg-[var(--color-white)]
         relative
