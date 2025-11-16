@@ -10,7 +10,7 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({ children }) => {
   return (
     <div
       className="
-        max-w-[360px]
+        max-w-[380px]
         mx-auto
         app-root
         bg-[var(--color-white)]

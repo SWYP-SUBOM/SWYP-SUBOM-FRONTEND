@@ -26,9 +26,11 @@ const Home = () => {
   const topicId = homeData?.todayPost.topicId;
   const aiFeedbackId = homeData?.todayPost.aiFeedbackId;
 
-  if (homeData?.todayPost) {
-    setTodayPostInfo(homeData.todayPost);
-  }
+  useEffect(() => {
+    if (homeData?.todayPost) {
+      setTodayPostInfo(homeData.todayPost);
+    }
+  }, [homeData]);
 
   useEffect(() => {
     if (isDraftSheetOpened) return;
