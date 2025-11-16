@@ -6,5 +6,5 @@ export const DATE_COLOR_MAP = {
   green: 'bg-green-400',
 } as const;
 
-// react-calendar는 ISO 8601 표준으로 월요일부터 시작
-export const WEEKDAYS = ['월', '화', '수', '목', '금', '토', '일'] as const;
+// 일요일부터 시작하는 요일 배열
+export const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'] as const;

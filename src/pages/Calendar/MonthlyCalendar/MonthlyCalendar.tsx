@@ -8,8 +8,15 @@ import { getDateColor } from './MonthlyCalendar.utils';
 import { WEEKDAYS } from './MonthlyCalendar.constants';
 import { NavigationButtons } from './NavigationButtons';
 
-export const MonthlyCalendar = ({ datesWithStatus = [] }: MonthlyCalendarProps) => {
-  const [currentDate, setCurrentDate] = useState<Date>(new Date());
+export const MonthlyCalendar = ({
+  datesWithStatus = [],
+  currentDate: externalCurrentDate,
+  onDateChange: externalOnDateChange,
+  onDateClick,
+}: MonthlyCalendarProps) => {
+  const [internalCurrentDate, setInternalCurrentDate] = useState<Date>(new Date());
+  const currentDate = externalCurrentDate ?? internalCurrentDate;
+  const setCurrentDate = externalOnDateChange ?? setInternalCurrentDate;
 
   const navigateMonth = (direction: 'prev' | 'next') => {
     const newDate = new Date(currentDate);
@@ -19,9 +26,32 @@ export const MonthlyCalendar = ({ datesWithStatus = [] }: MonthlyCalendarProps) 
 
   const handleDateChange = (value: unknown) => {
     if (value instanceof Date) {
-      setCurrentDate(value);
+      // 날짜 클릭 시 onDateClick 호출
+      const clickedDate = datesWithStatus.find(
+        (item) =>
+          item.date.getDate() === value.getDate() &&
+          item.date.getMonth() === value.getMonth() &&
+          item.date.getFullYear() === value.getFullYear(),
+      );
+
+      if (clickedDate?.postId && onDateClick) {
+        onDateClick(value);
+      } else {
+        setCurrentDate(value);
+      }
     } else if (Array.isArray(value) && value[0] instanceof Date) {
-      setCurrentDate(value[0]);
+      const clickedDate = datesWithStatus.find(
+        (item) =>
+          item.date.getDate() === value[0].getDate() &&
+          item.date.getMonth() === value[0].getMonth() &&
+          item.date.getFullYear() === value[0].getFullYear(),
+      );
+
+      if (clickedDate?.postId && onDateClick) {
+        onDateClick(value[0]);
+      } else {
+        setCurrentDate(value[0]);
+      }
     }
   };
 
@@ -49,14 +79,13 @@ export const MonthlyCalendar = ({ datesWithStatus = [] }: MonthlyCalendarProps) 
           onChange={handleDateChange}
           activeStartDate={currentDate}
           onActiveStartDateChange={handleActiveStartDateChange}
+          locale="en-US"
           formatDay={(_locale, date) => format(date, 'd')}
           formatShortWeekday={(_locale, date) => {
-            // react-calendar는 월요일부터 시작하므로 인덱스 조정
             // date.getDay(): 0=일요일, 1=월요일, ..., 6=토요일
-            // WEEKDAYS 배열: 0=월요일, 1=화요일, ..., 6=일요일
+            // WEEKDAYS 배열: 0=일요일, 1=월요일, ..., 6=토요일
             const dayIndex = date.getDay();
-            const adjustedIndex = dayIndex === 0 ? 6 : dayIndex - 1;
-            return WEEKDAYS[adjustedIndex];
+            return WEEKDAYS[dayIndex];
           }}
           tileContent={({ date, view }) => {
             const color = getDateColor(date, datesWithStatus);
@@ -81,6 +110,10 @@ export const MonthlyCalendar = ({ datesWithStatus = [] }: MonthlyCalendarProps) 
 
             if (color && isCurrentMonth) return 'relative [&>abbr]:opacity-0';
             if (!isCurrentMonth) return 'text-gray-300';
+            // 모든 요일을 검은색으로 표시
+            if (isCurrentMonth && !color) {
+              return 'text-black';
+            }
             return null;
           }}
           className="border-none! w-full!"

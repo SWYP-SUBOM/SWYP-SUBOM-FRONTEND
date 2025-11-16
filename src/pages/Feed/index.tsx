@@ -1,7 +1,6 @@
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { FeedLayout } from '../../layout/FeedLayout';
 import { FeedTab } from './_components/FeedTab';
-import { TitleHeader } from '../../components/common/TitleHeader';
 
 export const Feed = () => {
   return (
