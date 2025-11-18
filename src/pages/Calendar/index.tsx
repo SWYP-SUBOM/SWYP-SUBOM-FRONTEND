@@ -54,11 +54,11 @@ const Calendar = () => {
       const dateStr = format(day, 'yyyy-MM-dd');
       const hasWriting = streakDatesSet.has(dateStr);
 
-      let status: 'completed-active' | 'completed-inactive' | 'incomplete';
+      let status: 'pastCompleted' | 'todayCompleted' | 'incomplete';
       if (hasWriting) {
-        status = isSameDay(day, today) ? 'completed-active' : 'completed-inactive';
+        status = isSameDay(day, today) ? 'todayCompleted' : 'pastCompleted';
       } else {
-        status = isAfter(day, today) ? 'incomplete' : 'completed-inactive';
+        status = isAfter(day, today) ? 'incomplete' : 'pastCompleted';
       }
 
       return {
@@ -91,7 +91,7 @@ const Calendar = () => {
     <>
       <div className="flex flex-col h-full ">
         <div className="  h-[218px] bg-b7  pt-10 ">
-          <TitleHeader title="캘린더" />
+          <TitleHeader title="나의 캘린더" />
         </div>
 
         <WeeklyChallengeBox {...weeklyChallengeData} />

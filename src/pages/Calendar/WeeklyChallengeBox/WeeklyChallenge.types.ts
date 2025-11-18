@@ -1,4 +1,4 @@
-export type ChallengeDayStatus = 'completed-active' | 'completed-inactive' | 'incomplete';
+export type ChallengeDayStatus = 'pastCompleted' | 'todayCompleted' | 'incomplete';
 
 export interface WeeklyChallengeDay {
   dayLabel: string;
