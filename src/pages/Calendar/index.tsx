@@ -89,16 +89,13 @@ const Calendar = () => {
 
   return (
     <>
-      <div
-        className="flex flex-col h-full overflow-y-auto"
-        style={{ paddingBottom: 'calc(110px + env(safe-area-inset-bottom))' }}
-      >
-        <div className="  h-[218px] bg-b7  pt-10 ">
+      <div className="flex flex-col">
+        <div className="h-[218px] bg-b7 pt-10 shrink-0">
           <TitleHeader title="나의 캘린더" />
         </div>
 
         <WeeklyChallengeBox {...weeklyChallengeData} />
-        <div className=" B01_B mt-[108px]  px-4">이번달 글쓰기 훈련 상황</div>
+        <div className="B01_B mt-[120px] px-4">이번달 글쓰기 훈련 상황</div>
         <MonthlyTrainingStatusBox
           totalWritingCount={calendarData?.summary.totalWritingCount ?? 0}
           totalWeeklyChallengeCount={calendarData?.summary.totalWeeklyChallengeCount ?? 0}
@@ -109,6 +106,7 @@ const Calendar = () => {
           onDateChange={setCurrentDate}
           onDateClick={handleDateClick}
         />
+        <div style={{ minHeight: 'calc(110px + env(safe-area-inset-bottom))' }}></div>
       </div>
     </>
   );

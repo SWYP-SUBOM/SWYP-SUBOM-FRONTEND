@@ -62,9 +62,9 @@ export const MonthlyCalendar = ({
   };
 
   return (
-    <div className="px-4 mt-4 mb-4">
-      <div className="rounded-2xl shadow-sm p-4">
-        <div className="flex items-center justify-between mb-4">
+    <div className="px-4 mt-4 ">
+      <div className="rounded-2xl shadow-sm  p-4">
+        <div className="flex items-center justify-between pr-1 mb-4">
           <h2 className="B01_B text-gray-900">
             {format(currentDate, 'yyyy년 M월', { locale: ko })}
           </h2>
@@ -82,8 +82,6 @@ export const MonthlyCalendar = ({
           locale="en-US"
           formatDay={(_locale, date) => format(date, 'd')}
           formatShortWeekday={(_locale, date) => {
-            // date.getDay(): 0=일요일, 1=월요일, ..., 6=토요일
-            // WEEKDAYS 배열: 0=일요일, 1=월요일, ..., 6=토요일
             const dayIndex = date.getDay();
             return WEEKDAYS[dayIndex];
           }}
@@ -109,10 +107,10 @@ export const MonthlyCalendar = ({
             const color = getDateColor(date, datesWithStatus);
 
             if (color && isCurrentMonth) return 'relative [&>abbr]:opacity-0';
-            if (!isCurrentMonth) return 'text-gray-300';
+            if (!isCurrentMonth) return 'B03_B text-gray-500';
             // 모든 요일을 검은색으로 표시
             if (isCurrentMonth && !color) {
-              return 'text-black';
+              return 'B03_B text-gray-800';
             }
             return null;
           }}
