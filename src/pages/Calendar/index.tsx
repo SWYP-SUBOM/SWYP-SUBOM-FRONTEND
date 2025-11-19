@@ -12,7 +12,7 @@ const Calendar = () => {
   const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
   const year = currentDate.getFullYear();
-  const month = currentDate.getMonth() + 1; // getMonth()는 0부터 시작하므로 +1
+  const month = currentDate.getMonth() + 1;
 
   const { data: calendarData } = useGetCalendar({ year, month });
 
@@ -48,7 +48,7 @@ const Calendar = () => {
     const streakDatesSet = new Set(calendarData?.streakDates || []);
     const dayLabels = ['일', '월', '화', '수', '목', '금', '토'];
 
-    const days = weekDays.map((day) => {
+    const days = weekDays.slice(0, 7).map((day) => {
       const dayOfWeek = day.getDay();
       const dayLabel = dayLabels[dayOfWeek];
       const dateStr = format(day, 'yyyy-MM-dd');
@@ -89,7 +89,10 @@ const Calendar = () => {
 
   return (
     <>
-      <div className="flex flex-col h-full ">
+      <div
+        className="flex flex-col h-full overflow-y-auto"
+        style={{ paddingBottom: 'calc(110px + env(safe-area-inset-bottom))' }}
+      >
         <div className="  h-[218px] bg-b7  pt-10 ">
           <TitleHeader title="나의 캘린더" />
         </div>

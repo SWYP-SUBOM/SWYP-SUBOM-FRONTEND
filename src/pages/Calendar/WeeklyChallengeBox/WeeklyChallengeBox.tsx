@@ -30,19 +30,19 @@ const ProgressCircle = ({ status }: ProgressCircleProps) => {
 
 export const WeeklyChallengeBox = ({ title, goal, days }: WeeklyChallengeProps) => {
   return (
-    <div className=" mx-4 h-[168px] absolute top-33 w-full rounded-xl pt-5 pb-5 z-2 border border-[#E7EBEE] shadow-[0_0_30px_0_#D0D2D9] bg-[#F9F9F9]">
+    <div className="left-4 right-4 h-[168px] absolute top-33 rounded-xl pt-5 pb-5 z-2 border border-[#E7EBEE] shadow-[0_0_30px_0_#D0D2D9] bg-[#F9F9F9]">
       {/* 헤더 섹션 - 연한 파란색 배경 */}
-      <div className="  px-4.5 ">
+      <div className="px-4.5">
         <h2 className="B02_B text-gray-900 text-left mb-3">{title}</h2>
         <p className="B03_M text-b7">{goal}</p>
       </div>
 
       {/* 일일 진행 상황 추적 섹션 */}
-      <div className="px-2.5 bg-white mt-[13px]">
+      <div className="px-2.5 bg-white mt-[13px] mx-2">
         {/* 요일 레이블 */}
-        <div className="flex  ">
-          {days.map((day, index) => (
-            <div key={index} className="flex flex-col items-center px-0.5">
+        <div className="flex ">
+          {days.slice(0, 7).map((day, index) => (
+            <div key={index} className="flex flex-col items-center flex-1">
               <span className="B03_1_M text-gray-500">{day.dayLabel}</span>
 
               <ProgressCircle status={day.status} />

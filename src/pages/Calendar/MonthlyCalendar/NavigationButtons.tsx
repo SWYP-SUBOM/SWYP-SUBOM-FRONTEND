@@ -8,7 +8,7 @@ export const NavigationButtons = ({ onPrev, onNext }: NavigationButtonsProps) =>
     <div className="flex gap-2">
       <button
         onClick={onPrev}
-        className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
+        className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors"
       >
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
           <path
@@ -22,7 +22,7 @@ export const NavigationButtons = ({ onPrev, onNext }: NavigationButtonsProps) =>
       </button>
       <button
         onClick={onNext}
-        className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-colors"
+        className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center hover:bg-gray-300 transition-colors"
       >
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
           <path

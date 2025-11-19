@@ -62,7 +62,7 @@ export const MonthlyCalendar = ({
   };
 
   return (
-    <div className="px-4 mt-4 h-[310px]">
+    <div className="px-4 mt-4 mb-4">
       <div className="rounded-2xl shadow-sm p-4">
         <div className="flex items-center justify-between mb-4">
           <h2 className="B01_B text-gray-900">
