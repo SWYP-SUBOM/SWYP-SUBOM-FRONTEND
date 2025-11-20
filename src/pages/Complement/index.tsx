@@ -81,18 +81,22 @@ export const Complement = () => {
 
   return (
     <>
-      <WriteLayout handleClickSaveButton={handleSaveComplementPost} isDirty={isDirty}>
+      <WriteLayout
+        handleClickSaveButton={handleSaveComplementPost}
+        isDirty={isDirty}
+        isSaveDisabled={!isDirty}
+      >
         <div ref={containerRef} className="relative min-h-[100dvh] bg-[#F3F5F8]">
           <div className="sticky top-0 z-10 px-4 pb-3 pt-[30px] bg-[#F3F5F8]">
             <CategoryChip categoryName={categoryName} />
             <div className="py-[10px] B01_B">{topicName}</div>
           </div>
           <div className="px-4">
-            <div className="relative w-[328px]">
+            <div className="relative w-full">
               <textarea
                 value={opinion}
                 onChange={(e) => setOpinion(e.target.value)}
-                className="B03_M px-4 pt-4 py-10 w-full h-[360px] border border-gray-500 rounded-xl resize-none bg-white"
+                className="hide-scrollbar text-gray-800 hover:border-gray-700 focus:border--gray-700 bg-[#FFFFFF] B03_M pl-4 pr-2 pt-4 py-10 w-full h-[360px] border border-gray-500 rounded-xl resize-none"
               />
               {postData && (
                 <div className="C01_SB absolute bottom-6 right-4 text-gray-700">
@@ -118,20 +122,12 @@ export const Complement = () => {
               isScrolled ? 'shadow-[0_-10px_50px_0_#D0D2D9]' : 'shadow-none'
             }`}
           >
-            <div className="flex gap-2 w-[340px]">
-              <button
-                onClick={handlePublishPost}
-                className="cursor-pointer flex-2 h-14 bg-gray-300 text-gray-800 rounded-xl B02_B"
-              >
-                작성완료
-              </button>
-              <button
-                onClick={handlePublishPost}
-                className="cursor-pointer flex-3 h-14 bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white rounded-xl B02_B"
-              >
-                보완하기
-              </button>
-            </div>
+            <button
+              onClick={handlePublishPost}
+              className="cursor-pointer rounded-xl max-w-[348px] w-full h-14 bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white rounded-xl B02_B"
+            >
+              보완하기
+            </button>
           </div>
         </div>
       </WriteLayout>
