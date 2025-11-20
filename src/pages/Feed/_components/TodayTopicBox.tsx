@@ -67,8 +67,10 @@ export const TodayTopicBox = ({
             className="absolute bottom-5 left-4 flex items-center gap-1 cursor-pointer"
             onClick={movetoGatherTopic}
           >
-            <button className="B03-1_M text-gray-750 cursor-pointer">주제 모아보기</button>
-            <img src={right} className="w-6 h-6" />
+            <div className="flex">
+              <button className="B03-1_M text-gray-750 cursor-pointer">주제 모아보기</button>
+              <img src={right} className="w-6 h-6" />
+            </div>
           </div>
         )}
       </div>
