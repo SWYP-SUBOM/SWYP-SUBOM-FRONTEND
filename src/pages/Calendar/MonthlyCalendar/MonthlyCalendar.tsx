@@ -91,9 +91,11 @@ export const MonthlyCalendar = ({
 
             if (view === 'month' && color && isCurrentMonth) {
               return (
-                <div className="absolute inset-0 flex justify-center items-center">
-                  <div className={`w-8 h-8 rounded-full ${color} flex items-center justify-center`}>
-                    <span className="text-white text-xs font-bold">{format(date, 'd')}</span>
+                <div className="absolute inset-0 flex justify-center items-center ">
+                  <div
+                    className={`w-10 h-10 rounded-full ${color} flex items-center justify-center`}
+                  >
+                    <span className="text-white B03_B">{format(date, 'd')}</span>
                   </div>
                 </div>
               );

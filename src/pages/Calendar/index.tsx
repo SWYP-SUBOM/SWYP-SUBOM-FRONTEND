@@ -18,13 +18,13 @@ const Calendar = () => {
 
   const getCategoryColor = (categoryName: string): CalendarDateStatus['color'] => {
     const colorMap: Record<string, CalendarDateStatus['color']> = {
-      일상: 'red',
-      취미·취향: 'blue',
-      관계: 'purple',
+      일상: 'blue',
+      취미·취향: 'pink',
+      인간관계: 'purple',
       가치관: 'yellow',
       문화·트렌드: 'green',
     };
-    return colorMap[categoryName] || 'blue';
+    return colorMap[categoryName];
   };
 
   const datesWithStatus = useMemo(() => {

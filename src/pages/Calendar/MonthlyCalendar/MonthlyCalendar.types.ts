@@ -1,6 +1,6 @@
 export type CalendarDateStatus = {
   date: Date;
-  color: 'red' | 'blue' | 'purple' | 'yellow' | 'green';
+  color: 'blue' | 'pink' | 'purple' | 'yellow' | 'green';
   postId?: number;
 };
 
