@@ -31,12 +31,15 @@ export const Complement = () => {
 
   if (!categoryName) return null;
 
-  const [initialOpinion, setInitialOpinion] = useState(postData?.content ?? '');
+  const [initialOpinion, setInitialOpinion] = useState('');
 
   const [opinion, setOpinion] = useState(initialOpinion);
   useEffect(() => {
-    setOpinion(initialOpinion);
-  }, [initialOpinion]);
+    if (postData?.content) {
+      setInitialOpinion(postData.content);
+      setOpinion(postData.content);
+    }
+  }, [postData]);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [isDirty, setIsDirty] = useState(false);
