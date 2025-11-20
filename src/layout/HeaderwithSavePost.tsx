@@ -34,11 +34,11 @@ export const HeaderwithSavePost = ({
         <button
           onClick={() => handleClickSaveButton?.(false)}
           disabled={isSaveDisabled}
-          className={`B03_B px-[10px] py-2 rounded-[99px] border cursor-pointer transition
+          className={`B03_B px-[10px] py-2 rounded-lg border cursor-pointer transition
             ${
               isSaveDisabled
-                ? 'border-gray-600 text-gray-600 bg-gray-200'
-                : 'border-[var(--color-b7)] text-[var(--color-b7)] bg-[var(--color-b1)] hover:opacity-80'
+                ? 'border-gray-500 text-gray-600 bg-white'
+                : 'border-[var(--color-b6)] text-[var(--color-b7)] bg-white hover:text-[var(--color-b8)] hover:border-[var(--color-b8)]'
             }`}
         >
           임시저장
