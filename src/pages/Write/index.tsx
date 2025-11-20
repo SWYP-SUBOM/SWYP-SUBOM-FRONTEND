@@ -52,6 +52,10 @@ export const Write = () => {
     return opinion.trim() !== '';
   };
 
+  const isOpinionLengthValid = () => {
+    return opinion.trim().length >= 100;
+  };
+
   useEffect(() => {
     if (draftPostData) {
       const hasChanged = opinion.trim() !== initialOpinion.trim();
@@ -156,18 +160,22 @@ export const Write = () => {
 
   return (
     <>
-      <WriteLayout handleClickSaveButton={handleSavePost} isDirty={isDirty}>
+      <WriteLayout
+        handleClickSaveButton={handleSavePost}
+        isDirty={isDirty}
+        isSaveDisabled={!isDirty}
+      >
         <div className="px-4 bg-[#F3F5F8]">
           <div className="pt-[30px] pb-3 flex-shrink-0">
             <CategoryChip categoryName={categoryName}></CategoryChip>
             <div className="py-[10px] B01_B">{topicName}</div>
           </div>
-          <div className="relative w-[328px]">
+          <div className="relative w-full">
             <textarea
-              placeholder="내 의견을 논리적으로 작성해보세요!"
+              placeholder="AI 피드백은 100자 이상 작성 시 제공됩니다."
               value={opinion}
               onChange={(e) => setOpinion(e.target.value)}
-              className="B03_M px-4 pt-4 py-10 w-full min-h-[360px] border border-gray-500 rounded-xl resize-none"
+              className="hide-scrollbar focus:placeholder-transparent focus:outline-none focus:border-gray-700 hover:border-gray-700 focus:ring-0 bg-[#FFFFFF] B03_M pl-4 pr-2 pt-4 py-10 w-full min-h-[360px] text-gray-800 border border-gray-500 rounded-xl resize-none"
             />
             <div className="C01_SB absolute bottom-6 right-4 text-gray-700">
               {opinion.length} / 700
@@ -175,16 +183,16 @@ export const Write = () => {
           </div>
           <button
             onClick={movetoGetFeedback}
-            disabled={!isWriteOpinion()}
-            className={`cursor-pointer rounded-xl max-w-[328px] w-full h-14 B02_B fixed bottom-7 left-1/2 -translate-x-1/2
-                ${!isWriteOpinion() ? 'bg-gray-600 text-white' : 'bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white'}`}
+            disabled={!isOpinionLengthValid()}
+            className={`cursor-pointer rounded-xl max-w-[348px] w-full h-14 B02_B fixed bottom-7 left-1/2 -translate-x-1/2 
+                ${!isOpinionLengthValid() ? 'bg-gray-600 text-white' : 'bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white'}`}
           >
             피드백 받기
           </button>
           {isBubbleOpen && (
             <SpeechBubble
               className="fixed bottom-[80px] left-1/2 -translate-x-[10%] flex flex-col items-end z-50"
-              bubbleText="피드백은 한 번만 가능해요."
+              bubbleText="피드백은 한 번만 가능해요"
               onBubbleClose={handleCloseBubble}
             />
           )}
