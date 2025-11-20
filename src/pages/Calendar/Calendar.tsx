@@ -8,7 +8,7 @@ import { useGetCalendar } from '../../hooks/Calendar/useGetCalendar';
 import type { CalendarDateStatus } from './MonthlyCalendar/MonthlyCalendar.types';
 import { format, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay, isAfter } from 'date-fns';
 
-const Calendar = () => {
+export const Calendar = () => {
   const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
   const year = currentDate.getFullYear();
@@ -93,13 +93,13 @@ const Calendar = () => {
         <div className="h-[218px] bg-b7 pt-10 shrink-0">
           <TitleHeader title="나의 캘린더" />
         </div>
-
         <WeeklyChallengeBox {...weeklyChallengeData} />
         <div className="B01_B mt-[120px] px-4">이번달 글쓰기 훈련 상황</div>
         <MonthlyTrainingStatusBox
           totalWritingCount={calendarData?.summary.totalWritingCount ?? 0}
           totalWeeklyChallengeCount={calendarData?.summary.totalWeeklyChallengeCount ?? 0}
         />
+
         <MonthlyCalendar
           datesWithStatus={datesWithStatus}
           currentDate={currentDate}
@@ -111,5 +111,3 @@ const Calendar = () => {
     </>
   );
 };
-
-export default Calendar;

@@ -3,6 +3,7 @@ import { TitleHeader } from '../../components/common/TitleHeader';
 import { ReactionButtons } from '../../constants/ReactionButtons';
 import { useGetPost } from '../../hooks/Post/useGetPost';
 import { FeedLayout } from '../../layout/FeedLayout';
+import { CalendarPostView } from '../Calendar/CalendarPostView';
 import { PostDetailBox } from './_components/PostDetailBox';
 import { ReactionButton } from './_components/ReactionButton';
 
@@ -11,8 +12,13 @@ export const PostDetail = () => {
   const postId = Number(params.postId);
 
   const { data: postData } = useGetPost(postId);
+  const isMyPost = postData?.writer.me ?? false;
 
   const myReaction = postData?.myReaction?.reactionName;
+
+  if (isMyPost) {
+    return <CalendarPostView postId={postId} />;
+  }
 
   return (
     <>
