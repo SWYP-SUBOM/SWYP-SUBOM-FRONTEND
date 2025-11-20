@@ -44,7 +44,7 @@ export const HomeBannerItem: Record<HomeBannerStatus, HomeBannerItemType> = {
     img: penComplete,
     bgColor: 'bg-[var(--color-b6)]',
   },
-  COMPLETE_WITHCLICK: {
+  PUBLISHED_WITHCLICK: {
     description: <span className="B03_B text-[#146EFF]">다른 사람들은 어떻게 썼을까? </span>,
     title: '피드 보러가기',
     titleTextColor: 'text-gray-900',

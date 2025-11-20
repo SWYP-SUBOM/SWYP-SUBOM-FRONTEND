@@ -9,7 +9,7 @@ export type HomeBannerStatus =
   | 'NOT_STARTED'
   | 'DRAFT'
   | 'PUBLISHED'
-  | 'COMPLETE_WITHCLICK'
+  | 'PUBLISHED_WITHCLICK'
   | 'GUEST';
 
 export type HomeBannerItemType = {
