@@ -27,10 +27,24 @@ export const CalendarPostView = ({ postId }: CalendarPostViewProps) => {
   const handleViewFeedback = () => {
     if (editPostData?.topicInfo && editPostData?.aiFeedbackInfo) {
       const categoryName = editPostData.topicInfo.categoryName as CategoryNameType;
-      const aiFeedbackId = Number(editPostData.aiFeedbackInfo);
-      openBottomSheet(
-        <FeedbackModal postId={postId} aiFeedbackId={aiFeedbackId} categoryName={categoryName} />,
-      );
+
+      // aiFeedbackInfo가 객체인 경우와 문자열인 경우 모두 처리
+      let aiFeedbackId: number;
+      if (typeof editPostData.aiFeedbackInfo === 'object' && editPostData.aiFeedbackInfo !== null) {
+        // 객체인 경우 aiFeedbackId 속성 추출
+        aiFeedbackId = Number(
+          (editPostData.aiFeedbackInfo as { aiFeedbackId?: number }).aiFeedbackId,
+        );
+      } else {
+        // 문자열인 경우 파싱
+        aiFeedbackId = parseInt(String(editPostData.aiFeedbackInfo), 10);
+      }
+
+      if (!isNaN(aiFeedbackId) && aiFeedbackId > 0) {
+        openBottomSheet(
+          <FeedbackModal postId={postId} aiFeedbackId={aiFeedbackId} categoryName={categoryName} />,
+        );
+      }
     }
   };
 
@@ -44,7 +58,7 @@ export const CalendarPostView = ({ postId }: CalendarPostViewProps) => {
         <TitleHeader onlyNavigateBack={true} title={formatDateWithDay(editPostData.updatedAt)} />
       }
     >
-      <div className="px-4 pb-24 bg-[#F3F5F8]">
+      <div className="px-4 pb-24 pt-5 bg-[#F3F5F8]">
         <div className="pt-3 pb-3">
           <CategoryChip categoryName={editPostData.topicInfo.categoryName as CategoryNameType} />
         </div>
@@ -60,7 +74,7 @@ export const CalendarPostView = ({ postId }: CalendarPostViewProps) => {
         {editPostData.aiFeedbackInfo && (
           <button
             onClick={handleViewFeedback}
-            className="cursor-pointer rounded-xl max-w-[328px] w-full h-14 B02_B mt-6 bg-b7 active:bg-b8 hover:bg-b8 text-white flex items-center justify-center gap-2"
+            className=" B03_B cursor-pointer rounded-xl max-w-[155px] w-full h-14 mt-6  text-b7  bg-red-500 flex items-center justify-center gap-2"
           >
             받았던 피드백 보기 →
           </button>

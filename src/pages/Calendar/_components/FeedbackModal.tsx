@@ -44,28 +44,34 @@ const CenterContent = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const FeedbackModal = ({ postId, aiFeedbackId, categoryName }: FeedbackModalProps) => {
-  const { data: AIFeedBackData, isLoading } = useGetAIFeedBack(postId, aiFeedbackId);
+export const FeedbackModal = ({ postId, aiFeedbackId }: FeedbackModalProps) => {
+  const { data: AIFeedBackData, isLoading, error } = useGetAIFeedBack(postId, aiFeedbackId);
 
   return (
     <BottomSheet>
       <CenterOverlay>
         <CenterContent>
           <Xbutton />
-          <div className="pt-3 pb-3">
-            <CategoryChip categoryName={categoryName} />
-          </div>
+          <div className="pt-3 pb-3"></div>
           {isLoading && (
             <div className="py-8 text-center text-gray-500">피드백을 불러오는 중...</div>
           )}
-          {!isLoading && AIFeedBackData && AIFeedBackData.status === 'COMPLETED' && (
+          {error && (
+            <div className="py-8 text-center text-red-500">
+              피드백을 불러오는 중 오류가 발생했습니다.
+            </div>
+          )}
+          {!isLoading && !error && AIFeedBackData && AIFeedBackData.status === 'COMPLETED' && (
             <FeedbackBox
               strength={AIFeedBackData.strength}
               improvementPoints={AIFeedBackData.improvementPoints}
             />
           )}
-          {!isLoading && AIFeedBackData && AIFeedBackData.status === 'PROCESSING' && (
+          {!isLoading && !error && AIFeedBackData && AIFeedBackData.status === 'PROCESSING' && (
             <div className="py-8 text-center text-gray-500">피드백을 생성하는 중...</div>
+          )}
+          {!isLoading && !error && !AIFeedBackData && (
+            <div className="py-8 text-center text-gray-500">피드백 데이터가 없습니다.</div>
           )}
         </CenterContent>
       </CenterOverlay>
