@@ -23,8 +23,8 @@ import { RootLayout } from '../layout/RootLayout';
 import { Complete } from '../pages/Complete';
 import { PostDetail } from '../pages/PostDetail';
 import MyInfo from '../pages/Profile/MyInfo';
-import MyReactions from '../pages/Profile/MyReactions';
 import MyPosts from '../pages/Profile/MyPosts';
+import MyReactions from '../pages/Profile/MyReactions';
 import Profile from '../pages/Profile/Profile';
 import { Write } from '../pages/Write';
 import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
@@ -122,14 +122,6 @@ export const router = createBrowserRouter([
         element: <MobileLayout showNavBar={true} />,
         children: [
           {
-            path: 'feed',
-            element: <Feed />,
-          },
-          {
-            path: '/postdetail/:postId',
-            element: <PostDetail />,
-          },
-          {
             path: 'calendar',
             element: <Calendar />,
           },
@@ -162,19 +154,19 @@ export const router = createBrowserRouter([
             path: '/complement/:categoryName/:topicName',
             element: <Complement />,
           },
+          {
+            path: 'feed',
+            element: <Feed />,
+          },
+          {
+            path: '/postdetail/:postId',
+            element: <PostDetail />,
+          },
+          {
+            path: 'gathertopic',
+            element: <GatherTopic />,
+          },
         ],
-      },
-      {
-        path: 'feed',
-        element: <Feed />,
-      },
-      {
-        path: '/postdetail/:postId',
-        element: <PostDetail />,
-      },
-      {
-        path: 'gathertopic',
-        element: <GatherTopic />,
       },
     ],
   },

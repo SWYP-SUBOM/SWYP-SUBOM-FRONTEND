@@ -28,7 +28,7 @@ export const PostDetail = () => {
               viewCount={postData.viewCount}
             ></PostDetailBox>
           )}
-          <div className="justify-end flex gap-[22px] pt-4">
+          <div className="justify-end flex gap-[22px] pt-10">
             {ReactionButtons.map((reactionButton) => (
               <div key={reactionButton.reactionName} className="flex flex-col items-center gap-1">
                 <ReactionButton
