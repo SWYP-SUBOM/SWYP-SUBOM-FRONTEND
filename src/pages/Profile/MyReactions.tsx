@@ -14,7 +14,7 @@ import { ReactionPostCard } from './_components/MyReactions/ReactionPostCard.tsx
 type SortOption = 'latest' | 'oldest';
 type DateOption = 'lastWeek' | 'lastMonth' | 'lastYear' | 'all' | 'custom';
 
-const MyReactions = () => {
+export const MyReactions = () => {
   const navigate = useNavigate();
   const [sort, setSort] = useState<SortOption>('latest');
   const [dateFilter, setDateFilter] = useState<DateOption>('all');
@@ -174,5 +174,3 @@ const MyReactions = () => {
     </div>
   );
 };
-
-export default MyReactions;

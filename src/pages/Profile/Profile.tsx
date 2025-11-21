@@ -7,7 +7,7 @@ import post from '../../assets/Profile/post.svg';
 import { useGetUserName } from '../../hooks/useGetUserName';
 import { useGetHome } from '../../hooks/Home/useGetHome';
 
-const Profile = () => {
+export const Profile = () => {
   const navigate = useNavigate();
   const { data: userName, isLoading: isUserNameLoading } = useGetUserName();
   const { data: homeData, isLoading: isHomeDataLoading } = useGetHome();
@@ -45,18 +45,16 @@ const Profile = () => {
             icon={reaction}
             title="내가 반응 남긴 글"
             righticon={true}
-            onClick={() => navigate('/profile/reactions')}
+            onClick={() => navigate('/profile/my-reactions')}
           />
           <ProfileContents
             icon={post}
             title="내가 쓴 글"
             righticon={true}
-            onClick={() => navigate('/profile/posts')}
+            onClick={() => navigate('/profile/my-posts')}
           />
         </div>
       </div>
     </>
   );
 };
-
-export default Profile;

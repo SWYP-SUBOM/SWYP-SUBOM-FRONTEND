@@ -14,7 +14,7 @@ import { MyPostCard } from './_components/MyPosts/MyPostCard.tsx';
 type SortOption = 'latest' | 'oldest';
 type DateOption = 'lastWeek' | 'lastMonth' | 'lastYear' | 'all' | 'custom';
 
-const MyPosts = () => {
+export const MyPosts = () => {
   const navigate = useNavigate();
   const [sort, setSort] = useState<SortOption>('latest');
   const [dateFilter, setDateFilter] = useState<DateOption>('all');
@@ -162,7 +162,7 @@ const MyPosts = () => {
                 summary={post.summary}
                 status={post.status}
                 date={formatDate(post.updatedAt)}
-                onClick={() => navigate(`/postdetail/${post.postId}`)}
+                onClick={() => navigate(`/profile/my-posts/feedbackview/${post.postId}`)}
               />
             ))}
             <div ref={loadMoreRef} className="h-6" />
@@ -175,5 +175,3 @@ const MyPosts = () => {
     </div>
   );
 };
-
-export default MyPosts;

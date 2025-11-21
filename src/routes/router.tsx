@@ -18,14 +18,14 @@ import { SplashMessage } from '../pages/Onboarding/FeatureTour/SplashMessage';
 import { ServiceIntro1 } from '../pages/Onboarding/Introduction/ServiceIntro1';
 import { ServiceIntro2 } from '../pages/Onboarding/Introduction/ServiceIntro2';
 import { SplashScreen } from '../pages/Onboarding/Introduction/SplashScreen';
-
 import { RootLayout } from '../layout/RootLayout';
 import { Complete } from '../pages/Complete';
 import { PostDetail } from '../pages/PostDetail';
-import MyInfo from '../pages/Profile/MyInfo';
-import MyPosts from '../pages/Profile/MyPosts';
-import MyReactions from '../pages/Profile/MyReactions';
-import Profile from '../pages/Profile/Profile';
+import { MyInfo } from '../pages/Profile/MyInfo';
+import { MyPosts } from '../pages/Profile/MyPosts';
+import { MyReactions } from '../pages/Profile/MyReactions';
+import { FeedbackView } from '../pages/Profile/FeedbackView';
+import { Profile } from '../pages/Profile/Profile';
 import { Write } from '../pages/Write';
 import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
 
@@ -116,12 +116,16 @@ export const router = createBrowserRouter([
             element: <MyInfo />,
           },
           {
-            path: 'profile/reactions',
+            path: 'profile/my-reactions',
             element: <MyReactions />,
           },
           {
-            path: 'profile/posts',
+            path: 'profile/my-posts',
             element: <MyPosts />,
+          },
+          {
+            path: 'profile/my-posts/feedbackview/:postId',
+            element: <FeedbackView />,
           },
         ],
       },
