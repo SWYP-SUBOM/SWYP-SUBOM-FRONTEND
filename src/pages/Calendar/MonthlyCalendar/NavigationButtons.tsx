@@ -12,24 +12,38 @@ type NavigationButtonsProps = {
 export const NavigationButtons = ({ onPrev, onNext }: NavigationButtonsProps) => {
   const [isLeftHovered, setIsLeftHovered] = useState(false);
   const [isRightHovered, setIsRightHovered] = useState(false);
+  const [isLeftActive, setIsLeftActive] = useState(false);
+  const [isRightActive, setIsRightActive] = useState(false);
 
   return (
     <div className="flex gap-4">
       <button
         onClick={onPrev}
-        onMouseEnter={() => setIsLeftHovered(false)}
-        onMouseLeave={() => setIsLeftHovered(true)}
+        onMouseEnter={() => setIsLeftHovered(true)}
+        onMouseLeave={() => setIsLeftHovered(false)}
+        onMouseDown={() => setIsLeftActive(true)}
+        onMouseUp={() => setIsLeftActive(false)}
         className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
       >
-        <img src={isLeftHovered ? left : leftHover} alt="left" className="w-6 h-6" />
+        <img
+          src={isLeftActive || isLeftHovered ? leftHover : left}
+          alt="left"
+          className="w-6 h-6"
+        />
       </button>
       <button
         onClick={onNext}
-        onMouseEnter={() => setIsRightHovered(false)}
-        onMouseLeave={() => setIsRightHovered(true)}
-        className="w-8 h-8 rounded-full flex items-center justify-centertransition-colors"
+        onMouseEnter={() => setIsRightHovered(true)}
+        onMouseLeave={() => setIsRightHovered(false)}
+        onMouseDown={() => setIsRightActive(true)}
+        onMouseUp={() => setIsRightActive(false)}
+        className="w-8 h-8 rounded-full flex items-center justify-center transition-colors"
       >
-        <img src={isRightHovered ? right : rightHover} alt="right" className="w-6 h-6" />
+        <img
+          src={isRightActive || isRightHovered ? rightHover : right}
+          alt="right"
+          className="w-6 h-6"
+        />
       </button>
     </div>
   );
