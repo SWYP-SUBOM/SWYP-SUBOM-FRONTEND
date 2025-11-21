@@ -115,6 +115,14 @@ export const router = createBrowserRouter([
             path: 'profile/myinfo',
             element: <MyInfo />,
           },
+          {
+            path: 'profile/reactions',
+            element: <MyReactions />,
+          },
+          {
+            path: 'profile/posts',
+            element: <MyPosts />,
+          },
         ],
       },
       {
@@ -128,14 +136,6 @@ export const router = createBrowserRouter([
           {
             path: 'profile',
             element: <Profile />,
-          },
-          {
-            path: 'profile/reactions',
-            element: <MyReactions />,
-          },
-          {
-            path: 'profile/posts',
-            element: <MyPosts />,
           },
         ],
       },

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { SelectBottomSheet } from '../../../../../components/SelectBox/SelectBottomSheet';
+import { SelectBottomSheet } from '../../../../components/SelectBox/SelectBottomSheet';
 
 interface DatePickerProps {
   title: string;

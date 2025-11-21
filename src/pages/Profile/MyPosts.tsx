@@ -4,11 +4,11 @@ import { AnimatePresence } from 'framer-motion';
 import { TitleHeader } from '../../components/common/TitleHeader.tsx';
 import { useGetMyWritings } from '../../hooks/Profile/useGetMyWritings.ts';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll.ts';
-import { FilterBar } from './_components/MyReactions/_components/FilterBar.tsx';
-import { SortFilterModal } from './_components/MyReactions/_components/SortFilterModal.tsx';
-import { DateFilterModal } from './_components/MyReactions/_components/DateFilterModal.tsx';
-import { PeriodSelectionModal } from './_components/MyReactions/_components/PeriodSelectionModal.tsx';
-import { DatePicker } from './_components/MyReactions/_components/DatePicker.tsx';
+import { FilterBar } from './_components/MyReactions/FilterBar.tsx';
+import { SortFilterModal } from './_components/MyReactions/SortFilterModal.tsx';
+import { DateFilterModal } from './_components/MyReactions/DateFilterModal.tsx';
+import { PeriodSelectionModal } from './_components/MyReactions/PeriodSelectionModal.tsx';
+import { DatePicker } from './_components/MyReactions/DatePicker.tsx';
 import { MyPostCard } from './_components/MyPosts/_components/MyPostCard.tsx';
 
 type SortOption = 'latest' | 'oldest';
@@ -64,7 +64,7 @@ const MyPosts = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen pt-10 bg-gray-50">
+    <div className="flex flex-col min-h-screen ">
       <TitleHeader title="내가 쓴 글" headerWithNoalarm={true} />
       <FilterBar
         sortLabel={getSortLabel(sort)}

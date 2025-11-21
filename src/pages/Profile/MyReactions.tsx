@@ -4,12 +4,12 @@ import { AnimatePresence } from 'framer-motion';
 import { TitleHeader } from '../../components/common/TitleHeader.tsx';
 import { useGetMyReactions } from '../../hooks/Profile/useGetMyReactions.ts';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll.ts';
-import { FilterBar } from './_components/MyReactions/_components/FilterBar.tsx';
-import { SortFilterModal } from './_components/MyReactions/_components/SortFilterModal.tsx';
-import { DateFilterModal } from './_components/MyReactions/_components/DateFilterModal.tsx';
-import { PeriodSelectionModal } from './_components/MyReactions/_components/PeriodSelectionModal.tsx';
-import { DatePicker } from './_components/MyReactions/_components/DatePicker.tsx';
-import { ReactionPostCard } from './_components/MyReactions/_components/ReactionPostCard.tsx';
+import { FilterBar } from './_components/MyReactions/FilterBar.tsx';
+import { SortFilterModal } from './_components/MyReactions/SortFilterModal.tsx';
+import { DateFilterModal } from './_components/MyReactions/DateFilterModal.tsx';
+import { PeriodSelectionModal } from './_components/MyReactions/PeriodSelectionModal.tsx';
+import { DatePicker } from './_components/MyReactions/DatePicker.tsx';
+import { ReactionPostCard } from './_components/MyReactions/ReactionPostCard.tsx';
 
 type SortOption = 'latest' | 'oldest';
 type DateOption = 'lastWeek' | 'lastMonth' | 'lastYear' | 'all' | 'custom';
