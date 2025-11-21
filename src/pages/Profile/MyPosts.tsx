@@ -157,8 +157,8 @@ const MyPosts = () => {
             {allPosts.map((post) => (
               <MyPostCard
                 key={post.postId}
-                category={post.categoryName}
-                question={post.topicName}
+                category={post.topicInfo.categoryName}
+                question={post.topicInfo.topicName}
                 summary={post.summary}
                 status={post.status}
                 date={formatDate(post.updatedAt)}
