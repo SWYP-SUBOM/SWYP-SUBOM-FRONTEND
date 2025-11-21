@@ -17,7 +17,7 @@ const Profile = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center bg-b6 pt-10">
+      <div className="flex flex-col items-center justify-center bg-b6">
         <TitleHeader title="마이 페이지" />
         <img src={profile} alt="profile" className="w-[130px] h-[130px] rounded-full  " />
         <div className="T01_B text-white mt-4">
