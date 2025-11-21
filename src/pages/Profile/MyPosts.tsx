@@ -9,7 +9,7 @@ import { SortFilterModal } from './_components/MyReactions/SortFilterModal.tsx';
 import { DateFilterModal } from './_components/MyReactions/DateFilterModal.tsx';
 import { PeriodSelectionModal } from './_components/MyReactions/PeriodSelectionModal.tsx';
 import { DatePicker } from './_components/MyReactions/DatePicker.tsx';
-import { MyPostCard } from './_components/MyPosts/_components/MyPostCard.tsx';
+import { MyPostCard } from './_components/MyPosts/MyPostCard.tsx';
 
 type SortOption = 'latest' | 'oldest';
 type DateOption = 'lastWeek' | 'lastMonth' | 'lastYear' | 'all' | 'custom';

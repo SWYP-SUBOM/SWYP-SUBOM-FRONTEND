@@ -1,4 +1,4 @@
-import rightIcon from '../../../../../assets/Feed/right.svg';
+import rightIcon from '../../../../assets/Feed/right.svg';
 
 interface MyPostCardProps {
   category: string;
