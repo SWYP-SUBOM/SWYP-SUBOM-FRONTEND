@@ -69,7 +69,7 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
           });
         }
         break;
-      case 'COMPLETE_WITHCLICK':
+      case 'PUBLISHED_WITHCLICK':
         navigate('/feed');
         break;
       case 'GUEST':

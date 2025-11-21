@@ -1,5 +1,5 @@
 export const PostBoxSkeleton = () => (
-  <div className="px-4 py-4 rounded-xl w-[328px] h-[185px] border border-[#E0E4E7] bg-white flex flex-col justify-between animate-pulse">
+  <div className="px-4 py-4 rounded-xl w-full h-[185px] border border-[#E0E4E7] bg-white flex flex-col justify-between animate-pulse">
     <div className="flex justify-between">
       <div className="h-4 w-24 bg-gray-300 rounded"></div>
       <div className="h-6 w-6 bg-gray-300 rounded"></div>
