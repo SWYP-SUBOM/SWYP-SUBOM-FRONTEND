@@ -6,7 +6,7 @@ import { MonthlyCalendar } from './MonthlyCalendar/MonthlyCalendar';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { useGetCalendar } from '../../hooks/Calendar/useGetCalendar';
 import type { CalendarDateStatus } from './MonthlyCalendar/MonthlyCalendar.types';
-import { format, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay, isAfter } from 'date-fns';
+import { format, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay } from 'date-fns';
 
 export const Calendar = () => {
   const navigate = useNavigate();
@@ -58,7 +58,7 @@ export const Calendar = () => {
       if (hasWriting) {
         status = isSameDay(day, today) ? 'todayCompleted' : 'pastCompleted';
       } else {
-        status = isAfter(day, today) ? 'incomplete' : 'pastCompleted';
+        status = 'incomplete';
       }
 
       return {
