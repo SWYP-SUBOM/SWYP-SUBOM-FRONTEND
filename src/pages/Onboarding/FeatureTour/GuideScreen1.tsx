@@ -7,7 +7,7 @@ export const GuideScreen1 = () => {
   const { handleNext, handleSkip } = useOnboardingNavigation();
   return (
     <>
-      <ProgressIndicator activeIndexes={[0]} total={3} />
+      <ProgressIndicator activeIndexes={[0]} total={4} />
       <OnboardingLayout
         title={
           <>

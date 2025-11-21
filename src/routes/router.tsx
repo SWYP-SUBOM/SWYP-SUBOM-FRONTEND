@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { HomeLayout } from '../layout/HomeLayout';
 import { MobileLayout } from '../layout/MobileLayout';
-import Calendar from '../pages/Calendar';
+import { Calendar } from '../pages/Calendar/Calendar';
 import { Complement } from '../pages/Complement';
 import { Feed } from '../pages/Feed';
 import { FeedBack } from '../pages/Feedback';
