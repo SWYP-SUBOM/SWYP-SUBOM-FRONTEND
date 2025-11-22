@@ -46,7 +46,6 @@ export const Write = () => {
   useEffect(() => {
     const timer = window.setTimeout(() => {
       setIsGuideIconVisible(false);
-      console.log('222');
     }, 3000);
 
     return () => clearTimeout(timer);
