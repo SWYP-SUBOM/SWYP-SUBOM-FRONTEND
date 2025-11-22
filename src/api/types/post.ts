@@ -99,17 +99,21 @@ export interface MyWritingsResponse {
   data: {
     items: {
       postId: number;
-      topicInfo: Record<string, unknown>;
-      topicName: string;
-      categoryName: string;
+      topicInfo: {
+        topicName: string;
+        categoryName: string;
+      };
       summary: string;
       status: string;
+      isRevised: boolean;
       updatedAt: string;
-      revised: boolean;
     }[];
-    sliceInfo: {
-      hasNext: boolean;
-      nextCursorId: number;
+    pageInfo: {
+      currentPage: number;
+      pageSize: number;
+      totalElements: number;
+      totalPages: number;
+      isLast: boolean;
     };
   } | null;
 }

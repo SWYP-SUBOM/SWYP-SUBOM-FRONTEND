@@ -6,7 +6,7 @@ import { InfoCard } from './_components/InfoCard';
 import { ActionButtons } from './_components/ActionButtons';
 import { InfoNotice } from './_components/InfoNotice';
 
-const MyInfo = () => {
+export const MyInfo = () => {
   const { data: meData, isLoading } = useGetMe();
   const logoutMutation = useLogout();
   const unregisterMutation = useUnregister();
@@ -51,5 +51,3 @@ const MyInfo = () => {
     </div>
   );
 };
-
-export default MyInfo;

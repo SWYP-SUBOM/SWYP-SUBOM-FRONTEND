@@ -1,4 +1,4 @@
-import { SelectBottomSheet } from '../../../../../components/SelectBox/SelectBottomSheet';
+import { SelectBottomSheet } from '../../../../components/SelectBox/SelectBottomSheet';
 
 interface PeriodSelectionModalProps {
   startDate: Date | null;

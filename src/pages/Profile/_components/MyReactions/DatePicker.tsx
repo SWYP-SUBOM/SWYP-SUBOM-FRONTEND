@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { SelectBottomSheet } from '../../../../../components/SelectBox/SelectBottomSheet';
+import { SelectBottomSheet } from '../../../../components/SelectBox/SelectBottomSheet';
 
 interface DatePickerProps {
   title: string;
@@ -29,17 +29,23 @@ export const DatePicker = ({ title, initialDate, onSelect, onClose }: DatePicker
     const scrollToSelected = (ref: React.RefObject<HTMLDivElement | null>, index: number) => {
       if (ref.current) {
         const itemHeight = 48;
-        ref.current.scrollTop = index * itemHeight;
+        const containerHeight = 192;
+        const offset = (containerHeight - itemHeight) / 2;
+        ref.current.scrollTop = index * itemHeight - offset;
       }
     };
 
-    const yearIndex = years.indexOf(selectedDate.getFullYear());
-    const monthIndex = selectedDate.getMonth();
-    const dayIndex = selectedDate.getDate() - 1;
+    const timer = setTimeout(() => {
+      const yearIndex = years.indexOf(selectedDate.getFullYear());
+      const monthIndex = selectedDate.getMonth();
+      const dayIndex = selectedDate.getDate() - 1;
 
-    scrollToSelected(yearRef, yearIndex);
-    scrollToSelected(monthRef, monthIndex);
-    scrollToSelected(dayRef, dayIndex);
+      scrollToSelected(yearRef, yearIndex);
+      scrollToSelected(monthRef, monthIndex);
+      scrollToSelected(dayRef, dayIndex);
+    }, 0);
+
+    return () => clearTimeout(timer);
   }, [selectedDate, years]);
 
   const handleYearChange = (year: number) => {
@@ -63,11 +69,9 @@ export const DatePicker = ({ title, initialDate, onSelect, onClose }: DatePicker
   };
 
   const handleDayChange = (day: number) => {
-    setSelectedDate(new Date(selectedDate.getFullYear(), selectedDate.getMonth(), day));
-  };
-
-  const handleConfirm = () => {
-    onSelect(selectedDate);
+    const newDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), day);
+    setSelectedDate(newDate);
+    onSelect(newDate);
     onClose();
   };
 
@@ -83,13 +87,14 @@ export const DatePicker = ({ title, initialDate, onSelect, onClose }: DatePicker
               msOverflowStyle: 'none',
             }}
           >
+            <div className="h-[22px]" />
             {years.map((year) => {
               const isSelected = year === selectedDate.getFullYear();
               return (
                 <div
                   key={year}
-                  className={`h-12 flex items-center justify-center snap-center cursor-pointer ${
-                    isSelected ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600'
+                  className={`h-12 flex items-center justify-center snap-center cursor-pointer rounded-lg ${
+                    isSelected ? 'bg-gray-300 text-b7 B01_B' : 'text-gray-600'
                   }`}
                   onClick={() => handleYearChange(year)}
                 >
@@ -109,13 +114,14 @@ export const DatePicker = ({ title, initialDate, onSelect, onClose }: DatePicker
               msOverflowStyle: 'none',
             }}
           >
+            <div className="h-[22px]" />
             {months.map((month) => {
               const isSelected = month === selectedDate.getMonth() + 1;
               return (
                 <div
                   key={month}
-                  className={`h-12 flex items-center justify-center snap-center cursor-pointer ${
-                    isSelected ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600'
+                  className={`h-12 flex items-center justify-center snap-center cursor-pointer rounded-lg ${
+                    isSelected ? 'bg-gray-300 text-b7 B01_B' : 'text-gray-600'
                   }`}
                   onClick={() => handleMonthChange(month)}
                 >
@@ -123,6 +129,7 @@ export const DatePicker = ({ title, initialDate, onSelect, onClose }: DatePicker
                 </div>
               );
             })}
+            <div className="h-[22px]" />
           </div>
         </div>
 
@@ -135,13 +142,14 @@ export const DatePicker = ({ title, initialDate, onSelect, onClose }: DatePicker
               msOverflowStyle: 'none',
             }}
           >
+            <div className="h-[22px]" />
             {days.map((day) => {
               const isSelected = day === selectedDate.getDate();
               return (
                 <div
                   key={day}
-                  className={`h-12 flex items-center justify-center snap-center cursor-pointer ${
-                    isSelected ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-600'
+                  className={`h-12 flex items-center justify-center snap-center cursor-pointer rounded-lg ${
+                    isSelected ? 'bg-gray-300 text-b7 B01_B' : 'text-gray-600'
                   }`}
                   onClick={() => handleDayChange(day)}
                 >
@@ -152,12 +160,6 @@ export const DatePicker = ({ title, initialDate, onSelect, onClose }: DatePicker
           </div>
         </div>
       </div>
-      <button
-        onClick={handleConfirm}
-        className="w-full h-14 bg-blue-600 text-white rounded-xl font-medium mt-4"
-      >
-        확인
-      </button>
     </SelectBottomSheet>
   );
 };
