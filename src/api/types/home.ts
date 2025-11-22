@@ -33,5 +33,6 @@ export interface dailyQuestionResponse {
     topicName: string;
     topicId: number;
     categoryId: number;
+    topicType: string;
   };
 }
