@@ -12,7 +12,7 @@ export const ProfileContents = ({ title, icon, righticon, onClick }: ProfileCont
     <div className="mx-4 ">
       <button
         onClick={onClick}
-        className="flex items-center justify-between bg-white rounded-xl w-full p-4 text-left"
+        className="flex items-center justify-between bg-white rounded-xl w-full p-4 text-lef hover:shadow-md transition-shadow duration-300 cursor-pointer"
       >
         <div className="flex items-center gap-3 min-w-0 flex-1">
           {icon && (

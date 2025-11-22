@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import { subDays, subMonths, subYears, startOfDay, endOfDay, format } from 'date-fns';
 import { TitleHeader } from '../../components/common/TitleHeader.tsx';
 import { useGetMyWritings } from '../../hooks/Profile/useGetMyWritings.ts';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll.ts';
@@ -26,9 +27,53 @@ export const MyPosts = () => {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
+  const dateRange = useMemo(() => {
+    const now = new Date();
+    let start: Date | null = null;
+    let end: Date | null = null;
+
+    switch (dateFilter) {
+      case 'lastWeek': {
+        start = startOfDay(subDays(now, 6));
+        end = endOfDay(now);
+        break;
+      }
+      case 'lastMonth': {
+        start = startOfDay(subMonths(now, 1));
+        end = endOfDay(now);
+        break;
+      }
+      case 'lastYear': {
+        start = startOfDay(subYears(now, 1));
+        end = endOfDay(now);
+        break;
+      }
+      case 'custom': {
+        if (startDate) {
+          start = startOfDay(startDate);
+        }
+        if (endDate) {
+          end = endOfDay(endDate);
+        }
+        break;
+      }
+      case 'all':
+      default:
+        start = null;
+        end = null;
+    }
+
+    return {
+      startDate: start ? format(start, 'yyyy-MM-dd') : undefined,
+      endDate: end ? format(end, 'yyyy-MM-dd') : undefined,
+    };
+  }, [dateFilter, startDate, endDate]);
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetMyWritings({
     size: 10,
     sort: sort === 'latest' ? 'latest' : 'oldest',
+    ...(dateRange.startDate && { startDate: dateRange.startDate }),
+    ...(dateRange.endDate && { endDate: dateRange.endDate }),
   });
 
   const getSortLabel = (sortOption: SortOption) => {

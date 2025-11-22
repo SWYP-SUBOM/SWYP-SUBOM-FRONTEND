@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import { subDays, subMonths, subYears, startOfDay, endOfDay, format } from 'date-fns';
 import { TitleHeader } from '../../components/common/TitleHeader.tsx';
 import { useGetMyReactions } from '../../hooks/Profile/useGetMyReactions.ts';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll.ts';
@@ -26,9 +27,53 @@ export const MyReactions = () => {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
+  const dateRange = useMemo(() => {
+    const now = new Date();
+    let start: Date | null = null;
+    let end: Date | null = null;
+
+    switch (dateFilter) {
+      case 'lastWeek': {
+        start = startOfDay(subDays(now, 6));
+        end = endOfDay(now);
+        break;
+      }
+      case 'lastMonth': {
+        start = startOfDay(subMonths(now, 1));
+        end = endOfDay(now);
+        break;
+      }
+      case 'lastYear': {
+        start = startOfDay(subYears(now, 1));
+        end = endOfDay(now);
+        break;
+      }
+      case 'custom': {
+        if (startDate) {
+          start = startOfDay(startDate);
+        }
+        if (endDate) {
+          end = endOfDay(endDate);
+        }
+        break;
+      }
+      case 'all':
+      default:
+        start = null;
+        end = null;
+    }
+
+    return {
+      startDate: start ? format(start, 'yyyy-MM-dd') : undefined,
+      endDate: end ? format(end, 'yyyy-MM-dd') : undefined,
+    };
+  }, [dateFilter, startDate, endDate]);
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetMyReactions({
     size: 10,
     sort: sort === 'latest' ? 'latest' : 'oldest',
+    ...(dateRange.startDate && { startDate: dateRange.startDate }),
+    ...(dateRange.endDate && { endDate: dateRange.endDate }),
   });
 
   const getSortLabel = (sortOption: SortOption) => {
@@ -64,7 +109,7 @@ export const MyReactions = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen pt-10 bg-gray-50">
+    <div className="flex flex-col min-h-screen">
       <TitleHeader title="내가 반응 남긴 글" headerWithNoalarm={true} />
       <FilterBar
         sortLabel={getSortLabel(sort)}
