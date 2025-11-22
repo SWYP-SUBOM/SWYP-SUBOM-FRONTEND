@@ -8,7 +8,7 @@ export const GuideScreen4 = () => {
 
   return (
     <>
-      <ProgressIndicator activeIndexes={[2]} total={3} />
+      <ProgressIndicator activeIndexes={[3]} total={4} />
 
       <OnboardingLayout
         title={

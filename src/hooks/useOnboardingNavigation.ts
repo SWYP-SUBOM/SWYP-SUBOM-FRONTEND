@@ -27,7 +27,28 @@ export const useOnboardingNavigation = () => {
   };
 
   const handleSkip = () => {
-    navigate(ROUTES.HOME);
+    const currentPath = location.pathname;
+
+    switch (currentPath) {
+      case ROUTES.ONBOARDING_INTRO1:
+      case ROUTES.ONBOARDING_INTRO2:
+        navigate(ROUTES.ONBOARDING_LOGIN);
+        break;
+
+      case ROUTES.ONBOARDING_LOGIN:
+        navigate(ROUTES.HOME);
+        break;
+
+      case ROUTES.ONBOARDING_GUIDE_SCREEN1:
+      case ROUTES.ONBOARDING_GUIDE_SCREEN2:
+      case ROUTES.ONBOARDING_GUIDE_SCREEN3:
+        navigate(ROUTES.ONBOARDING_GUIDE_SCREEN4);
+        break;
+
+      default:
+        navigate(ROUTES.HOME);
+        break;
+    }
   };
 
   return { handleNext, handleSkip };
