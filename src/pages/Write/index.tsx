@@ -1,19 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
+import blueRight from '../../assets/Write/blue-right.svg';
+import darkBlueRight from '../../assets/Write/darkblue-right.svg';
+import darkWriteGuide from '../../assets/Write/darkwrite_guide.svg';
+import writeGuide from '../../assets/Write/write_guide.svg';
 import { CategoryChip } from '../../components/common/CategoryChip';
+import type { guideTopicType } from '../../constants/Guide';
 import { usePostAIFeedBack } from '../../hooks/FeedBack/usePostAIFeedBack';
 import { useGetDraftPost } from '../../hooks/Post/useGetPost';
 import { useSavePost } from '../../hooks/Post/useSavePost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
+import { useModal } from '../../hooks/useModal';
 import { WriteLayout } from '../../layout/WriteLayout';
 import { useBottomSheetStore } from '../../store/useBottomSheetStore';
 import { SpeechBubble } from './_components/SpeechBubble';
 import { FeedbackLoading } from './FeedbackLoading';
+import { GuideModal } from './GuideModal/GuideModal';
 
 export const Write = () => {
   const location = useLocation();
   const { closeBottomSheet } = useBottomSheetStore();
+  const { openModal, Content, isOpen } = useModal();
 
   const categoryName = location.state.categoryName;
   const categoryId = location.state.categoryId;
@@ -21,6 +29,7 @@ export const Write = () => {
   const topicId = location.state.topicId;
   const draftPostId = location.state.draftPostId;
   const isTodayDraft = location.state.isTodayDraft;
+  const topicType = location.state.topicType;
 
   const [opinion, setOpinion] = useState('');
   const [initialOpinion, setInitialOpinion] = useState('');
@@ -31,6 +40,17 @@ export const Write = () => {
 
   const [currentPostId, setCurrentPostId] = useState(0);
   const [isFirst, setIsFirst] = useState(true);
+  const [isHoverGuideIcon, setIsHoverGuideIcon] = useState(false);
+  const [isGuideIconVisible, setIsGuideIconVisible] = useState(true);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setIsGuideIconVisible(false);
+      console.log('222');
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const saveMutation = useSavePost();
   const updateAndSaveMutation = useUpdateAndSavePost();
@@ -158,6 +178,18 @@ export const Write = () => {
     }
   };
 
+  const openGuideModal = (topicType: guideTopicType) => {
+    openModal(<GuideModal topicType={topicType} />);
+  };
+
+  const handleButtonTextShow = () => {
+    setIsHoverGuideIcon(true);
+  };
+
+  const handleButtonTextHide = () => {
+    setIsHoverGuideIcon(false);
+  };
+
   return (
     <>
       <WriteLayout
@@ -175,7 +207,7 @@ export const Write = () => {
               placeholder="AI 피드백은 100자 이상 작성 시 제공됩니다."
               value={opinion}
               onChange={(e) => setOpinion(e.target.value)}
-              className="hide-scrollbar focus:placeholder-transparent focus:outline-none focus:border-gray-700 hover:border-gray-700 focus:ring-0 bg-[#FFFFFF] B03_M pl-4 pr-2 pt-4 py-10 w-full min-h-[360px] text-gray-800 border border-gray-500 rounded-xl resize-none"
+              className="hide-scrollbar focus:placeholder-transparent focus:outline-none focus:border-gray-700 hover:border-gray-700 focus:ring-0 bg-[#FFFFFF] B03_M pl-4 pr-2 pt-4 py-10 w-full min-h-[330px] text-gray-800 border border-gray-500 rounded-xl resize-none"
             />
             <div className="C01_SB absolute bottom-6 right-4 text-gray-700">
               {opinion.length} / 700
@@ -189,9 +221,42 @@ export const Write = () => {
           >
             피드백 받기
           </button>
+          <button
+            onMouseEnter={handleButtonTextShow}
+            onTouchStart={handleButtonTextShow}
+            onMouseLeave={handleButtonTextHide}
+            onTouchEnd={handleButtonTextHide}
+            onClick={() => openGuideModal(topicType)}
+            className="absolute  bottom-[92px] right-4 z-50  group"
+          >
+            <div
+              className={`flex items-center gap-2 border border-gray-500 bg-[#F9F9F9] rounded-[999px] cursor-pointer 
+                ${isGuideIconVisible || isHoverGuideIcon ? 'border border-gray-700 py-[9px] px-[18px] w-auto justify-end' : 'w-10 h-10 justify-center pl-[1px]'}`}
+            >
+              <img
+                src={isHoverGuideIcon ? darkWriteGuide : writeGuide}
+                className="w-4 h-4"
+                alt="writeguide"
+              />
+              {(isGuideIconVisible || isHoverGuideIcon) && (
+                <>
+                  <div
+                    className={`B03_M text-[var(--color-b7)] group-hover:text-[var(--color-b8)] group-active:text-[var(--color-b8)]`}
+                  >
+                    가이드
+                  </div>
+                  <img
+                    src={isHoverGuideIcon ? darkBlueRight : blueRight}
+                    className="w-2 h-3"
+                    alt="blueright"
+                  />
+                </>
+              )}
+            </div>
+          </button>
           {isBubbleOpen && (
             <SpeechBubble
-              className="fixed bottom-[80px] left-1/2 -translate-x-[10%] flex flex-col items-end z-50"
+              className="fixed bottom-[80px] right-1/2 flex flex-col items-end z-50"
               bubbleText="피드백은 한 번만 가능해요"
               onBubbleClose={handleCloseBubble}
             />
@@ -199,6 +264,7 @@ export const Write = () => {
         </div>
       </WriteLayout>
       {isLoading && <FeedbackLoading />}
+      {isOpen && Content}
     </>
   );
 };
