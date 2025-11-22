@@ -1,6 +1,7 @@
 import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
 import { ProgressIndicator } from '../_components/ProgressIndicator';
 import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
+import { Button } from '../../../components/common/Button';
 import guide4 from '../../../assets/Onboarding/guide4.png';
 
 export const GuideScreen4 = () => {
@@ -29,12 +30,7 @@ export const GuideScreen4 = () => {
         }}
       />
       <div className="absolute top-[520px] sm:top-[654px] left-0 right-0 flex flex-col justify-center items-center px-4  z-5">
-        <button
-          onClick={handleNext}
-          className="w-full h-14 bg-b7 rounded-xl text-white B02_B cursor-pointer active:bg-b8 active:scale-95  hover:bg-b8  transition-colors duration-300 "
-        >
-          시작하기
-        </button>
+        <Button label="시작하기" onClick={handleNext} />
       </div>
     </>
   );
