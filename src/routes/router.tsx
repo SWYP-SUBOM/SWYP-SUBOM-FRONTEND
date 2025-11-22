@@ -21,6 +21,7 @@ import { SplashScreen } from '../pages/Onboarding/Introduction/SplashScreen';
 
 import { RootLayout } from '../layout/RootLayout';
 import { Complete } from '../pages/Complete';
+import { Notification } from '../pages/Notification';
 import { PostDetail } from '../pages/PostDetail';
 import MyInfo from '../pages/Profile/MyInfo';
 import MyPosts from '../pages/Profile/MyPosts';
@@ -98,11 +99,6 @@ export const router = createBrowserRouter([
             path: 'onboarding/guideScreen4',
             element: <GuideScreen4 />,
           },
-
-          {
-            path: 'gathertopic',
-            element: <GatherTopic />,
-          },
           {
             path: 'loadingfeedback',
             element: <FeedbackLoading />,
@@ -165,6 +161,10 @@ export const router = createBrowserRouter([
           {
             path: 'gathertopic',
             element: <GatherTopic />,
+          },
+          {
+            path: 'notification',
+            element: <Notification />,
           },
         ],
       },
