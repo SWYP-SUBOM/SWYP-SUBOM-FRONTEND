@@ -1,22 +1,46 @@
 import { useState } from 'react';
 import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
 import { usePostUserName } from '../../../hooks/usePostUserName';
+import { Button } from '../../../components/common/Button';
+import { nameSchema, NAME_MAX_LENGTH, NAME_PLACEHOLDER } from '../../../schemas/nameSchema';
 
 export const NameInput = () => {
   const [name, setName] = useState('');
+  const [error, setError] = useState<string>('');
 
-  const maxLength = 10;
   const { handleNext } = useOnboardingNavigation();
-
   const mutation = usePostUserName();
 
+  const isValid = name.trim() && nameSchema.safeParse(name.trim()).success;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setName(value);
+
+    // 실시간 유효성 검사
+    if (value.trim()) {
+      const result = nameSchema.safeParse(value.trim());
+      if (!result.success) {
+        setError(result.error.issues[0].message);
+      } else {
+        setError('');
+      }
+    } else {
+      setError('');
+    }
+  };
+
   const handleSubmit = () => {
-    if (!name.trim()) {
-      alert('이름을 입력해주세요.');
+    const trimmedName = name.trim();
+    const result = nameSchema.safeParse(trimmedName);
+
+    if (!result.success) {
+      setError(result.error.issues[0].message);
       return;
     }
 
-    mutation.mutate(name.trim(), {
+    setError('');
+    mutation.mutate(trimmedName, {
       onSuccess: () => {
         handleNext();
       },
@@ -38,29 +62,29 @@ export const NameInput = () => {
           <span className="text-blue-600 B03_B">불가능</span>해요)
         </div>
       </div>
+
       <div className="flex flex-col items-center px-10 mt-[44px] relative">
-        <div className="w-full h-14 relative bg-gray-100 rounded-lg">
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="여기에 이름 입력하기"
-            maxLength={maxLength}
-            className="w-full h-14 bg-gray-100 rounded-lg border-0 border-b-2 border-blue-400 text-gray-900 B01_B focus:outline-none focus:border-blue-600 px-4"
-          />
-          <div className="absolute right-4 bottom-3 B03_1_M text-neutral-400">
-            {name.length}/{maxLength}
+        <div className="w-full relative">
+          <div className="w-full h-14 relative bg-gray-100 rounded-lg">
+            <input
+              type="text"
+              value={name}
+              onChange={handleChange}
+              placeholder={NAME_PLACEHOLDER}
+              maxLength={NAME_MAX_LENGTH}
+              className={`w-full h-14 bg-gray-100  border-b-2 text-gray-900 B01_B focus:outline-none px-2 ${
+                error ? 'border-red-500' : 'border-blue-400 focus:border-blue-600'
+              }`}
+            />
+            <div className="absolute right-1 bottom-3 B03_1_M text-neutral-400">
+              {name.length}/{NAME_MAX_LENGTH}
+            </div>
           </div>
+          {error && <div className="mt-2 text-red-500 B03_1_M text-left">{error}</div>}
         </div>
       </div>
       <div className="absolute top-[520px] sm:top-[654px] left-0 right-0 flex flex-col justify-center items-center px-4 z-5">
-        <button
-          onClick={handleSubmit}
-          disabled={mutation.isPending}
-          className="w-full h-14 bg-b7 rounded-xl text-white B02_B cursor-pointer active:bg-b8 active:scale-95  hover:bg-b8  transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {mutation.isPending ? '저장 중...' : '시작하기'}
-        </button>
+        <Button label="시작하기" onClick={handleSubmit} disabled={!isValid} />
       </div>
     </div>
   );
