@@ -33,7 +33,7 @@ export const PostDetailBox = ({
   viewCount,
 }: PostDetailBoxProps) => {
   return (
-    <div className="flex flex-col justify-between w-full max-h-[70vh] px-4 py-4 bg-white rounded-xl border border-[#D0D2D9]">
+    <div className="flex flex-col justify-between w-full max-h-[70vh] min-h-[70vh] px-4 py-4 bg-[#FFFFFF] rounded-xl border border-[#D0D2D9]">
       <div className="overflow-y-auto hide-scrollbar">
         <div className="flex justify-between">
           <div className="B01_M text-gray-900">By {writer}</div>
