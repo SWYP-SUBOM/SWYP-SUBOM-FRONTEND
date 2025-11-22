@@ -32,9 +32,9 @@ export const TodayTopicBoxMap = {
     bgColor: 'bg-[#FFFDF2]',
     icon: value,
   },
-  '취미·취향': {
+  '시대·사회': {
     categoryId: 5,
-    title: '취미·취향',
+    title: '시대·사회',
     bgColor: 'bg-[#FFF2F2]',
     icon: hobby,
   },

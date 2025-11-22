@@ -1,6 +1,6 @@
 export const DATE_COLOR_MAP = {
   blue: 'bg-[#6D9FFF]', // 일상
-  pink: 'bg-[#FF8C8C]', // 취미·취향
+  pink: 'bg-[#FF8C8C]', // 시대·사회
   purple: 'bg-[#CE9CFF]', // 인간관계
   yellow: 'bg-[#FFD26E]', // 가치관
   green: 'bg-[#3FF0B3]', // 문화·트렌드

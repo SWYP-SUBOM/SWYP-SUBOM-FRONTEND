@@ -1,12 +1,12 @@
-import { useState, useMemo } from 'react';
+import { eachDayOfInterval, endOfWeek, format, isSameDay, startOfWeek } from 'date-fns';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { WeeklyChallengeBox } from './WeeklyChallengeBox/WeeklyChallengeBox';
-import { MonthlyTrainingStatusBox } from './MonthlyTrainingStatusBox/MonthlyTrainingStatusBox';
-import { MonthlyCalendar } from './MonthlyCalendar/MonthlyCalendar';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { useGetCalendar } from '../../hooks/Calendar/useGetCalendar';
+import { MonthlyCalendar } from './MonthlyCalendar/MonthlyCalendar';
 import type { CalendarDateStatus } from './MonthlyCalendar/MonthlyCalendar.types';
-import { format, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay } from 'date-fns';
+import { MonthlyTrainingStatusBox } from './MonthlyTrainingStatusBox/MonthlyTrainingStatusBox';
+import { WeeklyChallengeBox } from './WeeklyChallengeBox/WeeklyChallengeBox';
 
 export const Calendar = () => {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ export const Calendar = () => {
   const getCategoryColor = (categoryName: string): CalendarDateStatus['color'] => {
     const colorMap: Record<string, CalendarDateStatus['color']> = {
       일상: 'blue',
-      취미·취향: 'pink',
+      시대·사회: 'pink',
       인간관계: 'purple',
       가치관: 'yellow',
       문화·트렌드: 'green',

@@ -10,7 +10,7 @@ export const FeedTab = () => {
     { categoryName: '인간관계', categoryId: 2 },
     { categoryName: '문화·트렌드', categoryId: 3 },
     { categoryName: '가치관', categoryId: 4 },
-    { categoryName: '취미·취향', categoryId: 5 },
+    { categoryName: '시대·사회', categoryId: 5 },
   ];
   return (
     <>
