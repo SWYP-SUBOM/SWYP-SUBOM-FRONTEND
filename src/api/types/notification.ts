@@ -1,0 +1,24 @@
+import type { CategoryNameType } from '../../constants/Category';
+import type { ReactionType } from '../../constants/Reations';
+
+export interface NotificationResponse {
+  success: boolean;
+  code: string;
+  message: string;
+  data: {
+    notifications: {
+      notificationId: number;
+      reactionName: ReactionType;
+      reactionCount: number;
+      updatedAt: string;
+      category: {
+        categoryId: number;
+        categoryName: CategoryNameType;
+      };
+      postId: number;
+      read: boolean;
+    }[];
+    cursor: string;
+    hasMore: boolean;
+  };
+}

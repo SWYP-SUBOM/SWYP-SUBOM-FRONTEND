@@ -48,16 +48,26 @@ export const TitleHeader = ({
         <button className="cursor-pointer" onClick={handleBack}>
           <img src={left} className="w-9 h-9" alt="뒤로가기" />
         </button>
+        {title && (
+          <div className="absolute left-1/2 transform -translate-x-1/2 B02_B text-gray-900">
+            {title}
+          </div>
+        )}
+        <div className="w-9" />
       </div>
     );
   }
 
   return (
-    <div className=" flex justify-between w-full px-4 mt-2.5 mb-10 ">
-      <div className="w-6" />
-      <div className={`B02_B text-center ${isFeed ? 'text-gray-900' : 'text-white'}`}>{title}</div>
-      <button className="cursor-pointer ">
-        <img src={isFeed ? alarm_black : alarm_white} className="w-6 h-6 " alt="알림" />
+    <div className="flex justify-between w-full px-4 mt-2.5 mb-10 ">
+      <div className="w-9 h-6" />
+      <div
+        className={`B02_B text-center translate-y-1 pt-1 ${isFeed ? 'text-gray-900' : 'text-white'}`}
+      >
+        {title}
+      </div>
+      <button className="cursor-pointer pt-1" onClick={() => navigate('/notification')}>
+        <img src={isFeed ? alarm_black : alarm_white} className="w-9 h-6 " alt="알림" />
       </button>
     </div>
   );

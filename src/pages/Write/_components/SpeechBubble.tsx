@@ -14,13 +14,13 @@ export const SpeechBubble = ({ onBubbleClose, bubbleText, className }: SpeechBub
   return (
     <>
       <div className={`flex flex-col items-end ${className}`}>
-        <div className="flex gap-2 bg-[#4D4D4D] px-3 py-2 rounded-lg relative">
-          <div className="C01_M text-gray-100 translate-y-1">{bubbleText}</div>
+        <div className="flex gap-2 items-center bg-[#4D4D4D] px-3 py-2 rounded-lg relative">
+          <div className="C01_M text-gray-100">{bubbleText}</div>
           <img
             src={bubbleXButton}
             alt="close"
             onClick={handleCloseBubble}
-            className="w-5 h-5 cursor-pointer"
+            className="w-5 h-6 cursor-pointer"
           />
         </div>
         <img

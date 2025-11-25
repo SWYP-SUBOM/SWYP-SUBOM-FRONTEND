@@ -1,8 +1,41 @@
-import type { ReactNode } from 'react';
+import { useRef, type ReactNode } from 'react';
 import { useTabStore } from '../../../store/useTabStore';
 
 export const TabList = ({ children }: { children: ReactNode }) => {
-  return <div className="flex w-full gap-2 overflow-x-auto whitespace-nowrap  ">{children}</div>;
+  const ref = useRef<HTMLDivElement>(null);
+  let isDown = false;
+  let startX = 0;
+  let scrollLeft = 0;
+
+  const onMouseDown = (e: any) => {
+    isDown = true;
+    startX = e.pageX - ref.current!.offsetLeft;
+    scrollLeft = ref.current!.scrollLeft;
+  };
+
+  const onMouseUp = () => (isDown = false);
+  const onMouseLeave = () => (isDown = false);
+
+  const onMouseMove = (e: any) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - ref.current!.offsetLeft;
+    const walk = (x - startX) * 1;
+    ref.current!.scrollLeft = scrollLeft - walk;
+  };
+
+  return (
+    <div
+      ref={ref}
+      className="flex w-full gap-2 overflow-x-auto whitespace-nowrap hide-scrollbar cursor-grab active:cursor-grabbing"
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onMouseLeave={onMouseLeave}
+      onMouseMove={onMouseMove}
+    >
+      {children}
+    </div>
+  );
 };
 
 export const Trigger = ({ children, categoryId }: { children: ReactNode; categoryId: number }) => {

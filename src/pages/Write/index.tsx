@@ -1,19 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
+import blueRight from '../../assets/Write/blue-right.svg';
+import darkBlueRight from '../../assets/Write/darkblue-right.svg';
+import darkWriteGuide from '../../assets/Write/darkwrite_guide.svg';
+import writeGuide from '../../assets/Write/write_guide.svg';
 import { CategoryChip } from '../../components/common/CategoryChip';
+import type { guideTopicType } from '../../constants/Guide';
 import { usePostAIFeedBack } from '../../hooks/FeedBack/usePostAIFeedBack';
 import { useGetDraftPost } from '../../hooks/Post/useGetPost';
 import { useSavePost } from '../../hooks/Post/useSavePost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
+import { useModal } from '../../hooks/useModal';
 import { WriteLayout } from '../../layout/WriteLayout';
 import { useBottomSheetStore } from '../../store/useBottomSheetStore';
 import { SpeechBubble } from './_components/SpeechBubble';
-import { FeedbackLoading } from './FeedbackLoading';
+import { GuideModal } from './GuideModal/GuideModal';
 
 export const Write = () => {
   const location = useLocation();
   const { closeBottomSheet } = useBottomSheetStore();
+  const { openModal, Content, isOpen } = useModal();
 
   const categoryName = location.state.categoryName;
   const categoryId = location.state.categoryId;
@@ -21,16 +28,26 @@ export const Write = () => {
   const topicId = location.state.topicId;
   const draftPostId = location.state.draftPostId;
   const isTodayDraft = location.state.isTodayDraft;
+  const topicType = location.state.topicType;
 
   const [opinion, setOpinion] = useState('');
   const [initialOpinion, setInitialOpinion] = useState('');
   const [isBubbleOpen, setIsBubbleOpen] = useState(false);
   const hasClosedBubble = useRef(false);
   const [isDirty, setIsDirty] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const [currentPostId, setCurrentPostId] = useState(0);
   const [isFirst, setIsFirst] = useState(true);
+  const [isHoverGuideIcon, setIsHoverGuideIcon] = useState(false);
+  const [isGuideIconVisible, setIsGuideIconVisible] = useState(true);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      setIsGuideIconVisible(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const saveMutation = useSavePost();
   const updateAndSaveMutation = useUpdateAndSavePost();
@@ -50,6 +67,10 @@ export const Write = () => {
 
   const isWriteOpinion = () => {
     return opinion.trim() !== '';
+  };
+
+  const isOpinionLengthValid = () => {
+    return opinion.trim().length >= 100;
   };
 
   useEffect(() => {
@@ -76,16 +97,12 @@ export const Write = () => {
   /* 피드백 받기 요청 보낼때 저장을 안했으면 저장 후 피드백 요청*/
   const movetoGetFeedback = () => {
     const saveAndRequestFeedback = (postId: number) => {
-      setIsLoading(true);
       postAIFeedBackMutation.mutate(postId, {
         onSuccess: (response) => {
           const aiFeedbackId = response.aiFeedbackId;
-          navigate(
-            `/feedback/${encodeURIComponent(categoryName)}/${encodeURIComponent(topicName)}`,
-            { state: { postId, aiFeedbackId } },
-          );
+          navigate(`/rating`, { state: { postId, aiFeedbackId, categoryName, topicName } });
         },
-        onError: () => setIsLoading(false),
+        onError: () => console.log('저장 에러'),
       });
     };
 
@@ -154,43 +171,92 @@ export const Write = () => {
     }
   };
 
+  const openGuideModal = (topicType: guideTopicType) => {
+    openModal(<GuideModal topicType={topicType} />);
+  };
+
+  const handleButtonTextShow = () => {
+    setIsHoverGuideIcon(true);
+  };
+
+  const handleButtonTextHide = () => {
+    setIsHoverGuideIcon(false);
+  };
+
   return (
     <>
-      <WriteLayout handleClickSaveButton={handleSavePost} isDirty={isDirty}>
-        <div className="px-4 bg-[#F3F5F8]">
+      <WriteLayout
+        handleClickSaveButton={handleSavePost}
+        isDirty={isDirty}
+        isSaveDisabled={!isDirty}
+      >
+        <div className="px-4 bg-[#F3F5F8] flex flex-col h-[calc(100vh-50px)] overflow-hidden">
           <div className="pt-[30px] pb-3 flex-shrink-0">
             <CategoryChip categoryName={categoryName}></CategoryChip>
             <div className="py-[10px] B01_B">{topicName}</div>
           </div>
-          <div className="relative w-[328px]">
+          <div className="relative w-full h-full flex-1 flex flex-col pb-40 ">
             <textarea
-              placeholder="내 의견을 논리적으로 작성해보세요!"
+              placeholder="AI 피드백은 100자 이상 작성 시 제공됩니다."
               value={opinion}
               onChange={(e) => setOpinion(e.target.value)}
-              className="B03_M px-4 pt-4 py-10 w-full min-h-[360px] border border-gray-500 rounded-xl resize-none"
+              className="min-h-0 h-full hide-scrollbar focus:placeholder-transparent focus:outline-none focus:border-gray-700 hover:border-gray-700 focus:ring-0 bg-[#FFFFFF] B03_M pl-4 pr-2 pt-4 py-10 w-full min-h-[330px] text-gray-800 border border-gray-500 rounded-xl resize-none"
             />
-            <div className="C01_SB absolute bottom-6 right-4 text-gray-700">
+            <div className="C01_SB absolute bottom-42 right-4 text-gray-700 pointer-events-none">
               {opinion.length} / 700
             </div>
           </div>
           <button
             onClick={movetoGetFeedback}
-            disabled={!isWriteOpinion()}
-            className={`cursor-pointer rounded-xl max-w-[328px] w-full h-14 B02_B fixed bottom-7 left-1/2 -translate-x-1/2
-                ${!isWriteOpinion() ? 'bg-gray-600 text-white' : 'bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white'}`}
+            disabled={!isOpinionLengthValid()}
+            className={`cursor-pointer rounded-xl max-w-[348px] w-full h-14 B02_B fixed bottom-7 left-1/2 -translate-x-1/2 
+                ${!isOpinionLengthValid() ? 'bg-gray-600 text-white' : 'bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white'}`}
           >
             피드백 받기
           </button>
+          <button
+            onMouseEnter={handleButtonTextShow}
+            onTouchStart={handleButtonTextShow}
+            onMouseLeave={handleButtonTextHide}
+            onTouchEnd={handleButtonTextHide}
+            onClick={() => openGuideModal(topicType)}
+            className="absolute  bottom-[92px] right-4 z-50  group"
+          >
+            <div
+              className={`flex items-center gap-2 border border-gray-500 bg-[#F9F9F9] rounded-[999px] cursor-pointer 
+                ${isGuideIconVisible || isHoverGuideIcon ? 'border border-gray-700 py-[9px] px-[18px] w-auto justify-end' : 'w-10 h-10 justify-center pl-[1px]'}`}
+            >
+              <img
+                src={isHoverGuideIcon ? darkWriteGuide : writeGuide}
+                className="w-4 h-4"
+                alt="writeguide"
+              />
+              {(isGuideIconVisible || isHoverGuideIcon) && (
+                <>
+                  <div
+                    className={`B03_M text-[var(--color-b7)] group-hover:text-[var(--color-b8)] group-active:text-[var(--color-b8)]`}
+                  >
+                    가이드
+                  </div>
+                  <img
+                    src={isHoverGuideIcon ? darkBlueRight : blueRight}
+                    className="w-2 h-3"
+                    alt="blueright"
+                  />
+                </>
+              )}
+            </div>
+          </button>
           {isBubbleOpen && (
             <SpeechBubble
-              className="fixed bottom-[80px] left-1/2 -translate-x-[10%] flex flex-col items-end z-50"
-              bubbleText="피드백은 한 번만 가능해요."
+              className="fixed bottom-[80px] right-1/2 flex flex-col items-end z-50"
+              bubbleText="피드백은 한 번만 가능해요"
               onBubbleClose={handleCloseBubble}
             />
           )}
         </div>
       </WriteLayout>
-      {isLoading && <FeedbackLoading />}
+      {isOpen && Content}
     </>
   );
 };

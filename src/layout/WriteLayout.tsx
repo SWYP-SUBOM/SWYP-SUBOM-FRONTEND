@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { HeaderwithSavePost } from './HeaderwithSavePost';
 
 interface WriteLayoutProps {
@@ -14,20 +14,21 @@ export const WriteLayout = ({
   isSaveDisabled = false,
   isDirty = false,
 }: WriteLayoutProps) => {
+  const { pathname } = useLocation();
+  const isWritePage = pathname === '/write';
+
   return (
     <div
-      className="
+      className={`
         max-w-[380px]
         mx-auto
-        h-[100vh]
-        min-h-[100dvh]
         bg-[var(--color-white)]
         relative
         shadow-[0_0_20px_rgba(0,0,0,0.1)]
         flex
         flex-col
-        [height:-webkit-fill-available]
-        "
+        ${isWritePage ? 'app-root overflow-hidden' : 'h-[100vh] min-h-[100dvh] [height:-webkit-fill-available]'}
+      `}
     >
       <div className="bg-white">
         <HeaderwithSavePost

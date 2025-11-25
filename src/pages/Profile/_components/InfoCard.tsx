@@ -17,8 +17,8 @@ export const InfoCard = ({
 
   if (showChangeButton) {
     return (
-      <div className="bg-white rounded-xl p-4">
-        <div className="flex items-center justify-between">
+      <div className="bg-white rounded-xl p-4  ">
+        <div className="flex items-center justify-between ">
           <div className="flex-1">
             <div className="B01_B text-gray-900 mb-2">{label}</div>
             <div className="B02_M text-gray-900">{displayValue}</div>
@@ -34,7 +34,7 @@ export const InfoCard = ({
   }
 
   return (
-    <div className="bg-white rounded-xl p-4 ">
+    <div className="bg-white rounded-xl p-4 cursor-pointer ">
       <div className="B01_B text-gray-900 mb-2">{label}</div>
       <div className="B02_M text-gray-900">{displayValue}</div>
     </div>

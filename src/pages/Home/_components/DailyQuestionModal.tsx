@@ -18,9 +18,11 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
   const { data: dailyQuestionData, isLoading } = useGetDailyQuestion(categoryId);
   const deleteMutation = useDeletePost();
 
-  const todaycategoryId = todayPost.categoryId;
-  const draftPostId = todayPost.postId;
+  const todaycategoryId = todayPost?.categoryId;
+  const draftPostId = todayPost?.postId;
+  const aiFeedbackId = todayPost?.aiFeedbackId;
   const isTodayDraft = todayPost.postStatus === 'DRAFT';
+
   const { isLoggedIn } = useAuthStore();
 
   /* 임시저장일때 -> 기존에 임시저장하던 카테고리와 같으면 이어서 쓰고, 다르면 기존 데이터 삭제 후 write페이지로 이동 */
@@ -28,17 +30,34 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
     closeModal();
     if (isTodayDraft && draftPostId) {
       if (todaycategoryId === categoryId) {
-        navigate('/write', {
-          state: {
-            categoryName: dailyQuestionData?.categoryName,
-            topicName: dailyQuestionData?.topicName,
-            topicId: dailyQuestionData?.topicId,
-            categoryId: dailyQuestionData?.categoryId,
-            draftPostId: draftPostId,
-            isTodayDraft: isTodayDraft,
-            aiFeedbackId: todayPost.aiFeedbackId,
-          },
-        });
+        if (aiFeedbackId) {
+          navigate(
+            `/complement/${dailyQuestionData?.categoryName}/${dailyQuestionData?.topicName}`,
+            {
+              state: {
+                categoryName: dailyQuestionData?.categoryName,
+                topicName: dailyQuestionData?.topicName,
+                topicId: dailyQuestionData?.topicId,
+                categoryId: dailyQuestionData?.categoryId,
+                postId: draftPostId,
+                aiFeedbackId: aiFeedbackId,
+              },
+            },
+          );
+        } else {
+          navigate('/write', {
+            state: {
+              categoryName: dailyQuestionData?.categoryName,
+              topicName: dailyQuestionData?.topicName,
+              topicId: dailyQuestionData?.topicId,
+              categoryId: dailyQuestionData?.categoryId,
+              draftPostId: draftPostId,
+              isTodayDraft: isTodayDraft,
+              aiFeedbackId: todayPost.aiFeedbackId,
+              topicType: dailyQuestionData?.topicType,
+            },
+          });
+        }
       } else {
         try {
           await deleteMutation.mutateAsync({ postId: draftPostId });
@@ -49,6 +68,7 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
               topicName: dailyQuestionData?.topicName,
               topicId: dailyQuestionData?.topicId,
               categoryId: dailyQuestionData?.categoryId,
+              topicType: dailyQuestionData?.topicType,
             },
           });
         } catch (error) {
@@ -62,6 +82,7 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
           topicName: dailyQuestionData?.topicName,
           topicId: dailyQuestionData?.topicId,
           categoryId: dailyQuestionData?.categoryId,
+          topicType: dailyQuestionData?.topicType,
         },
       });
     }
@@ -82,7 +103,7 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
             {isLoading ? '로딩중...' : dailyQuestionData?.topicName}
           </Modal.Description>
           <Modal.Trigger handleClickButton={isLoggedIn ? onMoveToWrite : onMoveLogin}>
-            {isLoggedIn ? '글 쓰러가기' : '로그인 후 작성하기'}
+            {isLoggedIn ? '글 쓰러 가기' : '로그인 후 작성하기'}
           </Modal.Trigger>
         </Modal.Content>
       </Modal.Overlay>

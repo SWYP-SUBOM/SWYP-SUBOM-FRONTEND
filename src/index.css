@@ -234,6 +234,7 @@ body {
   height: 100vh;
   height: -webkit-fill-available;
   min-height: 100dvh;
+  height: auto;
   background-color: var(--color-gray-100);
   position: relative;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
@@ -265,7 +266,6 @@ body,
 .react-calendar__month-view__weekdays {
   @apply text-center  text-black mb-2;
   text-transform: none;
-  font-size: 14px;
   font-size: var(--font-size-body-03);
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
@@ -275,14 +275,21 @@ body,
   @apply py-2;
 }
 
-.react-calendar__month-view__days {
-  font-size: var(--font-size-body-03);
-  font-weight: var(--font-weight-bold);
-  line-height: var(--line-height-tight);
+.react-calendar__month-view__weekdays__weekday::after,
+.react-calendar__month-view__weekdays__weekday::before {
+  content: none;
+  display: none;
+}
+
+.react-calendar__month-view__weekdays__weekday abbr {
+  text-decoration: none;
+  border-bottom: none;
 }
 
 .react-calendar__tile {
-  @apply border-none bg-transparent text-center w-10 h-10 flex items-center justify-center relative;
+  @apply border-none bg-transparent text-center flex items-center justify-center relative w-11 h-11;
+  padding: 2px;
+  box-sizing: border-box;
 }
 
 .react-calendar__tile:enabled:hover,
@@ -294,4 +301,16 @@ body,
 
 .react-calendar__tile--now {
   @apply bg-transparent;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
 }

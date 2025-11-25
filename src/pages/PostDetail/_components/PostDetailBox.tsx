@@ -33,16 +33,16 @@ export const PostDetailBox = ({
   viewCount,
 }: PostDetailBoxProps) => {
   return (
-    <div className="px-4 py-4 rounded-xl w-[328px] min-h-[457px] border border-[#D0D2D9] bg-white flex flex-col justify-between">
-      <div>
+    <div className="flex flex-col justify-between w-full max-h-[70vh] min-h-[70vh] px-4 py-4 bg-[#FFFFFF] rounded-xl border border-[#D0D2D9]">
+      <div className="overflow-y-auto hide-scrollbar">
         <div className="flex justify-between">
-          <div className="B01_M text-gray-900 ">By {writer}</div>
+          <div className="B01_M text-gray-900">By {writer}</div>
           <div className="C01_SB text-gray-700 translate-y-1/7">{DateFormatter(updatedAt)}</div>
         </div>
         <div className="border-t border-[#E0E4E7] my-4"></div>
-        <div className="B03_M text-gray-800 ">{content}</div>
+        <div className="B03_M text-gray-800">{content}</div>
       </div>
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between items-center mt-4">
         <div className="flex items-center gap-3">
           {reactions.map((reaction) => (
             <div key={reaction.reactionId} className="flex items-center gap-1">

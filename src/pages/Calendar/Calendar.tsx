@@ -1,30 +1,30 @@
-import { useState, useMemo } from 'react';
+import { eachDayOfInterval, endOfWeek, format, isSameDay, startOfWeek } from 'date-fns';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { WeeklyChallengeBox } from './WeeklyChallengeBox/WeeklyChallengeBox';
-import { MonthlyTrainingStatusBox } from './MonthlyTrainingStatusBox/MonthlyTrainingStatusBox';
-import { MonthlyCalendar } from './MonthlyCalendar/MonthlyCalendar';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { useGetCalendar } from '../../hooks/Calendar/useGetCalendar';
+import { MonthlyCalendar } from './MonthlyCalendar/MonthlyCalendar';
 import type { CalendarDateStatus } from './MonthlyCalendar/MonthlyCalendar.types';
-import { format, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay, isAfter } from 'date-fns';
+import { MonthlyTrainingStatusBox } from './MonthlyTrainingStatusBox/MonthlyTrainingStatusBox';
+import { WeeklyChallengeBox } from './WeeklyChallengeBox/WeeklyChallengeBox';
 
-const Calendar = () => {
+export const Calendar = () => {
   const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
   const year = currentDate.getFullYear();
-  const month = currentDate.getMonth() + 1; // getMonth()는 0부터 시작하므로 +1
+  const month = currentDate.getMonth() + 1;
 
   const { data: calendarData } = useGetCalendar({ year, month });
 
   const getCategoryColor = (categoryName: string): CalendarDateStatus['color'] => {
     const colorMap: Record<string, CalendarDateStatus['color']> = {
-      일상: 'red',
-      취미·취향: 'blue',
-      관계: 'purple',
+      일상: 'blue',
+      시대·사회: 'pink',
+      인간관계: 'purple',
       가치관: 'yellow',
       문화·트렌드: 'green',
     };
-    return colorMap[categoryName] || 'blue';
+    return colorMap[categoryName];
   };
 
   const datesWithStatus = useMemo(() => {
@@ -48,17 +48,17 @@ const Calendar = () => {
     const streakDatesSet = new Set(calendarData?.streakDates || []);
     const dayLabels = ['일', '월', '화', '수', '목', '금', '토'];
 
-    const days = weekDays.map((day) => {
+    const days = weekDays.slice(0, 7).map((day) => {
       const dayOfWeek = day.getDay();
       const dayLabel = dayLabels[dayOfWeek];
       const dateStr = format(day, 'yyyy-MM-dd');
       const hasWriting = streakDatesSet.has(dateStr);
 
-      let status: 'completed-active' | 'completed-inactive' | 'incomplete';
+      let status: 'pastCompleted' | 'todayCompleted' | 'incomplete';
       if (hasWriting) {
-        status = isSameDay(day, today) ? 'completed-active' : 'completed-inactive';
+        status = isSameDay(day, today) ? 'todayCompleted' : 'pastCompleted';
       } else {
-        status = isAfter(day, today) ? 'incomplete' : 'completed-inactive';
+        status = 'incomplete';
       }
 
       return {
@@ -89,26 +89,25 @@ const Calendar = () => {
 
   return (
     <>
-      <div className="flex flex-col h-full ">
-        <div className="  h-[218px] bg-b7  pt-10 ">
-          <TitleHeader title="캘린더" />
+      <div className="flex flex-col">
+        <div className="h-[180px] bg-b7 shrink-0">
+          <TitleHeader title="나의 캘린더" />
         </div>
-
         <WeeklyChallengeBox {...weeklyChallengeData} />
-        <div className=" B01_B mt-[108px]  px-4">이번달 글쓰기 훈련 상황</div>
+        <div className="B01_B mt-[90px] px-4">이번달 글쓰기 훈련 상황</div>
         <MonthlyTrainingStatusBox
           totalWritingCount={calendarData?.summary.totalWritingCount ?? 0}
           totalWeeklyChallengeCount={calendarData?.summary.totalWeeklyChallengeCount ?? 0}
         />
+
         <MonthlyCalendar
           datesWithStatus={datesWithStatus}
           currentDate={currentDate}
           onDateChange={setCurrentDate}
           onDateClick={handleDateClick}
         />
+        <div style={{ minHeight: 'calc(110px + env(safe-area-inset-bottom))' }}></div>
       </div>
     </>
   );
 };
-
-export default Calendar;
