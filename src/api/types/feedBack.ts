@@ -16,6 +16,7 @@ export interface getAIfeedBackResponse {
     aiFeedbackId: number;
     status: string;
     strength: string;
+    grade: string;
     summary: string;
     improvementPoints: string[];
   };

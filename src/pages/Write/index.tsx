@@ -15,7 +15,6 @@ import { useModal } from '../../hooks/useModal';
 import { WriteLayout } from '../../layout/WriteLayout';
 import { useBottomSheetStore } from '../../store/useBottomSheetStore';
 import { SpeechBubble } from './_components/SpeechBubble';
-import { FeedbackLoading } from './FeedbackLoading';
 import { GuideModal } from './GuideModal/GuideModal';
 
 export const Write = () => {
@@ -36,7 +35,6 @@ export const Write = () => {
   const [isBubbleOpen, setIsBubbleOpen] = useState(false);
   const hasClosedBubble = useRef(false);
   const [isDirty, setIsDirty] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const [currentPostId, setCurrentPostId] = useState(0);
   const [isFirst, setIsFirst] = useState(true);
@@ -99,16 +97,12 @@ export const Write = () => {
   /* 피드백 받기 요청 보낼때 저장을 안했으면 저장 후 피드백 요청*/
   const movetoGetFeedback = () => {
     const saveAndRequestFeedback = (postId: number) => {
-      setIsLoading(true);
       postAIFeedBackMutation.mutate(postId, {
         onSuccess: (response) => {
           const aiFeedbackId = response.aiFeedbackId;
-          navigate(
-            `/feedback/${encodeURIComponent(categoryName)}/${encodeURIComponent(topicName)}`,
-            { state: { postId, aiFeedbackId } },
-          );
+          navigate(`/rating`, { state: { postId, aiFeedbackId, categoryName, topicName } });
         },
-        onError: () => setIsLoading(false),
+        onError: () => console.log('저장 에러'),
       });
     };
 
@@ -196,19 +190,19 @@ export const Write = () => {
         isDirty={isDirty}
         isSaveDisabled={!isDirty}
       >
-        <div className="px-4 bg-[#F3F5F8]">
+        <div className="px-4 bg-[#F3F5F8] flex flex-col h-[calc(100vh-50px)] overflow-hidden">
           <div className="pt-[30px] pb-3 flex-shrink-0">
             <CategoryChip categoryName={categoryName}></CategoryChip>
             <div className="py-[10px] B01_B">{topicName}</div>
           </div>
-          <div className="relative w-full">
+          <div className="relative w-full h-full flex-1 flex flex-col pb-40 ">
             <textarea
               placeholder="AI 피드백은 100자 이상 작성 시 제공됩니다."
               value={opinion}
               onChange={(e) => setOpinion(e.target.value)}
-              className="hide-scrollbar focus:placeholder-transparent focus:outline-none focus:border-gray-700 hover:border-gray-700 focus:ring-0 bg-[#FFFFFF] B03_M pl-4 pr-2 pt-4 py-10 w-full min-h-[330px] text-gray-800 border border-gray-500 rounded-xl resize-none"
+              className="min-h-0 h-full hide-scrollbar focus:placeholder-transparent focus:outline-none focus:border-gray-700 hover:border-gray-700 focus:ring-0 bg-[#FFFFFF] B03_M pl-4 pr-2 pt-4 py-10 w-full min-h-[330px] text-gray-800 border border-gray-500 rounded-xl resize-none"
             />
-            <div className="C01_SB absolute bottom-6 right-4 text-gray-700">
+            <div className="C01_SB absolute bottom-42 right-4 text-gray-700 pointer-events-none">
               {opinion.length} / 700
             </div>
           </div>
@@ -262,7 +256,6 @@ export const Write = () => {
           )}
         </div>
       </WriteLayout>
-      {isLoading && <FeedbackLoading />}
       {isOpen && Content}
     </>
   );
