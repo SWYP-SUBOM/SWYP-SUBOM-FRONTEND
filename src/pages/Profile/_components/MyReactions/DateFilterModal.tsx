@@ -1,4 +1,4 @@
-import { SelectBottomSheet } from '../../../../../components/SelectBox/SelectBottomSheet';
+import { SelectBottomSheet } from '../../../../components/SelectBox/SelectBottomSheet';
 
 type DateOption = 'lastWeek' | 'lastMonth' | 'lastYear' | 'all' | 'custom';
 
@@ -28,7 +28,7 @@ export const DateFilterModal = ({
         {dateOptions.map((option) => (
           <button
             key={option.value}
-            className="flex justify-between items-center py-4 text-gray-900 w-full"
+            className="group flex justify-between items-center py-4 text-gray-900 w-full "
             onClick={() => {
               if (option.value === 'custom') {
                 onCustomSelect?.();
@@ -40,12 +40,14 @@ export const DateFilterModal = ({
           >
             <span className="B02_M text-gray-800">{option.label}</span>
             <div
-              className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
-                selected === option.value ? 'border-blue-600' : 'border-gray-400'
+              className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                selected === option.value ? 'border-b7' : 'border-gray-500 hover:border-gray-500'
               }`}
             >
-              {selected === option.value && (
-                <span className="w-2.5 h-2.5 bg-blue-600 rounded-full"></span>
+              {selected === option.value ? (
+                <span className="w-3 h-3 bg-b7 rounded-full"></span>
+              ) : (
+                <span className="w-3 h-3 bg-gray-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></span>
               )}
             </div>
           </button>

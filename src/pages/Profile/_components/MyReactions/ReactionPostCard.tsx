@@ -1,4 +1,6 @@
-import rightIcon from '../../../../../assets/Feed/right.svg';
+import rightIcon from '../../../../assets/Feed/right.svg';
+import { CategoryChip } from '../../../../components/common/CategoryChip';
+import type { CategoryNameType } from '../../../../constants/Category';
 
 interface ReactionPostCardProps {
   category: string;
@@ -18,12 +20,12 @@ export const ReactionPostCard = ({
   return (
     <div
       onClick={onClick}
-      className="bg-white rounded-xl p-4 shadow-sm cursor-pointer hover:shadow-md transition-shadow relative"
+      className="bg-white rounded-xl p-4 cursor-pointer hover:shadow-md transition-shadow relative duration-300"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1 min-w-0">
-          <div className="inline-block px-2.5 py-1 bg-blue-100 rounded-md mb-3">
-            <span className="B03_M text-blue-600">{category}</span>
+          <div className="inline-block  rounded-md mb-3">
+            {category && <CategoryChip categoryName={category as CategoryNameType} />}
           </div>
           <div className="B02_M text-gray-900 mb-3 leading-relaxed">{question}</div>
           <div className="B02_B text-gray-900 mb-3 leading-relaxed">{reaction}</div>
@@ -33,7 +35,7 @@ export const ReactionPostCard = ({
         </div>
       </div>
       <div className="flex justify-end mt-3 -mr-2">
-        <span className="C01_M text-gray-400">{date}</span>
+        <span className="C01_SB text-gray-700">{date}</span>
       </div>
     </div>
   );

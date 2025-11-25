@@ -15,8 +15,8 @@ export const useGetMyWritings = (params: Omit<MyWritingsRequest, 'cursorId'> = {
       }),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
-      if (lastPage?.sliceInfo?.hasNext) {
-        return lastPage.sliceInfo.nextCursorId;
+      if (lastPage?.pageInfo && !lastPage.pageInfo.isLast) {
+        return lastPage.pageInfo.currentPage + 1;
       }
       return undefined;
     },

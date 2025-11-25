@@ -1,20 +1,21 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import { subDays, subMonths, subYears, startOfDay, endOfDay, format } from 'date-fns';
 import { TitleHeader } from '../../components/common/TitleHeader.tsx';
 import { useGetMyWritings } from '../../hooks/Profile/useGetMyWritings.ts';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll.ts';
-import { FilterBar } from './_components/MyReactions/_components/FilterBar.tsx';
-import { SortFilterModal } from './_components/MyReactions/_components/SortFilterModal.tsx';
-import { DateFilterModal } from './_components/MyReactions/_components/DateFilterModal.tsx';
-import { PeriodSelectionModal } from './_components/MyReactions/_components/PeriodSelectionModal.tsx';
-import { DatePicker } from './_components/MyReactions/_components/DatePicker.tsx';
-import { MyPostCard } from './_components/MyPosts/_components/MyPostCard.tsx';
+import { FilterBar } from './_components/MyReactions/FilterBar.tsx';
+import { SortFilterModal } from './_components/MyReactions/SortFilterModal.tsx';
+import { DateFilterModal } from './_components/MyReactions/DateFilterModal.tsx';
+import { PeriodSelectionModal } from './_components/MyReactions/PeriodSelectionModal.tsx';
+import { DatePicker } from './_components/MyReactions/DatePicker.tsx';
+import { MyPostCard } from './_components/MyPosts/MyPostCard.tsx';
 
 type SortOption = 'latest' | 'oldest';
 type DateOption = 'lastWeek' | 'lastMonth' | 'lastYear' | 'all' | 'custom';
 
-const MyPosts = () => {
+export const MyPosts = () => {
   const navigate = useNavigate();
   const [sort, setSort] = useState<SortOption>('latest');
   const [dateFilter, setDateFilter] = useState<DateOption>('all');
@@ -26,9 +27,53 @@ const MyPosts = () => {
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
 
+  const dateRange = useMemo(() => {
+    const now = new Date();
+    let start: Date | null = null;
+    let end: Date | null = null;
+
+    switch (dateFilter) {
+      case 'lastWeek': {
+        start = startOfDay(subDays(now, 6));
+        end = endOfDay(now);
+        break;
+      }
+      case 'lastMonth': {
+        start = startOfDay(subMonths(now, 1));
+        end = endOfDay(now);
+        break;
+      }
+      case 'lastYear': {
+        start = startOfDay(subYears(now, 1));
+        end = endOfDay(now);
+        break;
+      }
+      case 'custom': {
+        if (startDate) {
+          start = startOfDay(startDate);
+        }
+        if (endDate) {
+          end = endOfDay(endDate);
+        }
+        break;
+      }
+      case 'all':
+      default:
+        start = null;
+        end = null;
+    }
+
+    return {
+      startDate: start ? format(start, 'yyyy-MM-dd') : undefined,
+      endDate: end ? format(end, 'yyyy-MM-dd') : undefined,
+    };
+  }, [dateFilter, startDate, endDate]);
+
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useGetMyWritings({
     size: 10,
     sort: sort === 'latest' ? 'latest' : 'oldest',
+    ...(dateRange.startDate && { startDate: dateRange.startDate }),
+    ...(dateRange.endDate && { endDate: dateRange.endDate }),
   });
 
   const getSortLabel = (sortOption: SortOption) => {
@@ -64,7 +109,7 @@ const MyPosts = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen pt-10 bg-gray-50">
+    <div className="flex flex-col min-h-screen ">
       <TitleHeader title="내가 쓴 글" headerWithNoalarm={true} />
       <FilterBar
         sortLabel={getSortLabel(sort)}
@@ -157,12 +202,12 @@ const MyPosts = () => {
             {allPosts.map((post) => (
               <MyPostCard
                 key={post.postId}
-                category={post.categoryName}
-                question={post.topicName}
+                category={post.topicInfo.categoryName}
+                question={post.topicInfo.topicName}
                 summary={post.summary}
                 status={post.status}
                 date={formatDate(post.updatedAt)}
-                onClick={() => navigate(`/postdetail/${post.postId}`)}
+                onClick={() => navigate(`/profile/my-posts/feedbackview/${post.postId}`)}
               />
             ))}
             <div ref={loadMoreRef} className="h-6" />
@@ -175,5 +220,3 @@ const MyPosts = () => {
     </div>
   );
 };
-
-export default MyPosts;
