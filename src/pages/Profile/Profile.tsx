@@ -16,7 +16,7 @@ export const Profile = () => {
   const isLoading = isUserNameLoading || isHomeDataLoading;
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen ">
       <div className="flex flex-col items-center justify-center bg-b6">
         <TitleHeader title="마이 페이지" />
         <img src={profile} alt="profile" className="w-[130px] h-[130px] rounded-full  " />
@@ -32,7 +32,7 @@ export const Profile = () => {
         </div>
       </div>
 
-      <div className="pt-3 ">
+      <div className="pt-3" style={{ paddingBottom: 'calc(100px + env(safe-area-inset-bottom))' }}>
         <ProfileContents
           title="내 정보 관리"
           righticon={true}
@@ -55,6 +55,6 @@ export const Profile = () => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
