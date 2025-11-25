@@ -30,6 +30,10 @@ export const POST_ENDPOINTS = {
   MY_REACTIONS: '/api/posts/my-reactions',
 } as const;
 
+export const NOTIFICATION_ENDPOINTS = {
+  GET_NOTIFICATION: '/api/notifications',
+} as const;
+
 export const ENDPOINTS = {
   ...OAUTH_ENDPOINTS,
   ...USER_ENDPOINTS,
@@ -37,4 +41,5 @@ export const ENDPOINTS = {
   ...CATEGORY_ENDPOINTS,
   ...CALENDAR_ENDPOINTS,
   ...POST_ENDPOINTS,
+  ...NOTIFICATION_ENDPOINTS,
 } as const;

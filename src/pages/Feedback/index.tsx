@@ -1,27 +1,24 @@
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import type { getAIfeedBackResponse } from '../../api/types/feedBack';
 import type { CategoryNameType } from '../../constants/Category';
-import { useGetAIFeedBack } from '../../hooks/FeedBack/uesGetAIFeedBack';
 import { useGetPost } from '../../hooks/Post/useGetPost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { WriteLayout } from '../../layout/WriteLayout';
-import { FeedbackLoading } from '../Write/FeedbackLoading';
 import { FeedbackBanner } from './_components/FeedbackBanner';
 import { FeedbackBox } from './_components/FeedbackBox';
 
 export const FeedBack = () => {
   const location = useLocation();
-  const { postId, aiFeedbackId } = location.state as {
+  const { AIFeedBackData, postId, aiFeedbackId } = location.state as {
+    AIFeedBackData: getAIfeedBackResponse['data'];
     postId: number;
     aiFeedbackId: number;
   };
 
-  const { data: AIFeedBackData, isLoading } = useGetAIFeedBack(postId, aiFeedbackId);
   const updateAndSaveMutation = useUpdateAndSavePost();
   const { data: postData } = useGetPost(postId);
 
   const content = postData?.content ?? '';
-
-  const isProcessing = AIFeedBackData?.status === 'PROCESSING';
 
   const { categoryName, topicName } = useParams<{
     categoryName: CategoryNameType;
@@ -60,7 +57,7 @@ export const FeedBack = () => {
         <div className="relative min-h-[100dvh] flex flex-col pt-[30px] min-h-[100dvh] px-4 bg-[#F3F5F8]">
           <FeedbackBanner>써봄이가 피드백을 준비했어요!</FeedbackBanner>
           <div className="flex-1">
-            {!isLoading && AIFeedBackData?.status === 'COMPLETED' && (
+            {AIFeedBackData?.status === 'COMPLETED' && (
               <FeedbackBox
                 strength={AIFeedBackData?.strength}
                 improvementPoints={AIFeedBackData?.improvementPoints}
@@ -86,7 +83,6 @@ export const FeedBack = () => {
           </div>
         </div>
       </WriteLayout>
-      {(isLoading || isProcessing) && <FeedbackLoading />}
     </>
   );
 };

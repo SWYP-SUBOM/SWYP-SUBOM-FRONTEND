@@ -61,10 +61,12 @@ export const TitleHeader = ({
   return (
     <div className="flex justify-between w-full px-4 mt-2.5 mb-10 ">
       <div className="w-9 h-6" />
-      <div className={`B02_B text-center translate-y-1 ${isFeed ? 'text-gray-900' : 'text-white'}`}>
+      <div
+        className={`B02_B text-center translate-y-1 pt-1 ${isFeed ? 'text-gray-900' : 'text-white'}`}
+      >
         {title}
       </div>
-      <button className="cursor-pointer ">
+      <button className="cursor-pointer pt-1" onClick={() => navigate('/notification')}>
         <img src={isFeed ? alarm_black : alarm_white} className="w-9 h-6 " alt="알림" />
       </button>
     </div>

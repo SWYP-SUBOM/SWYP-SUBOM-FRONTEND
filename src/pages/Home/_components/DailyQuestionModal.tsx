@@ -54,6 +54,7 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
               draftPostId: draftPostId,
               isTodayDraft: isTodayDraft,
               aiFeedbackId: todayPost.aiFeedbackId,
+              topicType: dailyQuestionData?.topicType,
             },
           });
         }
@@ -67,6 +68,7 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
               topicName: dailyQuestionData?.topicName,
               topicId: dailyQuestionData?.topicId,
               categoryId: dailyQuestionData?.categoryId,
+              topicType: dailyQuestionData?.topicType,
             },
           });
         } catch (error) {
@@ -80,6 +82,7 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
           topicName: dailyQuestionData?.topicName,
           topicId: dailyQuestionData?.topicId,
           categoryId: dailyQuestionData?.categoryId,
+          topicType: dailyQuestionData?.topicType,
         },
       });
     }

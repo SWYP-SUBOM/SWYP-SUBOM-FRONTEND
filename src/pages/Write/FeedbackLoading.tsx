@@ -4,8 +4,7 @@ import penFeedbackLoadingAnimation from '../../assets/Write/pen-feedback-loading
 
 export const FeedbackLoading = () => {
   return createPortal(
-    <div className="fixed inset-0 flex items-center justify-center max-w-[380px] mx-auto backdrop-blur-[15px]">
-      <div className="absolute inset-0 bg-[#121212]/70"></div>
+    <div className="fixed inset-0 flex items-center justify-center max-w-[380px] mx-auto bg-[#121212]/70 backdrop-blur-[15px] z-300">
       <div className="relative flex flex-col items-center justify-center text-center gap-2">
         <Lottie
           animationData={penFeedbackLoadingAnimation}

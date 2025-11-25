@@ -38,9 +38,9 @@ export const CategoryBoxItem: Record<string, CategoryBoxItemType> = {
     icon: value,
     column: 2,
   },
-  '취미·취향': {
+  '시대·사회': {
     categoryId: 5,
-    title: '취미·취향',
+    title: '시대·사회',
     titleColor: '#693333',
     size: 'large',
     icon: hobby,
