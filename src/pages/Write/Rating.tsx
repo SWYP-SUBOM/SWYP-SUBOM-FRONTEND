@@ -1,5 +1,5 @@
 import { createPortal } from 'react-dom';
-import gradeBg from '../../assets/Write/grade-bg.png';
+import gradeBg from '../../assets/Write/grade-bg.svg';
 import { RatingText } from '../../utils/RatingText';
 
 export function Rating({ grade }: { grade: string }) {
