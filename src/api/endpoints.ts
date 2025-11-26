@@ -32,7 +32,6 @@ export const POST_ENDPOINTS = {
 
 export const NOTIFICATION_ENDPOINTS = {
   GET_NOTIFICATION: '/api/notifications',
-  NOTIFICATION_STREAM: '/api/notifications/stream',
 } as const;
 
 export const ENDPOINTS = {

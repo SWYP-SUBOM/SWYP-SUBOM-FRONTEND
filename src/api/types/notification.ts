@@ -22,22 +22,3 @@ export interface NotificationResponse {
     hasMore: boolean;
   };
 }
-
-export interface NotificationStreamEvent {
-  event: 'snapshot' | 'notification';
-  data: {
-    unreadCount?: number;
-    notification?: {
-      notificationId: number;
-      reactionName: ReactionType;
-      reactionCount: number;
-      updatedAt: string;
-      category: {
-        categoryId: number;
-        categoryName: CategoryNameType;
-      };
-      postId: number;
-      read: boolean;
-    };
-  };
-}

@@ -1,40 +1,26 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import type { getAIfeedBackResponse } from '../../api/types/feedBack';
 import type { CategoryNameType } from '../../constants/Category';
-import { useGetAIFeedBack } from '../../hooks/FeedBack/uesGetAIFeedBack';
 import { useGetPost } from '../../hooks/Post/useGetPost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { WriteLayout } from '../../layout/WriteLayout';
-import { FeedbackLoading } from '../Write/FeedbackLoading';
-import { Rating } from '../Write/Rating';
 import { FeedbackBanner } from './_components/FeedbackBanner';
 import { FeedbackBox } from './_components/FeedbackBox';
 
 export const FeedBack = () => {
   const location = useLocation();
-  const { postId, aiFeedbackId } = location.state as {
+  const { AIFeedBackData, postId, aiFeedbackId } = location.state as {
+    AIFeedBackData: getAIfeedBackResponse['data'];
     postId: number;
     aiFeedbackId: number;
   };
 
-  const { data: AIFeedBackData, isLoading } = useGetAIFeedBack(postId, aiFeedbackId);
   const updateAndSaveMutation = useUpdateAndSavePost();
   const { data: postData } = useGetPost(postId);
 
-  const isProcessing = AIFeedBackData?.status === 'PROCESSING';
-  const grade = AIFeedBackData?.grade;
-  const [showRating, setShowRating] = useState(true);
-
-  useEffect(() => {
-    if (!isProcessing && grade) {
-      const timer = setTimeout(() => setShowRating(false), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [isProcessing, grade]);
-
   const content = postData?.content ?? '';
-  const showLoading = isProcessing || isLoading;
 
   const { categoryName, topicName } = useParams<{
     categoryName: CategoryNameType;
@@ -104,8 +90,6 @@ export const FeedBack = () => {
           </div>
         </motion.div>
       </WriteLayout>
-      {showLoading && <FeedbackLoading />}
-      {!isProcessing && grade && showRating && <Rating grade={grade} />}
     </>
   );
 };
