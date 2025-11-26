@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import type { getAIfeedBackResponse } from '../../api/types/feedBack';
 import type { CategoryNameType } from '../../constants/Category';

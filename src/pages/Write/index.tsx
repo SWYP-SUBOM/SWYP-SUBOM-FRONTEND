@@ -96,7 +96,6 @@ export const Write = () => {
   const navigate = useNavigate();
   /* 피드백 받기 요청 보낼때 저장을 안했으면 저장 후 피드백 요청*/
   const movetoGetFeedback = () => {
-    setIsLoading(true);
     const saveAndRequestFeedback = (postId: number) => {
       postAIFeedBackMutation.mutate(postId, {
         onSuccess: (response) => {
