@@ -74,11 +74,11 @@ export const useDeleteReaction = (postId: number) => {
       const previousPost = queryClient.getQueryData<PostResponse>(queryKey);
 
       if (!previousPost) return { previousPost: undefined };
-      queryClient.setQueryData<PostResponse>(queryKey, (old) => {
+      queryClient.setQueryData<PostResponse>(['post', postId], (old) => {
         if (!old) return old;
 
         const currentReactionId = old.data.myReaction?.reactionId;
-        const newReactions = old.data.reactions.map((reaction) => {
+        const newReactions = (old.data.reactions ?? []).map((reaction) => {
           if (reaction.reactionId === currentReactionId) {
             return { ...reaction, reactionCount: reaction.reactionCount - 1 };
           }
