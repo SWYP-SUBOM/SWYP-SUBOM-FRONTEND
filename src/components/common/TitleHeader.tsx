@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import alarm_black from '../../assets/Header/alarm.svg';
 import alarm_white from '../../assets/Header/alarm_white.svg';
 import left from '../../assets/Header/left.svg';
+import { useNotificationStore } from '../../store/useNotificationStore';
 
 interface TitleHeaderProps {
   headerWithNoalarm?: boolean;
@@ -19,6 +21,12 @@ export const TitleHeader = ({
   onlyNavigateBack = false,
 }: TitleHeaderProps) => {
   const navigate = useNavigate();
+  const unreadCount = useNotificationStore((state) => state.unreadCount);
+
+  // 디버깅: unreadCount 변경 추적
+  useEffect(() => {
+    console.log('TitleHeader: unreadCount 변경됨', unreadCount);
+  }, [unreadCount]);
 
   const handleBack = () => {
     if (onBack) {
@@ -66,8 +74,11 @@ export const TitleHeader = ({
       >
         {title}
       </div>
-      <button className="cursor-pointer pt-1" onClick={() => navigate('/notification')}>
+      <button className="cursor-pointer pt-1 relative" onClick={() => navigate('/notification')}>
         <img src={isFeed ? alarm_black : alarm_white} className="w-9 h-6 " alt="알림" />
+        {unreadCount > 0 && (
+          <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
+        )}
       </button>
     </div>
   );
