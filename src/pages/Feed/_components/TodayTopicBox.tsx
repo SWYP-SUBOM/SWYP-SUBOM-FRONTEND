@@ -13,30 +13,35 @@ export const TodayTopicBoxMap = {
     title: '일상',
     bgColor: 'bg-[#F2F6FF]',
     icon: daily,
+    iconClass: 'w-[88px] h-[90px]',
   },
   인간관계: {
     categoryId: 2,
     title: '인간관계',
     bgColor: 'bg-[#FCF2FF]',
     icon: relationship,
+    iconClass: 'w-[92px] h-[88px]',
   },
   '문화·트렌드': {
     categoryId: 3,
     title: '문화·트렌드',
     bgColor: 'bg-[#F2FFFE]',
     icon: culture,
+    iconClass: 'w-[86px] h-[76px]',
   },
   가치관: {
     categoryId: 4,
     title: '가치관',
     bgColor: 'bg-[#FFFDF2]',
     icon: value,
+    iconClass: 'w-[85px] h-[81px]',
   },
   '시대·사회': {
     categoryId: 5,
     title: '시대·사회',
     bgColor: 'bg-[#FFF2F2]',
     icon: hobby,
+    iconClass: 'w-[107px] h-[115px]',
   },
 };
 
@@ -61,7 +66,10 @@ export const TodayTopicBox = ({
       <div className={`${categoryData.bgColor} relative w-[380px] h-[270px] px-4 py-7`}>
         <div className="B01_B text-gray-900 pb-3">오늘의 주제</div>
         <div className="B01_B text-gray-800 pb-[23px]">{topicText}</div>
-        <img src={categoryData.icon} className="absolute right-5 bottom-5 w-[87px] h-[86px]"></img>
+        <img
+          src={categoryData.icon}
+          className={`absolute right-5 bottom-5 ${categoryData.iconClass}`}
+        ></img>
         {isLoggedIn && (
           <div
             className="absolute bottom-5 left-4 flex items-center gap-1 cursor-pointer"

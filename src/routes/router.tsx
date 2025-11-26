@@ -29,7 +29,6 @@ import { MyReactions } from '../pages/Profile/MyReactions';
 import { Profile } from '../pages/Profile/Profile';
 import { Write } from '../pages/Write';
 import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
-import { Rating } from '../pages/Write/Rating';
 
 export const router = createBrowserRouter([
   // 홈 페이지
@@ -111,10 +110,6 @@ export const router = createBrowserRouter([
           {
             path: 'profile/myinfo',
             element: <MyInfo />,
-          },
-          {
-            path: 'rating',
-            element: <Rating />,
           },
           {
             path: 'profile/my-reactions',
