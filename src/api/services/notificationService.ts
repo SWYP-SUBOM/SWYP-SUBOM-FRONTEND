@@ -1,3 +1,4 @@
+import EventSourcePolyfill from 'eventsource-polyfill';
 import { apiClient } from '../../utils/apiClient';
 import { NOTIFICATION_ENDPOINTS } from '../endpoints';
 import type { NotificationResponse } from '../types/notification';
