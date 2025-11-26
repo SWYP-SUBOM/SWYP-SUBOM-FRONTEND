@@ -1,24 +1,40 @@
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import type { getAIfeedBackResponse } from '../../api/types/feedBack';
 import type { CategoryNameType } from '../../constants/Category';
+import { useGetAIFeedBack } from '../../hooks/FeedBack/uesGetAIFeedBack';
 import { useGetPost } from '../../hooks/Post/useGetPost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { WriteLayout } from '../../layout/WriteLayout';
+import { FeedbackLoading } from '../Write/FeedbackLoading';
+import { Rating } from '../Write/Rating';
 import { FeedbackBanner } from './_components/FeedbackBanner';
 import { FeedbackBox } from './_components/FeedbackBox';
 
 export const FeedBack = () => {
   const location = useLocation();
-  const { AIFeedBackData, postId, aiFeedbackId } = location.state as {
-    AIFeedBackData: getAIfeedBackResponse['data'];
+  const { postId, aiFeedbackId } = location.state as {
     postId: number;
     aiFeedbackId: number;
   };
 
+  const { data: AIFeedBackData, isLoading } = useGetAIFeedBack(postId, aiFeedbackId);
   const updateAndSaveMutation = useUpdateAndSavePost();
   const { data: postData } = useGetPost(postId);
 
+  const isProcessing = AIFeedBackData?.status === 'PROCESSING';
+  const grade = AIFeedBackData?.grade;
+  const [showRating, setShowRating] = useState(true);
+
+  useEffect(() => {
+    if (!isProcessing && grade) {
+      const timer = setTimeout(() => setShowRating(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isProcessing, grade]);
+
   const content = postData?.content ?? '';
+  const showLoading = isProcessing || isLoading;
 
   const { categoryName, topicName } = useParams<{
     categoryName: CategoryNameType;
@@ -54,7 +70,12 @@ export const FeedBack = () => {
   return (
     <>
       <WriteLayout isSaveDisabled={true}>
-        <div className="relative min-h-[100dvh] flex flex-col pt-[30px] min-h-[100dvh] px-4 bg-[#F3F5F8]">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="relative min-h-[100dvh] flex flex-col pt-[30px] min-h-[100dvh] px-4 bg-[#F3F5F8]"
+        >
           <FeedbackBanner>써봄이가 피드백을 준비했어요!</FeedbackBanner>
           <div className="flex-1">
             {AIFeedBackData?.status === 'COMPLETED' && (
@@ -81,8 +102,10 @@ export const FeedBack = () => {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
       </WriteLayout>
+      {showLoading && <FeedbackLoading />}
+      {!isProcessing && grade && showRating && <Rating grade={grade} />}
     </>
   );
 };
