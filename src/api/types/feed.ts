@@ -30,6 +30,7 @@ export interface FeedResponse {
       updatedAt: string;
       totalReactions: number;
       postViews: number;
+      isMe?: boolean;
     }[];
     curUpdatedAt: string;
     curPostId: number;

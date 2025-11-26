@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { ReactionButtons } from '../../constants/ReactionButtons';
 import { useGetPost } from '../../hooks/Post/useGetPost';
+import type { ReactionNameType } from '../../hooks/Post/useToggleReaction';
 import { FeedLayout } from '../../layout/FeedLayout';
 import { CalendarPostView } from '../Calendar/CalendarPostView';
 import { PostDetailBox } from './_components/PostDetailBox';
@@ -24,7 +25,7 @@ export const PostDetail = () => {
     <>
       <FeedLayout header={<TitleHeader onlyNavigateBack={true} />}>
         <div className="px-4">
-          {postData && (
+          {postData ? (
             <PostDetailBox
               content={postData.content}
               updatedAt={postData.updatedAt}
@@ -32,7 +33,9 @@ export const PostDetail = () => {
               writer={postData.writer.name}
               reactions={postData.reactions}
               viewCount={postData.viewCount}
-            ></PostDetailBox>
+            />
+          ) : (
+            <div className="flex flex-col justify-between w-full max-h-[70vh] min-h-[70vh] px-4 py-4 bg-[#FFFFFF] rounded-xl border border-[#D0D2D9]"></div>
           )}
           <div className="justify-end flex gap-[22px] pt-10">
             {ReactionButtons.map((reactionButton) => (
@@ -42,7 +45,7 @@ export const PostDetail = () => {
                   icon={reactionButton.icon}
                   officon={reactionButton.officon}
                   isReactioned={myReaction === reactionButton.reactionValue}
-                  reactionValue={reactionButton.reactionValue}
+                  reactionValue={reactionButton.reactionValue as ReactionNameType}
                   postId={postId}
                 ></ReactionButton>
               </div>

@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import type { getAIfeedBackResponse } from '../../api/types/feedBack';
 import type { CategoryNameType } from '../../constants/Category';
@@ -54,7 +55,12 @@ export const FeedBack = () => {
   return (
     <>
       <WriteLayout isSaveDisabled={true}>
-        <div className="relative min-h-[100dvh] flex flex-col pt-[30px] min-h-[100dvh] px-4 bg-[#F3F5F8]">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="relative min-h-[100dvh] flex flex-col pt-[30px] min-h-[100dvh] px-4 bg-[#F3F5F8]"
+        >
           <FeedbackBanner>써봄이가 피드백을 준비했어요!</FeedbackBanner>
           <div className="flex-1">
             {AIFeedBackData?.status === 'COMPLETED' && (
@@ -81,7 +87,7 @@ export const FeedBack = () => {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
       </WriteLayout>
     </>
   );

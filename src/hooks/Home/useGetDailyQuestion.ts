@@ -3,7 +3,7 @@ import { homeService } from '../../api/services/homeService';
 
 export const useGetDailyQuestion = (categoryId: number) => {
   return useQuery({
-    queryKey: ['dailyquestion'],
+    queryKey: ['dailyquestion', categoryId],
     queryFn: () => homeService.getDailyQuestion(categoryId),
   });
 };

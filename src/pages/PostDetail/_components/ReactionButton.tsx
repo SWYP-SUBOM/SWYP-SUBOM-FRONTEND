@@ -1,10 +1,14 @@
-import { useDeleteReaction, usePutReaction } from '../../../hooks/Post/useToggleReaction';
+import {
+  useDeleteReaction,
+  usePutReaction,
+  type ReactionNameType,
+} from '../../../hooks/Post/useToggleReaction';
 
 export type ReactionButtonProps = {
   reactionName: string;
   icon: string;
   officon: string;
-  reactionValue: string;
+  reactionValue: ReactionNameType;
   isReactioned: boolean;
   postId: number;
 };
@@ -20,7 +24,7 @@ export function ReactionButton({
   const putReaciontMutation = usePutReaction(postId);
   const deleteReaciontMutation = useDeleteReaction(postId);
 
-  const handleClickReaction = (reactionValue: string) => {
+  const handleClickReaction = (reactionValue: ReactionNameType) => {
     if (!isReactioned) {
       putReaciontMutation.mutate(
         { reactionTypeName: reactionValue },

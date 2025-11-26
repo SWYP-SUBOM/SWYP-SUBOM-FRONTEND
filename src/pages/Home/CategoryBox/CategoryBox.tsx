@@ -1,4 +1,6 @@
+import { homeService } from '../../../api/services/homeService';
 import { useModal } from '../../../hooks/useModal';
+import { queryClient } from '../../../main';
 import { useTodayPostInfoStore } from '../../../store/useTodayPostInfo';
 import { CompleteDailyQuestionModal } from '../_components/CompleteDailyQuestionModal';
 import { DailyQuestionModal } from '../_components/DailyQuestionModal';
@@ -16,11 +18,19 @@ export const CategoryBox = ({
   const todayPost = useTodayPostInfoStore((state) => state.todayPost);
   const isTodayPublished = todayPost.postStatus === 'PUBLISHED';
 
+  const prefetchQuestion = (categoryId: number) => {
+    queryClient.prefetchQuery({
+      queryKey: ['dailyquestion', categoryId],
+      queryFn: () => homeService.getDailyQuestion(categoryId),
+    });
+  };
+
   const handleModalOpen = (categoryId: number) => {
     if (isTodayPublished) {
       openModal(<CompleteDailyQuestionModal />);
     } else {
-      openModal(<DailyQuestionModal categoryId={categoryId} />);
+      prefetchQuestion(categoryId);
+      openModal(<DailyQuestionModal categoryId={categoryId} key={categoryId} />);
     }
   };
 

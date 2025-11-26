@@ -17,8 +17,8 @@ export const Trigger = ({ children, categoryId }: { children: ReactNode; categor
       className={`cursor-pointer items-center relative pb-[3px] text-center transition-colors
       ${
         isActive
-          ? 'text-blue-500 B02_B'
-          : 'B02_M text-gray-500 hover:!text-gray-750 active:!text-gray-750'
+          ? 'text-blue-500 B02_B  whitespace-nowrap'
+          : 'B02_M text-gray-500 hover:!text-gray-750 active:!text-gray-750  whitespace-nowrap'
       }
     `}
     >
