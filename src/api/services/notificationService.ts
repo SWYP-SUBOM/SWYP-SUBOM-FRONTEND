@@ -1,6 +1,7 @@
 import { apiClient } from '../../utils/apiClient';
 import { NOTIFICATION_ENDPOINTS } from '../endpoints';
-import type { NotificationResponse } from '../types/notification';
+import { getAccessToken } from '../../utils/api';
+import type { NotificationResponse, NotificationStreamEvent } from '../types/notification';
 
 export const getNotification = async (
   limit = 10,
@@ -19,6 +20,86 @@ export const getNotification = async (
   return response.data;
 };
 
+export const createNotificationStream = (
+  onMessage: (event: NotificationStreamEvent) => void,
+  onError: (error: Event) => void,
+): { close: () => void } | null => {
+  const token = getAccessToken();
+  if (!token) {
+    return null;
+  }
+
+  const baseURL = import.meta.env.VITE_API_BASE_URL || '';
+  const url = `${baseURL}${NOTIFICATION_ENDPOINTS.NOTIFICATION_STREAM}`;
+
+  const abortController = new AbortController();
+
+  const fetchStream = async () => {
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'text/event-stream',
+        },
+        signal: abortController.signal,
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) {
+          onError(new Event('unauthorized'));
+          return;
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+
+      if (!reader) {
+        throw new Error('Response body가 없습니다');
+      }
+
+      let buffer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+
+        if (done) {
+          break;
+        }
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6)) as NotificationStreamEvent;
+              onMessage(data);
+            } catch (error) {}
+          }
+        }
+      }
+    } catch (error) {
+      if (error instanceof Error && error.name === 'AbortError') {
+        return;
+      }
+      onError(error instanceof Event ? error : new Event('error'));
+    }
+  };
+
+  fetchStream();
+
+  return {
+    close: () => {
+      abortController.abort();
+    },
+  };
+};
+
 export const NotificationService = {
   getNotification,
+  createNotificationStream,
 };

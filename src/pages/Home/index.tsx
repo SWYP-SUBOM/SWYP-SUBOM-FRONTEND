@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useGetHome } from '../../hooks/Home/useGetHome';
-// import { useNotificationStream } from '../../hooks/Notification/useNotificationStream'; // SSE 관련 코드 주석처리
+import { useNotificationStream } from '../../hooks/Notification/useNotificationStream';
 import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { useGetUserName } from '../../hooks/useGetUserName';
 import { useModal } from '../../hooks/useModal';
@@ -19,8 +19,7 @@ const Home = () => {
   const { data: homeData } = useGetHome();
   const setTodayPostInfo = useTodayPostInfoStore((state) => state.setTodayPostInfo);
 
-  // Home 페이지에 도착했을 때만 SSE 알림 스트림 연결
-  // useNotificationStream(); // SSE 관련 코드 주석처리
+  useNotificationStream();
 
   const isTodayDraft = homeData?.todayPost?.postStatus === 'DRAFT';
   const draftPostId = homeData?.todayPost?.postId;

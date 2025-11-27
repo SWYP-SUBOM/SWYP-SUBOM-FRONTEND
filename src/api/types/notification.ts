@@ -22,3 +22,11 @@ export interface NotificationResponse {
     hasMore: boolean;
   };
 }
+
+export interface NotificationStreamEvent {
+  event: 'snapshot' | 'notification';
+  data: {
+    unreadCount?: number;
+    [key: string]: unknown;
+  };
+}
