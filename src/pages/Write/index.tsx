@@ -15,6 +15,7 @@ import { useModal } from '../../hooks/useModal';
 import { WriteLayout } from '../../layout/WriteLayout';
 import { useBottomSheetStore } from '../../store/useBottomSheetStore';
 import { SpeechBubble } from './_components/SpeechBubble';
+import { FeedbackLoading } from './FeedbackLoading';
 import { GuideModal } from './GuideModal/GuideModal';
 
 export const Write = () => {
@@ -35,6 +36,7 @@ export const Write = () => {
   const [isBubbleOpen, setIsBubbleOpen] = useState(false);
   const hasClosedBubble = useRef(false);
   const [isDirty, setIsDirty] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [currentPostId, setCurrentPostId] = useState(0);
   const [isFirst, setIsFirst] = useState(true);
@@ -96,11 +98,15 @@ export const Write = () => {
   const navigate = useNavigate();
   /* 피드백 받기 요청 보낼때 저장을 안했으면 저장 후 피드백 요청*/
   const movetoGetFeedback = () => {
+    setIsLoading(true);
     const saveAndRequestFeedback = (postId: number) => {
       postAIFeedBackMutation.mutate(postId, {
         onSuccess: (response) => {
           const aiFeedbackId = response.aiFeedbackId;
-          navigate(`/rating`, { state: { postId, aiFeedbackId, categoryName, topicName } });
+          navigate(
+            `/feedback/${encodeURIComponent(categoryName)}/${encodeURIComponent(topicName)}`,
+            { state: { postId, aiFeedbackId } },
+          );
         },
         onError: () => console.log('저장 에러'),
       });
@@ -257,6 +263,7 @@ export const Write = () => {
         </div>
       </WriteLayout>
       {isOpen && Content}
+      {isLoading && <FeedbackLoading />}
     </>
   );
 };
