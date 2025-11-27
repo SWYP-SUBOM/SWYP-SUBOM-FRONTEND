@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useGetHome } from '../../hooks/Home/useGetHome';
-import { useNotificationStream } from '../../hooks/Notification/useNotificationStream';
 import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { useGetUserName } from '../../hooks/useGetUserName';
 import { useModal } from '../../hooks/useModal';
@@ -16,13 +15,8 @@ const Home = () => {
   const { isDraftSheetOpened, setDraftSheetOpened } = useHomeDraftSheetStore();
 
   const { data: userNameData } = useGetUserName();
-  const { data: homeData, isSuccess: isHomeDataLoaded } = useGetHome();
+  const { data: homeData } = useGetHome();
   const setTodayPostInfo = useTodayPostInfoStore((state) => state.setTodayPostInfo);
-
-  useNotificationStream({
-    waitForHomeData: true,
-    homeDataLoaded: isHomeDataLoaded,
-  });
 
   const isTodayDraft = homeData?.todayPost?.postStatus === 'DRAFT';
   const draftPostId = homeData?.todayPost?.postId;
