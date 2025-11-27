@@ -10,7 +10,12 @@ let globalEventSource: { close: () => void } | null = null;
 let globalConnectTimeout: number | null = null;
 let connectionCount = 0;
 
-export const useNotificationStream = () => {
+interface UseNotificationStreamOptions {
+  waitForHomeData?: boolean;
+  homeDataLoaded?: boolean;
+}
+
+export const useNotificationStream = (options?: UseNotificationStreamOptions) => {
   const { isLoggedIn } = useAuthStore();
   const setUnreadCount = useNotificationStore((state) => state.setUnreadCount);
   const incrementUnreadCount = useNotificationStore((state) => state.incrementUnreadCount);
@@ -42,6 +47,12 @@ export const useNotificationStream = () => {
     if (globalEventSource) {
       return;
     }
+
+    if (options?.waitForHomeData && !options?.homeDataLoaded) {
+      return;
+    }
+
+    const delay = options?.homeDataLoaded ? 1000 : 2000;
 
     globalConnectTimeout = setTimeout(() => {
       if (!isMountedRef.current || globalEventSource) {
@@ -79,7 +90,7 @@ export const useNotificationStream = () => {
       if (stream) {
         globalEventSource = stream;
       }
-    }, 100);
+    }, delay);
 
     return () => {
       isMountedRef.current = false;
@@ -100,7 +111,14 @@ export const useNotificationStream = () => {
         }
       }
     };
-  }, [isLoggedIn, setUnreadCount, incrementUnreadCount, queryClient]);
+  }, [
+    isLoggedIn,
+    options?.waitForHomeData,
+    options?.homeDataLoaded,
+    setUnreadCount,
+    incrementUnreadCount,
+    queryClient,
+  ]);
 
   return globalEventSource;
 };

@@ -16,10 +16,13 @@ const Home = () => {
   const { isDraftSheetOpened, setDraftSheetOpened } = useHomeDraftSheetStore();
 
   const { data: userNameData } = useGetUserName();
-  const { data: homeData } = useGetHome();
+  const { data: homeData, isSuccess: isHomeDataLoaded } = useGetHome();
   const setTodayPostInfo = useTodayPostInfoStore((state) => state.setTodayPostInfo);
 
-  useNotificationStream();
+  useNotificationStream({
+    waitForHomeData: true,
+    homeDataLoaded: isHomeDataLoaded,
+  });
 
   const isTodayDraft = homeData?.todayPost?.postStatus === 'DRAFT';
   const draftPostId = homeData?.todayPost?.postId;
