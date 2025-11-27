@@ -6,31 +6,48 @@ import { useNotificationStore } from '../../store/useNotificationStore';
 import { getAccessToken } from '../../utils/api';
 import type { NotificationStreamEvent } from '../../api/types/notification';
 
+let globalEventSource: { close: () => void } | null = null;
+let globalConnectTimeout: number | null = null;
+let connectionCount = 0;
+
 export const useNotificationStream = () => {
   const { isLoggedIn } = useAuthStore();
   const setUnreadCount = useNotificationStore((state) => state.setUnreadCount);
   const incrementUnreadCount = useNotificationStore((state) => state.incrementUnreadCount);
   const queryClient = useQueryClient();
-  const streamRef = useRef<{ close: () => void } | null>(null);
+  const isMountedRef = useRef(true);
 
   useEffect(() => {
+    isMountedRef.current = true;
     const token = getAccessToken();
     const hasValidAuth = isLoggedIn && !!token;
 
     if (!hasValidAuth) {
-      if (streamRef.current) {
-        streamRef.current.close();
-        streamRef.current = null;
+      // 로그아웃 시 전역 연결 종료
+      if (globalEventSource) {
+        globalEventSource.close();
+        globalEventSource = null;
+      }
+      if (globalConnectTimeout) {
+        clearTimeout(globalConnectTimeout);
+        globalConnectTimeout = null;
       }
       setUnreadCount(0);
+      connectionCount = 0;
       return;
     }
 
-    if (streamRef.current) {
+    connectionCount++;
+
+    if (globalEventSource) {
       return;
     }
 
-    const connectTimeout = setTimeout(() => {
+    globalConnectTimeout = setTimeout(() => {
+      if (!isMountedRef.current || globalEventSource) {
+        return;
+      }
+
       const currentToken = getAccessToken();
       if (!currentToken) {
         return;
@@ -52,29 +69,38 @@ export const useNotificationStream = () => {
       };
 
       const handleError = (_error: Event) => {
-        if (streamRef.current) {
-          streamRef.current.close();
-          streamRef.current = null;
+        if (globalEventSource) {
+          globalEventSource.close();
+          globalEventSource = null;
         }
-
-        return;
       };
 
       const stream = NotificationService.createNotificationStream(handleMessage, handleError);
       if (stream) {
-        streamRef.current = stream;
+        globalEventSource = stream;
       }
     }, 100);
 
     return () => {
-      clearTimeout(connectTimeout);
+      isMountedRef.current = false;
 
-      if (streamRef.current) {
-        streamRef.current.close();
-        streamRef.current = null;
+      if (isLoggedIn && getAccessToken()) {
+        connectionCount--;
+
+        if (connectionCount <= 0) {
+          if (globalConnectTimeout) {
+            clearTimeout(globalConnectTimeout);
+            globalConnectTimeout = null;
+          }
+          if (globalEventSource) {
+            globalEventSource.close();
+            globalEventSource = null;
+          }
+          connectionCount = 0;
+        }
       }
     };
-  }, [isLoggedIn]);
+  }, [isLoggedIn, setUnreadCount, incrementUnreadCount, queryClient]);
 
-  return streamRef.current;
+  return globalEventSource;
 };
