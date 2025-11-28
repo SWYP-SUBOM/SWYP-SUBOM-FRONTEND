@@ -5,11 +5,14 @@ import { useUnregister } from '../../hooks/useUnregister';
 import { InfoCard } from './_components/InfoCard';
 import { ActionButtons } from './_components/ActionButtons';
 import { InfoNotice } from './_components/InfoNotice';
+import { NameChangeModal } from './_components/NameChangeModal';
+import { useModal } from '../../hooks/useModal';
 
 export const MyInfo = () => {
   const { data: meData, isLoading } = useGetMe();
   const logoutMutation = useLogout();
   const unregisterMutation = useUnregister();
+  const { openModal, isOpen, Content } = useModal();
 
   const formatJoinDate = (dateString: string | undefined): string => {
     if (!dateString) return '';
@@ -18,7 +21,9 @@ export const MyInfo = () => {
 
   const joinDate = meData?.date ? `${formatJoinDate(meData.date)} 가입` : '';
 
-  const handleNameChange = () => {};
+  const handleNameChange = () => {
+    openModal(<NameChangeModal currentName={meData?.name || ''} />);
+  };
 
   const handleLogout = () => {
     logoutMutation.mutate();
@@ -48,6 +53,7 @@ export const MyInfo = () => {
       <div className="flex-1" />
       <ActionButtons onLogout={handleLogout} onWithdraw={handleWithdraw} />
       <InfoNotice />
+      {isOpen && Content}
     </div>
   );
 };
