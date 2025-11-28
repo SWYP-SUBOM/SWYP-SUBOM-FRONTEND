@@ -231,9 +231,7 @@ export const Write = () => {
             </button>
             <button
               onMouseEnter={handleButtonTextShow}
-              onTouchStart={handleButtonTextShow}
               onMouseLeave={handleButtonTextHide}
-              onTouchEnd={handleButtonTextHide}
               onClick={() => openGuideModal(topicType)}
               className="absolute  bottom-[92px] right-4 z-50  group"
             >
