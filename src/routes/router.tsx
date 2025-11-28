@@ -3,6 +3,7 @@ import { HomeLayout } from '../layout/HomeLayout';
 import { MobileLayout } from '../layout/MobileLayout';
 import { RootLayout } from '../layout/RootLayout';
 import { Calendar } from '../pages/Calendar/Calendar';
+import { CalendarPostView } from '../pages/Calendar/CalendarPostView';
 import { Complement } from '../pages/Complement';
 import { Complete } from '../pages/Complete';
 import { Feed } from '../pages/Feed';
@@ -136,6 +137,16 @@ export const router = createBrowserRouter([
           {
             path: 'profile',
             element: <Profile />,
+          },
+        ],
+      },
+      {
+        path: '/',
+        element: <MobileLayout showNavBar={false} />,
+        children: [
+          {
+            path: 'calendar/post/:postId',
+            element: <CalendarPostView />,
           },
         ],
       },

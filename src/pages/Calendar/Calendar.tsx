@@ -83,7 +83,9 @@ export const Calendar = () => {
     );
 
     if (clickedDate?.postId) {
-      navigate(`/postdetail/${clickedDate.postId}`);
+      const targetPath = `/calendar/post/${clickedDate.postId}`;
+
+      navigate(targetPath);
     }
   };
 
