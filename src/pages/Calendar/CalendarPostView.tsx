@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
+import { useParams } from 'react-router-dom';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { CategoryChip } from '../../components/common/CategoryChip';
 import type { CategoryNameType } from '../../constants/Category';
@@ -8,12 +9,9 @@ import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { FeedLayout } from '../../layout/FeedLayout';
 import { FeedbackModal } from './_components/FeedbackModal';
 
-interface CalendarPostViewProps {
-  postId: number;
-  clickedDate?: string;
-}
-
-export const CalendarPostView = ({ postId, clickedDate }: CalendarPostViewProps) => {
+export const CalendarPostView = () => {
+  const params = useParams<{ postId: string }>();
+  const postId = Number(params.postId);
   const { openBottomSheet } = useBottomSheet();
   const { data: editPostData } = useGetDraftPost(postId, 'edit', {
     enabled: !!postId,
@@ -25,7 +23,7 @@ export const CalendarPostView = ({ postId, clickedDate }: CalendarPostViewProps)
     return format(date, `yyyy.M.d(${dayOfWeek})`, { locale: ko });
   };
 
-  const displayDate = clickedDate || editPostData?.updatedAt;
+  const displayDate = editPostData?.updatedAt;
 
   const handleViewFeedback = () => {
     if (editPostData?.topicInfo && editPostData?.aiFeedbackInfo) {
@@ -45,7 +43,13 @@ export const CalendarPostView = ({ postId, clickedDate }: CalendarPostViewProps)
   };
 
   if (!editPostData) {
-    return null;
+    return (
+      <FeedLayout header={<TitleHeader onlyNavigateBack={true} title="" />}>
+        <div className="px-4 pb-24 pt-5 bg-[#F3F5F8] flex items-center justify-center min-h-[400px]">
+          <div className="text-gray-500">로딩 중...</div>
+        </div>
+      </FeedLayout>
+    );
   }
 
   return (
