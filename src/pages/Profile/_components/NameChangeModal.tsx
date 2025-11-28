@@ -4,7 +4,6 @@ import { useGetMe } from '../../../hooks/useGetMe';
 import { nameSchema, NAME_MAX_LENGTH, NAME_PLACEHOLDER } from '../../../schemas/nameSchema';
 import { Modal } from '../../../components/Modal/Modal';
 import { useModal } from '../../../hooks/useModal';
-import { Button } from '../../../components/common/Button';
 
 interface NameChangeModalProps {
   currentName: string;
