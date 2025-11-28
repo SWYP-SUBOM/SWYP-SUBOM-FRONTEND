@@ -444,6 +444,24 @@ export const createNotificationStream = (
           }
           reader = null;
         }
+      } finally {
+        // Reader 리소스 정리
+        if (reader) {
+          try {
+            reader.releaseLock();
+          } catch (e) {
+            // 이미 해제된 경우 무시
+          }
+          reader = null;
+        }
+      }
+
+      // 연결이 정상적으로 종료된 경우 (done === true)
+      // 재연결 시도 (수동으로 닫힌 경우가 아닐 때만)
+      if (!isClosed) {
+        reconnectTimeout = window.setTimeout(() => {
+          fetchStream();
+        }, 3000); // 3초 후 재연결
       }
 
       // 연결이 정상적으로 종료된 경우 (done === true)
