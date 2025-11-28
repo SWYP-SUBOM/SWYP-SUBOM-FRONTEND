@@ -16,7 +16,8 @@ export const CategoryBox = ({
   const { openModal } = useModal();
 
   const todayPost = useTodayPostInfoStore((state) => state.todayPost);
-  const isTodayPublished = todayPost.postStatus === 'PUBLISHED';
+  const isTodayPublished =
+    todayPost.postStatus === 'PUBLISHED' || todayPost.postStatus === 'PUBLISHED_WITHCLICK';
 
   const prefetchQuestion = (categoryId: number) => {
     queryClient.prefetchQuery({
