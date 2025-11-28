@@ -1,9 +1,17 @@
+import { useEffect } from 'react';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { useGetNotification } from '../../hooks/Notification/useGetNotification';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll';
+import { useNotificationStore } from '../../store/useNotificationStore';
 import { NotificationBox } from './_components/NotificationBox';
 
 export function Notification() {
+  const resetUnreadCount = useNotificationStore((state) => state.resetUnreadCount);
+
+  useEffect(() => {
+    // 알림 페이지에 들어오면 알림 카운트 리셋
+    resetUnreadCount();
+  }, [resetUnreadCount]);
   const {
     data: notificationData,
     fetchNextPage,
