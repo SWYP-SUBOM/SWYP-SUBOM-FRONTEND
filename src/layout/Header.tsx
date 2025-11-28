@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import alarm from '../assets/Header/alarm.svg';
-import alarm_action from '../assets/Header/alarm_action.svg';
 import logoImg from '../assets/Header/logo-img.svg';
 import logoName from '../assets/Header/logo-name.png';
 import { useNotificationStore } from '../store/useNotificationStore';
@@ -16,12 +15,11 @@ export const Header = () => {
           <img src={logoImg} className="w-9 h-6" />
           <img src={logoName} className="w-11 h-6" />
         </div>
-        <div onClick={() => navigate('/notification')}>
-          <img
-            src={unreadCount > 0 ? alarm_action : alarm}
-            className="w-9 h-6 cursor-pointer"
-            alt="알림"
-          />
+        <div className="relative cursor-pointer" onClick={() => navigate('/notification')}>
+          <img src={alarm} className="w-9 h-6" alt="알림" />
+          {unreadCount > 0 && (
+            <div className="absolute -top-1 right-2 w-2 h-2 bg-red-500 rounded-full" />
+          )}
         </div>
       </div>
     </>

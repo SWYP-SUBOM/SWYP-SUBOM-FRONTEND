@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import alarm_black from '../../assets/Header/alarm.svg';
 import alarm_white from '../../assets/Header/alarm_white.svg';
-import alarm_action from '../../assets/Header/alarm_action.svg';
 import left from '../../assets/Header/left.svg';
 import { useNotificationStore } from '../../store/useNotificationStore';
 
@@ -22,6 +21,8 @@ export const TitleHeader = ({
 }: TitleHeaderProps) => {
   const navigate = useNavigate();
   const unreadCount = useNotificationStore((state) => state.unreadCount);
+  const isFeed = path === 'feed';
+  const alarmIcon = isFeed ? alarm_black : alarm_white;
 
   const handleBack = () => {
     if (onBack) {
@@ -30,8 +31,6 @@ export const TitleHeader = ({
       navigate(-1);
     }
   };
-
-  const isFeed = path === 'feed';
 
   if (headerWithNoalarm) {
     return (
@@ -69,12 +68,11 @@ export const TitleHeader = ({
       >
         {title}
       </div>
-      <button className="cursor-pointer pt-1" onClick={() => navigate('/notification')}>
-        <img
-          src={unreadCount > 0 ? alarm_action : isFeed ? alarm_black : alarm_white}
-          className="w-9 h-6 "
-          alt="알림"
-        />
+      <button className="relative cursor-pointer pt-1" onClick={() => navigate('/notification')}>
+        <img src={alarmIcon} className="w-9 h-6" alt="알림" />
+        {unreadCount > 0 && (
+          <div className="absolute top-0 right-2 w-2 h-2 bg-red-500 rounded-full" />
+        )}
       </button>
     </div>
   );

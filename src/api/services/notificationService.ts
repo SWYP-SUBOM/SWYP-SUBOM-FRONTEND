@@ -42,6 +42,7 @@ export const createNotificationStream = (
           Authorization: `Bearer ${token}`,
           Accept: 'text/event-stream',
         },
+        credentials: 'include',
         signal: abortController.signal,
       });
 
@@ -61,6 +62,8 @@ export const createNotificationStream = (
       }
 
       let buffer = '';
+      let eventType = '';
+      let eventData = '';
 
       while (true) {
         const { done, value } = await reader.read();
@@ -74,11 +77,23 @@ export const createNotificationStream = (
         buffer = lines.pop() || '';
 
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            try {
-              const data = JSON.parse(line.slice(6)) as NotificationStreamEvent;
-              onMessage(data);
-            } catch (error) {}
+          if (line.startsWith('event:') || line.startsWith('event: ')) {
+            eventType = line.replace(/^event:\s*/, '').trim();
+          } else if (line.startsWith('data:') || line.startsWith('data: ')) {
+            eventData = line.replace(/^data:\s*/, '').trim();
+          } else if (line.trim() === '') {
+            if (eventData) {
+              try {
+                const data = JSON.parse(eventData);
+                const streamEvent: NotificationStreamEvent = {
+                  event: (eventType || 'snapshot') as 'snapshot' | 'notification',
+                  data,
+                };
+                onMessage(streamEvent);
+              } catch (error) {}
+            }
+            eventType = '';
+            eventData = '';
           }
         }
       }

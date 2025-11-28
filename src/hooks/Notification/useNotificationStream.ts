@@ -73,7 +73,7 @@ export const useNotificationStream = (options?: UseNotificationStreamOptions) =>
           const unreadCount = event.data.unreadCount ?? 0;
           setUnreadCount(unreadCount);
           queryClient.invalidateQueries({ queryKey: ['notification'] });
-        } else if (event.event === 'notification') {
+        } else if (event.event === 'notification' || event.event === 'newNotification') {
           incrementUnreadCount();
           queryClient.invalidateQueries({ queryKey: ['notification'] });
         }

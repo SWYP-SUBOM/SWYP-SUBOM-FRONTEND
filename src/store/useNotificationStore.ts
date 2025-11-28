@@ -7,18 +7,19 @@ interface NotificationState {
   resetUnreadCount: () => void;
 }
 
-export const useNotificationStore = create<NotificationState>((set) => ({
+const store = create<NotificationState>((set) => ({
   unreadCount: 0,
   setUnreadCount: (count: number) => {
     set({ unreadCount: count });
   },
   incrementUnreadCount: () => {
-    set((state) => {
-      const newCount = state.unreadCount + 1;
-      return { unreadCount: newCount };
-    });
+    set((state) => ({
+      unreadCount: state.unreadCount + 1,
+    }));
   },
   resetUnreadCount: () => {
     set({ unreadCount: 0 });
   },
 }));
+
+export const useNotificationStore = store;

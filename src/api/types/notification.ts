@@ -24,7 +24,7 @@ export interface NotificationResponse {
 }
 
 export interface NotificationStreamEvent {
-  event: 'snapshot' | 'notification';
+  event: 'snapshot' | 'notification' | 'newNotification';
   data: {
     unreadCount?: number;
     [key: string]: unknown;
