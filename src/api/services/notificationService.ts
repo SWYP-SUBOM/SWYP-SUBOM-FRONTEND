@@ -444,38 +444,35 @@ export const createNotificationStream = (
           }
           reader = null;
         }
-      }
 
-      // 연결이 정상적으로 종료된 경우 (done === true)
-      // 재연결 시도 (수동으로 닫힌 경우가 아닐 때만)
-      if (!isClosed) {
-        // 연결 상태 체크 타이머 취소
-        if (connectionHealthTimer) {
-          clearTimeout(connectionHealthTimer);
-          connectionHealthTimer = null;
-        }
+        // 연결이 정상적으로 종료된 경우 (done === true)
+        // 재연결 시도 (수동으로 닫힌 경우가 아닐 때만)
+        if (!isClosed) {
+          // 연결 상태 체크 타이머 취소
+          if (connectionHealthTimer) {
+            clearTimeout(connectionHealthTimer);
+            connectionHealthTimer = null;
+          }
 
-        // 기존 재연결 타이머가 있으면 취소
-        if (reconnectTimeout) {
-          clearTimeout(reconnectTimeout);
+          // 기존 재연결 타이머가 있으면 취소
+          if (reconnectTimeout) {
+            clearTimeout(reconnectTimeout);
+          }
+          reconnectTimeout = window.setTimeout(() => {
+            reconnectTimeout = null; // 타이머 실행 후 초기화
+            fetchStream().catch((err) => {
+              // 재연결 실패 시 에러 처리
+              console.error('SSE 재연결 실패:', err);
+              onError(new Event('error'));
+            });
+          }, 3000); // 3초 후 재연결
         }
-        reconnectTimeout = window.setTimeout(() => {
-          reconnectTimeout = null; // 타이머 실행 후 초기화
-          fetchStream().catch((err) => {
-            // 재연결 실패 시 에러 처리
-            console.error('SSE 재연결 실패:', err);
-            onError(new Event('error'));
-          });
-        }, 3000); // 3초 후 재연결
       }
     } catch (error) {
-      // AbortError는 수동으로 닫힌 경우에만 재연결하지 않음
-      // 네트워크 타임아웃 등으로 발생한 AbortError는 재연결 필요
       if (error instanceof Error && error.name === 'AbortError' && isClosed) {
         return;
       }
 
-      // 에러 발생 시 재연결 시도 (수동으로 닫힌 경우가 아닐 때만)
       if (!isClosed) {
         // 연결 상태 체크 타이머 취소
         if (connectionHealthTimer) {
