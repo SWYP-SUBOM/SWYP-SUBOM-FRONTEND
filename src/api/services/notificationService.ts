@@ -42,12 +42,12 @@ export const createNotificationStream = (
   let reader: ReadableStreamDefaultReader<Uint8Array> | null = null;
   let isClosed = false;
   let reconnectTimeout: number | null = null;
-  let refreshAttemptCount = 0; // 토큰 갱신 시도 횟수
-  let tokenRefreshTimer: number | null = null; // 토큰 만료 전 갱신 타이머
-  let lastDataReceivedTime: number = Date.now(); // 마지막 데이터 수신 시간
-  let connectionHealthTimer: number | null = null; // 연결 상태 체크 타이머
-  const MAX_REFRESH_ATTEMPTS = 3; // 최대 재시도 횟수
-  const CONNECTION_HEALTH_CHECK_INTERVAL = 4 * 60 * 1000; // 4분마다 체크 (타임아웃 전에 재연결)
+  let refreshAttemptCount = 0;
+  let tokenRefreshTimer: number | null = null;
+  let lastDataReceivedTime: number = Date.now();
+  let connectionHealthTimer: number | null = null;
+  const MAX_REFRESH_ATTEMPTS = 3;
+  const CONNECTION_HEALTH_CHECK_INTERVAL = 4 * 60 * 1000;
 
   // 토큰 만료 전에 미리 갱신하는 함수
   const refreshTokenBeforeExpiry = async () => {
@@ -93,12 +93,12 @@ export const createNotificationStream = (
               console.error('SSE 재연결 실패:', err);
               onError(new Event('error'));
             });
-            // 새 토큰의 만료 시간 기준으로 타이머 재설정
+
             const newExpiration = getTokenExpiration(newToken);
             if (newExpiration) {
               const now = Date.now();
               const timeUntilExpiry = newExpiration - now;
-              const checkTime = Math.max(timeUntilExpiry - 2 * 60 * 1000, 60000); // 만료 2분 전 또는 최소 1분 후
+              const checkTime = Math.max(timeUntilExpiry - 2 * 60 * 1000, 60000);
 
               if (tokenRefreshTimer) {
                 clearTimeout(tokenRefreshTimer);
@@ -118,7 +118,7 @@ export const createNotificationStream = (
     if (expiration) {
       const now = Date.now();
       const timeUntilExpiry = expiration - now;
-      const checkTime = Math.max(timeUntilExpiry - 2 * 60 * 1000, 60000); // 최소 1분 후
+      const checkTime = Math.max(timeUntilExpiry - 2 * 60 * 1000, 60000);
 
       if (tokenRefreshTimer) {
         clearTimeout(tokenRefreshTimer);

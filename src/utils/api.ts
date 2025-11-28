@@ -15,7 +15,6 @@ export const removeAccessToken = (): void => {
   localStorage.removeItem(ACCESS_TOKEN_KEY);
 };
 
-// JWT 토큰의 만료 시간 파싱
 export const getTokenExpiration = (token: string | null): number | null => {
   if (!token) return null;
 
@@ -24,7 +23,7 @@ export const getTokenExpiration = (token: string | null): number | null => {
     if (parts.length !== 3) return null;
 
     const payload = JSON.parse(atob(parts[1]));
-    return payload.exp ? payload.exp * 1000 : null; // exp는 초 단위이므로 밀리초로 변환
+    return payload.exp ? payload.exp * 1000 : null;
   } catch (error) {
     return null;
   }
