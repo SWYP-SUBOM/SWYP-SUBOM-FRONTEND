@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import alarm_black from '../../assets/Header/alarm.svg';
 import alarm_white from '../../assets/Header/alarm_white.svg';
