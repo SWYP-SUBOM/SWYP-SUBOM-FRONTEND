@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import type { homeResponse } from '../../../api/types/home';
 import type { namingResponse } from '../../../api/types/user';
 import folded from '../../../assets/HomeBanner/folded.svg';
+import { useTodayPostInfoStore } from '../../../store/useTodayPostInfo';
 import { getAccessToken } from '../../../utils/api';
 import type { HomeBannerTitleProps } from './HomeBanner.types';
 import { HomeBannerItem } from './HomeBannerItem';
@@ -19,7 +20,12 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
   const accessToken = getAccessToken();
 
   const userName = userNameData ?? '써봄';
-  const todayPost = homeData?.todayPost;
+
+  const setTodayPostInfo = useTodayPostInfoStore((state) => state.setTodayPostInfo);
+  const todayPostInfo = useTodayPostInfoStore((state) => state.todayPost);
+
+  const todayPost = todayPostInfo?.postId ? todayPostInfo : homeData?.todayPost;
+
   const postStatus =
     !accessToken || todayPost === null ? 'GUEST' : (todayPost?.postStatus ?? 'NOT_STARTED');
 
@@ -68,6 +74,9 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
             },
           });
         }
+        break;
+      case 'PUBLISHED':
+        setTodayPostInfo({ ...todayPost, postStatus: 'PUBLISHED_WITHCLICK' });
         break;
       case 'PUBLISHED_WITHCLICK':
         navigate('/feed');

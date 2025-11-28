@@ -17,36 +17,44 @@ export const usePutReaction = (postId: number) => {
       postService.putPostReaction(postId, reactionTypeName),
     async onMutate({ reactionTypeName }) {
       const queryKey = ['post', postId];
-      const previousPost = queryClient.getQueryData<PostResponse>(queryKey);
+      const previousPost = queryClient.getQueryData<PostResponse['data']>(queryKey);
       const newReactionId = REACTION_MAP[reactionTypeName];
-
       if (!previousPost || !newReactionId) return { previousPost: undefined };
 
-      queryClient.setQueryData<PostResponse>(['post', postId], (old) => {
-        if (!old?.data) return old;
+      queryClient.setQueryData<PostResponse['data']>(['post', postId], (old) => {
+        if (!old) return old;
+        const currentReactionId = old.myReaction?.reactionId;
+        const oldReactions = old.reactions ?? [];
+        let found = false;
 
-        const currentReactionId = old.data.myReaction?.reactionId;
-        const newReactions = (old.data.reactions ?? []).map((reaction) => {
+        const newReactions = oldReactions.map((reaction) => {
           if (reaction.reactionId === currentReactionId) {
             return { ...reaction, reactionCount: reaction.reactionCount - 1 };
           } else if (reaction.reactionId === newReactionId) {
+            found = true;
             return { ...reaction, reactionCount: reaction.reactionCount + 1 };
           }
           return reaction;
         });
 
+        if (!found) {
+          newReactions.push({
+            reactionId: newReactionId,
+            reactionName: reactionTypeName,
+            reactionCount: 1,
+          });
+        }
+
         const newMyReaction = {
           reactionId: newReactionId,
           reactionName: reactionTypeName,
         };
-
+        console.log(reactionTypeName);
+        console.log(newReactions);
         return {
           ...old,
-          data: {
-            ...old.data,
-            reactions: newReactions,
-            myReaction: newMyReaction,
-          },
+          reactions: newReactions,
+          myReaction: newMyReaction,
         };
       });
 
@@ -59,9 +67,7 @@ export const usePutReaction = (postId: number) => {
       }
     },
 
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['post', postId] });
-    },
+    onSettled: () => {},
   });
 };
 
@@ -71,14 +77,14 @@ export const useDeleteReaction = (postId: number) => {
     mutationFn: ({ postId }: { postId: number }) => postService.deletePostReaction(postId),
     async onMutate() {
       const queryKey = ['post', postId];
-      const previousPost = queryClient.getQueryData<PostResponse>(queryKey);
+      const previousPost = queryClient.getQueryData<PostResponse['data']>(queryKey);
 
       if (!previousPost) return { previousPost: undefined };
-      queryClient.setQueryData<PostResponse>(['post', postId], (old) => {
+      queryClient.setQueryData<PostResponse['data']>(['post', postId], (old) => {
         if (!old) return old;
 
-        const currentReactionId = old.data.myReaction?.reactionId;
-        const newReactions = (old.data.reactions ?? []).map((reaction) => {
+        const currentReactionId = old.myReaction?.reactionId;
+        const newReactions = (old.reactions ?? []).map((reaction) => {
           if (reaction.reactionId === currentReactionId) {
             return { ...reaction, reactionCount: reaction.reactionCount - 1 };
           }
@@ -87,11 +93,8 @@ export const useDeleteReaction = (postId: number) => {
 
         return {
           ...old,
-          data: {
-            ...old.data,
-            reactions: newReactions,
-            myReaction: null,
-          },
+          reactions: newReactions,
+          myReaction: null,
         };
       });
 
@@ -104,8 +107,6 @@ export const useDeleteReaction = (postId: number) => {
       }
     },
 
-    onSettled: () => {
-      queryClient.invalidateQueries({ queryKey: ['post', postId] });
-    },
+    onSettled: () => {},
   });
 };

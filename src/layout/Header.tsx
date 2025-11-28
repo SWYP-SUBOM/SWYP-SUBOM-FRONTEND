@@ -15,10 +15,10 @@ export const Header = () => {
           <img src={logoImg} className="w-9 h-6" />
           <img src={logoName} className="w-11 h-6" />
         </div>
-        <div className="relative" onClick={() => navigate('/notification')}>
-          <img src={alarm} className="w-9 h-6 cursor-pointer" />
+        <div className="relative cursor-pointer" onClick={() => navigate('/notification')}>
+          <img src={alarm} className="w-9 h-6" alt="알림" />
           {unreadCount > 0 && (
-            <span className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-red-500 rounded-full border-2 border-white"></span>
+            <div className="absolute -top-1 right-2 w-2 h-2 bg-red-500 rounded-full" />
           )}
         </div>
       </div>

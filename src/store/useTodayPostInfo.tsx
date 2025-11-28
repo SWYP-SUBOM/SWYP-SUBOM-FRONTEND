@@ -1,8 +1,9 @@
 import { create } from 'zustand';
+import type { HomeBannerStatus } from '../pages/Home/HomeBanner/HomeBanner.types';
 
 interface TodayPost {
   postId?: number | null;
-  postStatus?: string;
+  postStatus?: HomeBannerStatus;
   categoryId?: number | null;
   categoryName?: string | null;
   topicId?: number | null;
