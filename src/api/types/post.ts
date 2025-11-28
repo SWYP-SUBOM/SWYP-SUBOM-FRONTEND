@@ -1,3 +1,5 @@
+import type { ReactionNameType } from '../../hooks/Post/useToggleReaction';
+
 export interface PostResponse {
   success: boolean;
   code: string;
@@ -78,9 +80,9 @@ export interface PostReactionResponse {
     postId: number;
     metrics: {
       totalReactions: number;
-      countsByType: Record<string, number>;
+      countsByType: Record<ReactionNameType, number>;
     };
-    currentUserReaction: string;
+    currentUserReaction: string | null;
   };
 }
 

@@ -1,9 +1,9 @@
-import freshButton from '../assets/Feed/fresh_button.png';
-import offFreshButton from '../assets/Feed/fresh_button_off.png';
-import likeButton from '../assets/Feed/like_button.png';
-import offLikeButton from '../assets/Feed/like_button_off.png';
-import relateButton from '../assets/Feed/relate_button.png';
-import offRelateButton from '../assets/Feed/relate_button_off.png';
+import freshButton from '../assets/Feed/fresh_button.svg';
+import offFreshButton from '../assets/Feed/fresh_button_off.svg';
+import likeButton from '../assets/Feed/like_button.svg';
+import offLikeButton from '../assets/Feed/like_button_off.svg';
+import relateButton from '../assets/Feed/relate_button.svg';
+import offRelateButton from '../assets/Feed/relate_button_off.svg';
 
 export const ReactionButtons = [
   { reactionName: '좋아요', officon: offLikeButton, icon: likeButton, reactionValue: 'LIKE' },

@@ -27,9 +27,13 @@ const Home = () => {
   const aiFeedbackId = homeData?.todayPost?.aiFeedbackId;
 
   useEffect(() => {
-    if (homeData?.todayPost) {
-      setTodayPostInfo(homeData.todayPost);
-    }
+    if (!homeData?.todayPost) return;
+
+    const prev = useTodayPostInfoStore.getState().todayPost;
+
+    if (prev?.postStatus === 'PUBLISHED_WITHCLICK') return;
+
+    setTodayPostInfo(homeData.todayPost);
   }, [homeData]);
 
   useEffect(() => {

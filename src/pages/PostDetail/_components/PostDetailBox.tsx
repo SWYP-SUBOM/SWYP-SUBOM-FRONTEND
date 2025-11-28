@@ -25,6 +25,15 @@ export const reactionIconMap: Record<number, string> = {
   3: surpriseIcon,
 };
 
+const normalizeReactions = (reactions: reactionsType[]) => {
+  const DEFAULT = [1, 2, 3];
+
+  return DEFAULT.map((id) => {
+    const found = reactions.find((reaction) => reaction.reactionId === id);
+    return found ?? { reactionId: id, reactionName: '', reactionCount: 0 };
+  });
+};
+
 export const PostDetailBox = ({
   content,
   updatedAt,
@@ -32,8 +41,10 @@ export const PostDetailBox = ({
   reactions,
   viewCount,
 }: PostDetailBoxProps) => {
+  const orderedReactions = normalizeReactions(reactions);
+
   return (
-    <div className="flex flex-col justify-between w-full max-h-[70vh] min-h-[70vh] px-4 py-4 bg-[#FFFFFF] rounded-xl border border-[#D0D2D9]">
+    <div className="flex flex-col justify-between w-full max-h-[67vh] min-h-[67vh] px-4 py-4 bg-[#FFFFFF] rounded-xl border border-[#D0D2D9]">
       <div className="overflow-y-auto hide-scrollbar">
         <div className="flex justify-between">
           <div className="B01_M text-gray-900">By {writer}</div>
@@ -44,10 +55,14 @@ export const PostDetailBox = ({
       </div>
       <div className="flex justify-between items-center mt-4">
         <div className="flex items-center gap-3">
-          {reactions.map((reaction) => (
+          {orderedReactions.map((reaction) => (
             <div key={reaction.reactionId} className="flex items-center gap-1">
               <img src={reactionIconMap[reaction.reactionId]} className="w-4 h-4" />
-              <div className="C01_M text-gray-700">{reaction.reactionCount}</div>
+              <span
+                className={`C01_M text-gray-700 text-center min-w-[8px] ${reaction.reactionCount === 0 ? 'opacity-0' : 'opacity-100'}`}
+              >
+                {reaction.reactionCount}
+              </span>
             </div>
           ))}
         </div>
