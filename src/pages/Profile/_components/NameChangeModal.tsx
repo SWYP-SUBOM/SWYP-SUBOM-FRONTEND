@@ -84,11 +84,13 @@ export const NameChangeModal = ({ currentName }: NameChangeModalProps) => {
               {error && <div className="mt-2 text-red-500 B03_1_M text-left w-full">{error}</div>}
             </div>
             <div className="mt-6 w-full">
-              <Button
-                label="변경하기"
+              <button
                 onClick={handleSubmit}
                 disabled={!isValid || mutation.isPending}
-              />
+                className="w-full h-14 B02_B text-white rounded-xl bg-b7 active:bg-b8 active:scale-95 hover:bg-b8 cursor-pointer"
+              >
+                변경하기
+              </button>
             </div>
           </div>
         </Modal.Content>
