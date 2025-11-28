@@ -89,10 +89,15 @@ export const createNotificationStream = (
               clearTimeout(connectionHealthTimer);
               connectionHealthTimer = null;
             }
-            fetchStream().catch((err) => {
-              console.error('SSE 재연결 실패:', err);
-              onError(new Event('error'));
-            });
+            fetchStream()
+              .catch((err) => {
+                console.error('SSE 재연결 실패:', err);
+                onError(new Event('error'));
+              })
+              .catch((err) => {
+                // 이중 catch로 모든 에러 처리
+                console.error('SSE 재연결 에러 처리 실패:', err);
+              });
 
             const newExpiration = getTokenExpiration(newToken);
             if (newExpiration) {
@@ -498,7 +503,11 @@ export const createNotificationStream = (
     }
   };
 
-  fetchStream();
+  fetchStream().catch((err) => {
+    // 초기 연결 실패 시 에러 처리
+    console.error('SSE 초기 연결 실패:', err);
+    onError(new Event('error'));
+  });
 
   return {
     close: () => {
