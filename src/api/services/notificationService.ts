@@ -47,7 +47,7 @@ export const createNotificationStream = (
   let lastDataReceivedTime: number = Date.now();
   let connectionHealthTimer: number | null = null;
   const MAX_REFRESH_ATTEMPTS = 3;
-  const CONNECTION_HEALTH_CHECK_INTERVAL = 4 * 60 * 1000;
+  const CONNECTION_HEALTH_CHECK_INTERVAL = 2 * 60 * 1000; // 2분마다 체크 (백엔드 타임아웃 전에 재연결)
 
   // 토큰 만료 전에 미리 갱신하는 함수
   const refreshTokenBeforeExpiry = async () => {
