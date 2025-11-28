@@ -142,7 +142,7 @@ const createAxiosInstance = (): AxiosInstance => {
   return axiosInstance;
 };
 
-const axiosInstance = createAxiosInstance();
+export const axiosInstance = createAxiosInstance();
 
 export const get = async <T>(endpoint: string, config?: InternalAxiosRequestConfig): Promise<T> => {
   const response = await axiosInstance.get<T>(endpoint, config);
