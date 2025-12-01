@@ -26,7 +26,7 @@ export const GuideOverlay = ({ children }: { children: ReactNode }) => {
   return (
     <div
       onClick={closeModal}
-      className="absolute inset-0 mx-auto backdrop-blur-[30px] bg-[#121212]/70 max-w-[380px] flex items-center justify-center z-200"
+      className="absolute inset-0 mx-auto backdrop-blur-[30px] bg-[#121212]/70 max-w-[400px] flex items-center justify-center z-200"
     >
       <div onClick={(e) => e.stopPropagation()}>{children}</div>
     </div>
