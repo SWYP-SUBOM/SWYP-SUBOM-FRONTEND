@@ -87,7 +87,7 @@ export const FeedBack = () => {
             <div className="h-[50px]" />
           </div>
           <div className="sticky bottom-0 left-0 right-0 flex justify-center bg-[#F3F5F8] pb-7 pt-4 transition-shadow duration-300">
-            <div className="flex gap-2 w-[340px]">
+            <div className="flex gap-2 w-[360px]">
               <button
                 onClick={handlePublishPost}
                 className="cursor-pointer flex-2 h-14 bg-gray-300 text-gray-800 rounded-xl B02_B"

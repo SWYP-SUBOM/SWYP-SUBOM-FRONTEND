@@ -15,7 +15,7 @@ export const FeedTab = () => {
   return (
     <>
       <Tabs>
-        <div className="sticky top-[65px] z-100 bg-[var(--color-white)]">
+        <div className="sticky top-[65px] z-100 bg-[var(--color-white)] w-full">
           <Tabs.TabList>
             {tabs.map((tab) => (
               <Tabs.Trigger key={tab.categoryId} categoryId={tab.categoryId}>

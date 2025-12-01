@@ -63,7 +63,7 @@ export const TodayTopicBox = ({
 
   return (
     <>
-      <div className={`${categoryData.bgColor} relative w-[380px] h-[270px] px-4 py-7`}>
+      <div className={`${categoryData.bgColor} relative w-[400px] h-[270px] px-4 py-7`}>
         <div className="B01_B text-gray-900 pb-3">오늘의 주제</div>
         <div className="B01_B text-gray-800 pb-[23px]">{topicText}</div>
         <img

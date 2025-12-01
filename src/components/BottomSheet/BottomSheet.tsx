@@ -10,7 +10,7 @@ export const Overlay = ({ children }: { children: ReactNode }) => {
   return (
     <motion.div
       onClick={closeBottomSheet}
-      className="fixed inset-0 flex w-[380px] z-200 mx-auto h-full items-end justify-center bg-black/50"
+      className="fixed inset-0 flex w-[400px] z-200 mx-auto h-full items-end justify-center bg-black/50"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -35,7 +35,7 @@ export const Xbutton = () => {
 export const Content = ({ children }: { children: ReactNode }) => {
   return (
     <motion.div
-      className="relative bg-[#F9F9F9] w-[380px] h-[339px] py-6 rounded-tl-2xl rounded-tr-2xl px-4 flex flex-col items-center"
+      className="relative bg-[#F9F9F9] w-[400px] h-[339px] py-6 rounded-tl-2xl rounded-tr-2xl px-4 flex flex-col items-center"
       initial={{ y: 339 }}
       animate={{ y: 0 }}
       exit={{ y: 339 }}

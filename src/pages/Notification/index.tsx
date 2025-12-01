@@ -32,7 +32,7 @@ export function Notification() {
     <>
       <div
         className="
-        max-w-[380px]
+        max-w-[400px]
         mx-auto
         bg-gray-300
         relative
