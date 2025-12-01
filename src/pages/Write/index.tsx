@@ -224,7 +224,7 @@ export const Write = () => {
             <button
               onClick={movetoGetFeedback}
               disabled={!isOpinionLengthValid()}
-              className={`cursor-pointer rounded-xl max-w-[348px] w-full h-14 B02_B fixed bottom-7 left-1/2 -translate-x-1/2 
+              className={`cursor-pointer rounded-xl max-w-[368px] w-full h-14 B02_B fixed bottom-7 left-1/2 -translate-x-1/2 
                 ${!isOpinionLengthValid() ? 'bg-gray-600 text-white' : 'bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white'}`}
             >
               피드백 받기
