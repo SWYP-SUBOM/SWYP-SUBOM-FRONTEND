@@ -1,9 +1,9 @@
-import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
-import { BottomSheet } from '../../../components/BottomSheet/BottomSheet';
-import xButton from '../../../assets/Modal/xbutton.svg';
-import strengthIcon from '../../../assets/Feedback/strength.svg';
+import type { ReactNode } from 'react';
 import pointsToImproveIcon from '../../../assets/Feedback/pointsToImprove.svg';
+import strengthIcon from '../../../assets/Feedback/strength.svg';
+import xButton from '../../../assets/Modal/xbutton.svg';
+import { BottomSheet } from '../../../components/BottomSheet/BottomSheet';
 import { useGetAIFeedBack } from '../../../hooks/FeedBack/uesGetAIFeedBack';
 import { useBottomSheet } from '../../../hooks/useBottomSheet';
 
@@ -17,7 +17,7 @@ const CenterOverlay = ({ children }: { children: ReactNode }) => {
   return (
     <motion.div
       onClick={closeBottomSheet}
-      className="fixed inset-0 flex w-[380px] z-200 mx-auto h-full items-center justify-center bg-black/50"
+      className="fixed inset-0 flex w-[400px] z-200 mx-auto h-full items-center justify-center bg-black/50"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

@@ -20,7 +20,7 @@ export const WriteLayout = ({
   return (
     <div
       className={`
-        max-w-[380px]
+        max-w-[400px]
         mx-auto
         bg-[var(--color-white)]
         relative

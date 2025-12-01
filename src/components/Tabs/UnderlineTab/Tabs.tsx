@@ -14,7 +14,7 @@ export const Trigger = ({ children, categoryId }: { children: ReactNode; categor
   return (
     <button
       onClick={() => setIsActive(categoryId)}
-      className={`cursor-pointer items-center relative pb-[3px] text-center transition-colors
+      className={`w-full cursor-pointer items-center relative pb-[3px] text-center transition-colors
       ${
         isActive
           ? 'text-blue-500 B02_B  whitespace-nowrap'
