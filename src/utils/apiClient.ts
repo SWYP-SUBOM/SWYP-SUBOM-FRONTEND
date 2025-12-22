@@ -1,8 +1,9 @@
+import * as Sentry from '@sentry/react';
 import type { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import axios, { AxiosError } from 'axios';
+import { OAUTH_ENDPOINTS } from '../api/endpoints';
 import { useAuthStore } from '../store/useAuthStore';
 import { getAccessToken, setAccessToken } from './api';
-import { OAUTH_ENDPOINTS } from '../api/endpoints';
 
 // 리프레시 토큰 재발급 중복 방지
 let isRefreshing = false;
@@ -133,6 +134,20 @@ const createAxiosInstance = (): AxiosInstance => {
           logout();
           return Promise.reject(new Error('인증이 만료되었습니다.'));
         }
+      }
+
+      if (error.response?.status !== 401) {
+        Sentry.captureException(error, {
+          tags: {
+            type: 'api-error',
+          },
+          extra: {
+            url: error.config?.url,
+            method: error.config?.method,
+            status: error.response?.status,
+            data: error.response?.data,
+          },
+        });
       }
 
       return Promise.reject(error);
