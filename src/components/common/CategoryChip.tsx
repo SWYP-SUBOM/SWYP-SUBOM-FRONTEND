@@ -1,12 +1,5 @@
 import type { CategoryNameType } from '../../constants/Category';
-
-export const CategoryChipMap = {
-  일상: 'bg-[var(--color-action-blue)]',
-  인간관계: 'bg-[var(--color-action-purple)]',
-  '시대·사회': 'bg-[var(--color-action-pink)]',
-  '문화·트렌드': 'bg-[var(--color-action-green)]',
-  가치관: 'bg-[var(--color-action-yellow)]',
-};
+import { CATEGORY_COLOR_MAP } from '../../constants/CategoryMap';
 
 interface CategoryChipProps {
   categoryName: CategoryNameType;
@@ -15,7 +8,7 @@ interface CategoryChipProps {
 export const CategoryChip = ({ categoryName }: CategoryChipProps) => {
   return (
     <div
-      className={`inline-block B03_B rounded-lg px-3 py-[6px] text-white ${CategoryChipMap[categoryName]}`}
+      className={`inline-block B03_B rounded-lg px-3 py-[6px] text-white ${CATEGORY_COLOR_MAP[categoryName]}`}
     >
       {categoryName}
     </div>
