@@ -158,11 +158,11 @@ export const router = createBrowserRouter([
             element: <Write />,
           },
           {
-            path: '/feedback/:categoryName/:topicName',
+            path: '/feedback/:categoryName/:topicName/:topicType',
             element: <FeedBack />,
           },
           {
-            path: '/complement/:categoryName/:topicName',
+            path: '/complement/:categoryName/:topicName/:topicType',
             element: <Complement />,
           },
           {
