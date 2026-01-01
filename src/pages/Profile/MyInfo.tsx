@@ -1,12 +1,12 @@
 import { TitleHeader } from '../../components/common/TitleHeader';
-import { useGetMe } from '../../hooks/useGetMe';
-import { useLogout } from '../../hooks/useLogout';
-import { useUnregister } from '../../hooks/useUnregister';
-import { InfoCard } from './_components/InfoCard';
+import { useModal } from '../../hooks/useModal';
+import { useGetMe } from '../../hooks/User/useGetMe';
+import { useLogout } from '../../hooks/User/useLogout';
+import { useUnregister } from '../../hooks/User/useUnregister';
 import { ActionButtons } from './_components/ActionButtons';
+import { InfoCard } from './_components/InfoCard';
 import { InfoNotice } from './_components/InfoNotice';
 import { NameChangeModal } from './_components/NameChangeModal';
-import { useModal } from '../../hooks/useModal';
 
 export const MyInfo = () => {
   const { data: meData, isLoading } = useGetMe();

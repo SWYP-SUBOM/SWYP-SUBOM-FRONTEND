@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
-import { usePostUserName } from '../../../hooks/usePostUserName';
 import { Button } from '../../../components/common/Button';
-import { nameSchema, NAME_MAX_LENGTH, NAME_PLACEHOLDER } from '../../../schemas/nameSchema';
+import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
+import { usePostUserName } from '../../../hooks/User/usePostUserName';
+import { NAME_MAX_LENGTH, NAME_PLACEHOLDER, nameSchema } from '../../../schemas/nameSchema';
 
 export const NameInput = () => {
   const [name, setName] = useState('');

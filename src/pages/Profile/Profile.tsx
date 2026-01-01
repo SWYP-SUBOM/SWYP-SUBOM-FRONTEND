@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
-import { TitleHeader } from '../../components/common/TitleHeader';
-import { ProfileContents } from './_components/Profilecontents';
+import post from '../../assets/Profile/post.svg';
 import profile from '../../assets/Profile/Profile.png';
 import reaction from '../../assets/Profile/reaction.svg';
-import post from '../../assets/Profile/post.svg';
-import { useGetUserName } from '../../hooks/useGetUserName';
+import { TitleHeader } from '../../components/common/TitleHeader';
 import { useGetHome } from '../../hooks/Home/useGetHome';
+import { useGetUserName } from '../../hooks/User/useGetUserName';
+import { ProfileContents } from './_components/Profilecontents';
 
 export const Profile = () => {
   const navigate = useNavigate();

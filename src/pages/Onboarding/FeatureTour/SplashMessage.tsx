@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
-import { useGetUserName } from '../../../hooks/useGetUserName';
+import { useGetUserName } from '../../../hooks/User/useGetUserName';
 
 export const SplashMessage = () => {
   const { handleNext } = useOnboardingNavigation();
