@@ -9,6 +9,7 @@ interface TodayPost {
   topicId?: number | null;
   topicName?: string | null;
   aiFeedbackId?: number | null;
+  topicType?: string | null;
 }
 
 interface TodayPostInfoState {

@@ -13,6 +13,7 @@ export const IsDraftBottomSheet = ({
   categoryId,
   topicId,
   aiFeedbackId,
+  topicType,
 }: {
   draftPostId: number;
   isTodayDraft: boolean;
@@ -21,6 +22,7 @@ export const IsDraftBottomSheet = ({
   categoryId: number;
   topicId: number;
   aiFeedbackId?: number | null;
+  topicType: string;
 }) => {
   const deleteMutation = useDeletePost();
   const navigate = useNavigate();
@@ -42,17 +44,21 @@ export const IsDraftBottomSheet = ({
   const handleMoveContinuing = () => {
     closeBottomSheet();
     if (aiFeedbackId) {
-      navigate(`/complement/${categoryName}/${topicName}`, {
-        state: {
-          categoryName: categoryName,
-          topicName: topicName,
-          topicId: topicId,
-          categoryId: categoryId,
-          postId: draftPostId,
-          isTodayDraft: isTodayDraft,
-          aiFeedbackId: aiFeedbackId,
+      navigate(
+        `/complement/${encodeURIComponent(categoryName)}/${encodeURIComponent(topicName)}/${encodeURIComponent(topicType)}`,
+        {
+          state: {
+            categoryName: categoryName,
+            topicName: topicName,
+            topicId: topicId,
+            categoryId: categoryId,
+            postId: draftPostId,
+            isTodayDraft: isTodayDraft,
+            aiFeedbackId: aiFeedbackId,
+            topicType: topicType,
+          },
         },
-      });
+      );
     } else {
       navigate('/write', {
         state: {

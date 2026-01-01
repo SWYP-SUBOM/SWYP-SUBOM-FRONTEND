@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import { useGetHome } from '../../hooks/Home/useGetHome';
 // import { useNotificationStream } from '../../hooks/Notification/useNotificationStream'; // SSE 관련 코드 주석처리
 import { useBottomSheet } from '../../hooks/useBottomSheet';
-import { useGetUserName } from '../../hooks/useGetUserName';
 import { useModal } from '../../hooks/useModal';
+import { useGetUserName } from '../../hooks/User/useGetUserName';
 import { useHomeDraftSheetStore } from '../../store/useHomeDraftSheetStore';
 import { useTodayPostInfoStore } from '../../store/useTodayPostInfo';
 import { IsDraftBottomSheet } from './_components/IsDraftBottomSheet';
@@ -29,6 +29,7 @@ const Home = () => {
   const categoryId = homeData?.todayPost?.categoryId;
   const topicId = homeData?.todayPost?.topicId;
   const aiFeedbackId = homeData?.todayPost?.aiFeedbackId;
+  const topicType = homeData?.todayPost?.topicType;
 
   useEffect(() => {
     if (!homeData?.todayPost) return;
@@ -43,7 +44,15 @@ const Home = () => {
   useEffect(() => {
     if (isDraftSheetOpened) return;
 
-    if (isTodayDraft && draftPostId && categoryName && topicName && categoryId && topicId) {
+    if (
+      isTodayDraft &&
+      draftPostId &&
+      categoryName &&
+      topicName &&
+      categoryId &&
+      topicId &&
+      topicType
+    ) {
       openBottomSheet(
         <IsDraftBottomSheet
           draftPostId={draftPostId}
@@ -53,6 +62,7 @@ const Home = () => {
           categoryId={categoryId}
           topicId={topicId}
           aiFeedbackId={aiFeedbackId}
+          topicType={topicType}
         />,
       );
       setDraftSheetOpened(true);
