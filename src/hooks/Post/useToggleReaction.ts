@@ -49,8 +49,6 @@ export const usePutReaction = (postId: number) => {
           reactionId: newReactionId,
           reactionName: reactionTypeName,
         };
-        console.log(reactionTypeName);
-        console.log(newReactions);
         return {
           ...old,
           reactions: newReactions,
