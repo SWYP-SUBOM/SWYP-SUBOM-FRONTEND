@@ -1,3 +1,5 @@
+import type { Grade } from '../../constants/Grade';
+
 export interface postAIfeedBackResponse {
   success: boolean;
   code: string;
@@ -8,6 +10,12 @@ export interface postAIfeedBackResponse {
   };
 }
 
+export interface ImprovementPoint {
+  reason: string;
+  sentenceIndex: number;
+  originalText: string;
+}
+
 export interface getAIfeedBackResponse {
   success: boolean;
   code: string;
@@ -16,8 +24,8 @@ export interface getAIfeedBackResponse {
     aiFeedbackId: number;
     status: string;
     strength: string;
-    grade: string;
+    grade: Grade;
     summary: string;
-    improvementPoints: string[];
+    improvementPoints: ImprovementPoint[];
   };
 }
