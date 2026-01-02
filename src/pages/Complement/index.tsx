@@ -1,24 +1,31 @@
 import { useScroll } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import toast from 'react-hot-toast';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { CategoryChip } from '../../components/common/CategoryChip';
 import type { CategoryNameType } from '../../constants/Category';
+import type { guideTopicType } from '../../constants/Guide';
 import { useGetAIFeedBack } from '../../hooks/FeedBack/uesGetAIFeedBack';
 import { useGetPost } from '../../hooks/Post/useGetPost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
+import { useModal } from '../../hooks/useModal';
 import { WriteLayout } from '../../layout/WriteLayout';
 import { useBottomSheetStore } from '../../store/useBottomSheetStore';
+import { getHighlightedHTML } from '../../utils/HighLights';
 import { FeedbackBanner } from '../Feedback/_components/FeedbackBanner';
 import { FeedbackBox } from '../Feedback/_components/FeedbackBox';
+import { GuideModal } from '../Write/GuideModal/GuideModal';
 
 export const Complement = () => {
   const location = useLocation();
   const { closeBottomSheet } = useBottomSheetStore();
-  const { categoryName, topicName } = useParams<{
+  const { openModal, Content, isOpen } = useModal();
+  const { categoryName, topicName, topicType } = useParams<{
     categoryName: CategoryNameType;
     topicName: string;
+    topicType: guideTopicType;
   }>();
+
+  const [showSaveAlert, setShowSaveAlert] = useState(false);
 
   const { postId, aiFeedbackId } = location.state as {
     postId: number;
@@ -29,9 +36,16 @@ export const Complement = () => {
   const { data: postData } = useGetPost(postId);
   const updateAndSaveMutation = useUpdateAndSavePost();
 
-  if (!categoryName) return null;
+  const textRef = useRef<HTMLTextAreaElement>(null);
+  const highlightRef = useRef<HTMLDivElement>(null);
+
+  if (!categoryName || !topicType) return null;
 
   const [initialOpinion, setInitialOpinion] = useState('');
+
+  const openGuideModal = (topicType: guideTopicType) => {
+    openModal(<GuideModal topicType={topicType} />);
+  };
 
   const [opinion, setOpinion] = useState(initialOpinion);
   useEffect(() => {
@@ -50,13 +64,25 @@ export const Complement = () => {
 
   const isScrolled = useScroll();
 
+  const handleScroll = () => {
+    if (textRef.current && highlightRef.current) {
+      highlightRef.current.scrollTop = textRef.current.scrollTop;
+    }
+  };
+
+  const highlightTargets =
+    AIFeedBackData?.improvementPoints?.map((point) => point.originalText).filter(Boolean) || [];
+
+  const highlightedContent = getHighlightedHTML(opinion, highlightTargets);
+
   const navigate = useNavigate();
   const handleSaveComplementPost = (shouldNavigateHome = false) => {
     updateAndSaveMutation.mutate(
       { postId, status: 'DRAFT', content: opinion },
       {
         onSuccess: () => {
-          toast.success('임시저장 성공');
+          setShowSaveAlert(true);
+          setTimeout(() => setShowSaveAlert(false), 3000);
           closeBottomSheet();
           setInitialOpinion(opinion);
           setIsDirty(false);
@@ -85,9 +111,12 @@ export const Complement = () => {
   return (
     <>
       <WriteLayout
+        isRightActions={true}
         handleClickSaveButton={handleSaveComplementPost}
         isDirty={isDirty}
+        openGuideModal={() => openGuideModal(topicType)}
         isSaveDisabled={!isDirty}
+        showSaveAlert={showSaveAlert}
       >
         <div ref={containerRef} className="relative min-h-[100dvh] bg-[#F3F5F8]">
           <div className="sticky top-0 z-10 px-4 pb-3 pt-[30px] bg-[#F3F5F8]">
@@ -95,11 +124,27 @@ export const Complement = () => {
             <div className="py-[10px] B01_B">{topicName}</div>
           </div>
           <div className="px-4">
-            <div className="relative w-full">
+            <div className="relative w-full h-[360px] bg-white rounded-xl border border-gray-500 overflow-hidden text-left">
+              <div
+                ref={highlightRef}
+                className="absolute top-0 left-0 w-full h-full B03_M pl-4 pr-2 pt-4 pb-10 pointer-events-none overflow-y-auto whitespace-pre-wrap break-all hide-scrollbar text-gray-800"
+                aria-hidden="true"
+                dangerouslySetInnerHTML={{ __html: highlightedContent }}
+                style={{ lineHeight: '1.5' }}
+              />
+
               <textarea
+                ref={textRef}
                 value={opinion}
                 onChange={(e) => setOpinion(e.target.value)}
-                className="hide-scrollbar text-gray-800 hover:border-gray-700 focus:border--gray-700 bg-[#FFFFFF] B03_M pl-4 pr-2 pt-4 py-10 w-full h-[360px] border border-gray-500 rounded-xl resize-none"
+                onScroll={handleScroll}
+                spellCheck={false}
+                className="relative z-10 w-full h-full bg-transparent B03_M pl-4 pr-2 pt-4 pb-10 resize-none focus:outline-none hide-scrollbar"
+                style={{
+                  lineHeight: '1.5',
+                  color: 'transparent',
+                  caretColor: '#1F2937',
+                }}
               />
               {postData && (
                 <div className="C01_SB absolute bottom-6 right-4 text-gray-700">
@@ -134,6 +179,7 @@ export const Complement = () => {
           </div>
         </div>
       </WriteLayout>
+      {isOpen && Content}
     </>
   );
 };

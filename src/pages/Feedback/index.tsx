@@ -2,12 +2,13 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import type { CategoryNameType } from '../../constants/Category';
+import type { guideTopicType } from '../../constants/Guide';
 import { useGetAIFeedBack } from '../../hooks/FeedBack/uesGetAIFeedBack';
 import { useGetPost } from '../../hooks/Post/useGetPost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { WriteLayout } from '../../layout/WriteLayout';
 import { FeedbackLoading } from '../Write/FeedbackLoading';
-import { Rating } from '../Write/Rating';
+import { Rating } from '../Write/Rating/Rating';
 import { FeedbackBanner } from './_components/FeedbackBanner';
 import { FeedbackBox } from './_components/FeedbackBox';
 
@@ -36,18 +37,19 @@ export const FeedBack = () => {
   const content = postData?.content ?? '';
   const showLoading = isProcessing || isLoading;
 
-  const { categoryName, topicName } = useParams<{
+  const { categoryName, topicName, topicType } = useParams<{
     categoryName: CategoryNameType;
     topicName: string;
+    topicType: guideTopicType;
   }>();
 
-  if (!categoryName) return null;
+  if (!categoryName || !topicType) return null;
 
   const encodedTopicName = encodeURIComponent(topicName!);
 
   const navigate = useNavigate();
   const movetoComplement = () => {
-    navigate(`/complement/${categoryName}/${encodedTopicName}`, {
+    navigate(`/complement/${categoryName}/${encodedTopicName}/${topicType}`, {
       state: { postId, aiFeedbackId },
     });
   };
@@ -69,7 +71,7 @@ export const FeedBack = () => {
 
   return (
     <>
-      <WriteLayout isSaveDisabled={true}>
+      <WriteLayout isSaveDisabled={true} isRightActions={false}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -90,13 +92,13 @@ export const FeedBack = () => {
             <div className="flex gap-2 w-[360px]">
               <button
                 onClick={handlePublishPost}
-                className="cursor-pointer flex-2 h-14 bg-gray-300 text-gray-800 rounded-xl B02_B"
+                className="cursor-pointer flex-1 h-14 bg-white text-[#5a5b66] rounded-xl border border-[var(--color-gray-600)] B02_B active:border-[var(--color-gray-750)] active:text-[var(--color-gray-900)] hover:text-[var(--color-gray-900)] hover:border-[var(--color-gray-750)]"
               >
                 작성완료
               </button>
               <button
                 onClick={movetoComplement}
-                className="cursor-pointer flex-3 h-14 bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white rounded-xl B02_B"
+                className="cursor-pointer flex-1 h-14 bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white rounded-xl B02_B"
               >
                 보완하기
               </button>

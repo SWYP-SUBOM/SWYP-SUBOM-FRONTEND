@@ -1,19 +1,13 @@
 import { Tabs } from '../../../components/Tabs/ButtonTab/Tabs';
+import { CategoryTabs } from '../../../constants/CategoryMap';
 import { GatherTopicContent } from './GatherTopicContent';
 
 export const GatherTopicTab = () => {
-  const tabs = [
-    { categoryName: '일상', categoryId: 1 },
-    { categoryName: '인간관계', categoryId: 2 },
-    { categoryName: '문화·트렌드', categoryId: 3 },
-    { categoryName: '가치관', categoryId: 4 },
-    { categoryName: '시대·사회', categoryId: 5 },
-  ];
   return (
     <div className="flex flex-col flex-1">
       <Tabs>
         <Tabs.TabList>
-          {tabs.map((tab) => (
+          {CategoryTabs.map((tab) => (
             <Tabs.Trigger key={tab.categoryName} categoryId={tab.categoryId}>
               {tab.categoryName}
             </Tabs.Trigger>
@@ -21,7 +15,7 @@ export const GatherTopicTab = () => {
         </Tabs.TabList>
 
         <div className="flex-1 overflow-y-auto">
-          {tabs.map((tab) => (
+          {CategoryTabs.map((tab) => (
             <Tabs.Content key={tab.categoryName} categoryId={tab.categoryId}>
               <GatherTopicContent categoryId={tab.categoryId} />
             </Tabs.Content>

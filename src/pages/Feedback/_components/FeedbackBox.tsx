@@ -1,9 +1,10 @@
+import type { ImprovementPoint } from '../../../api/types/feedBack';
 import pointsToImproveIcon from '../../../assets/Feedback/pointsToImprove.svg';
 import strengthIcon from '../../../assets/Feedback/strength.svg';
 
 interface FeedbackBoxProps {
   strength: string;
-  improvementPoints: string[];
+  improvementPoints: ImprovementPoint[];
 }
 
 export const FeedbackBox = ({ strength, improvementPoints }: FeedbackBoxProps) => {
@@ -19,9 +20,9 @@ export const FeedbackBox = ({ strength, improvementPoints }: FeedbackBoxProps) =
         <img src={pointsToImproveIcon} className="w-6 h-6" />
         <span className="text-[var(--color-b5)] B02_B pb-2">개선 포인트</span>
       </div>
-      {improvementPoints?.map((point, index) => (
-        <div key={index} className=" B03_M text-gray-900">
-          {point}
+      {improvementPoints?.map((improvementPoint, index) => (
+        <div key={index} className="B03_M text-gray-900 whitespace-pre-line">
+          {index + 1}. {improvementPoint.reason}
         </div>
       ))}
     </div>

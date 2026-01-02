@@ -78,9 +78,9 @@ export const FeedbackModal = ({ postId, aiFeedbackId }: FeedbackModalProps) => {
                   <img src={pointsToImproveIcon} className="w-6 h-6" alt="improvement" />
                   <span className="text-[var(--color-b5)] B02_B pb-2">개선 포인트</span>
                 </div>
-                {AIFeedBackData.improvementPoints?.map((point, index) => (
-                  <div key={index} className="B03_M text-gray-900 mb-2">
-                    {point}
+                {AIFeedBackData.improvementPoints?.map((improvementPoint, index) => (
+                  <div key={index} className="B03_M text-gray-900 mb-2 whitespace-pre-line">
+                    {index + 1}. {improvementPoint.reason}
                   </div>
                 ))}
               </>

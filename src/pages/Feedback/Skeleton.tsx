@@ -5,7 +5,7 @@ import { FeedbackBanner } from './_components/FeedbackBanner';
 export const Skeleton = () => {
   return (
     <>
-      <WriteLayout isSaveDisabled={true}>
+      <WriteLayout isSaveDisabled={true} isRightActions={false}>
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

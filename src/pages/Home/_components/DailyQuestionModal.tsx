@@ -30,9 +30,9 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
     closeModal();
     if (isTodayDraft && draftPostId) {
       if (todaycategoryId === categoryId) {
-        if (aiFeedbackId) {
+        if (aiFeedbackId && dailyQuestionData) {
           navigate(
-            `/complement/${dailyQuestionData?.categoryName}/${dailyQuestionData?.topicName}`,
+            `/complement/${encodeURIComponent(dailyQuestionData?.categoryName)}/${encodeURIComponent(dailyQuestionData?.topicName)}/${encodeURIComponent(dailyQuestionData?.topicType)}`,
             {
               state: {
                 categoryName: dailyQuestionData?.categoryName,

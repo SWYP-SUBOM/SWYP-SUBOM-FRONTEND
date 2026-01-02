@@ -3,7 +3,7 @@ import bubbleXButton from '../../../assets/Write/bubble-xbutton.svg';
 
 type SpeechBubbleType = {
   onBubbleClose: (isOpen: boolean) => void;
-  bubbleText: string;
+  bubbleText: React.ReactNode;
   className?: string;
 };
 

@@ -1,8 +1,8 @@
+import guide1 from '../../../assets/Onboarding/guide1.png';
+import { Button } from '../../../components/common/Button';
+import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
 import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
 import { ProgressIndicator } from '../_components/ProgressIndicator';
-import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
-import { Button } from '../../../components/common/Button';
-import guide1 from '../../../assets/Onboarding/guide1.png';
 export const GuideScreen1 = () => {
   const { handleNext, handleSkip } = useOnboardingNavigation();
   return (
@@ -11,14 +11,14 @@ export const GuideScreen1 = () => {
       <OnboardingLayout
         title={
           <>
-            <div>카테고리마다</div>
-            <div>매일 새로운 주제가 열립니다.</div>
+            <div>하루에 단 한번,</div>
+            <div>원하는 주제로 글을 써봐요</div>
           </>
         }
         subtitle={
           <>
-            <div>그중 가장 흥미로운 주제를 선택해</div>
-            <div>오늘의 생각을 글로 정리해보세요.</div>
+            <div>카테고리마다 매일</div>
+            <div>새로운 주제가 열립니다.</div>
           </>
         }
         image={{

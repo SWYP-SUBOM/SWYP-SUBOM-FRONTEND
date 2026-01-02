@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import penComplete from '../../assets/Write/pen_complete.gif';
-import { useGetUserName } from '../../hooks/useGetUserName';
+import { useGetUserName } from '../../hooks/User/useGetUserName';
 
 export function Complete() {
   const { data: userName } = useGetUserName();

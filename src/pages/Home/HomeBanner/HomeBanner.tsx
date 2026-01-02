@@ -50,7 +50,7 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
       case 'DRAFT':
         if (aiFeedbackId) {
           navigate(
-            `/complement/${homeData?.todayPost?.categoryName}/${homeData?.todayPost?.topicName}`,
+            `/complement/${homeData?.todayPost?.categoryName}/${homeData?.todayPost?.topicName}/${homeData?.todayPost?.topicType}`,
             {
               state: {
                 categoryName: homeData?.todayPost?.categoryName,
@@ -59,6 +59,7 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
                 categoryId: homeData?.todayPost?.categoryId,
                 postId: homeData?.todayPost?.postId,
                 aiFeedbackId: aiFeedbackId,
+                topicType: homeData?.todayPost?.topicType,
               },
             },
           );

@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { usePostUserName } from '../../../hooks/usePostUserName';
-import { useGetMe } from '../../../hooks/useGetMe';
-import { nameSchema, NAME_MAX_LENGTH, NAME_PLACEHOLDER } from '../../../schemas/nameSchema';
 import { Modal } from '../../../components/Modal/Modal';
 import { useModal } from '../../../hooks/useModal';
+import { useGetMe } from '../../../hooks/User/useGetMe';
+import { usePostUserName } from '../../../hooks/User/usePostUserName';
+import { NAME_MAX_LENGTH, NAME_PLACEHOLDER, nameSchema } from '../../../schemas/nameSchema';
 
 interface NameChangeModalProps {
   currentName: string;

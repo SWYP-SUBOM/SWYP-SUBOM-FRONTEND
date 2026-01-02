@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useOAuthToken } from '../../../hooks/useOAuthToken';
+import { useOAuthToken } from '../../../hooks/User/useOAuthToken';
 import { ROUTES } from '../../../routes/routes';
 import { useAuthStore } from '../../../store/useAuthStore';
 
