@@ -31,6 +31,10 @@ import { Profile } from '../pages/Profile/Profile';
 import { Write } from '../pages/Write';
 import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
 
+// 관리자 페이지
+import { Admin } from '../pages/admin';
+import { AdminLogin } from '../pages/admin/AdminLogin';
+
 export const router = createBrowserRouter([
   // 홈 페이지
   {
@@ -56,6 +60,15 @@ export const router = createBrowserRouter([
         path: '/',
         element: <MobileLayout showNavBar={false} />,
         children: [
+          {
+            path: 'admin',
+            element: <Admin />,
+          },
+          {
+            path: 'admin/login',
+            element: <AdminLogin />,
+          },
+
           {
             path: '',
             element: <SplashScreen />,

@@ -35,6 +35,10 @@ export const NOTIFICATION_ENDPOINTS = {
   NOTIFICATION_STREAM: '/api/notifications/stream',
 } as const;
 
+export const ADMIN_ENDPOINTS = {
+  LOGIN: '/api/admin/manage/login',
+} as const;
+
 export const ENDPOINTS = {
   ...OAUTH_ENDPOINTS,
   ...USER_ENDPOINTS,
@@ -43,4 +47,5 @@ export const ENDPOINTS = {
   ...CALENDAR_ENDPOINTS,
   ...POST_ENDPOINTS,
   ...NOTIFICATION_ENDPOINTS,
+  ...ADMIN_ENDPOINTS,
 } as const;

@@ -324,3 +324,10 @@ body,
     font-size: 16px !important;
   }
 }
+
+/* Admin Category hover 스타일 */
+.category-item:hover {
+  font-size: var(--font-size-body-02);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
