@@ -213,11 +213,12 @@ export const Write = () => {
             {isKeyboardOpen &&
               createPortal(
                 <div
-                  className="fixed left-0 w-full px-5 flex justify-between items-center bg-white border-t border-gray-200"
+                  className="fixed left-0 w-full px-5 flex justify-between items-center bg-white"
                   style={{
                     zIndex: 9999,
                     top: `${height + offsetTop - 50}px`,
                     height: '50px',
+                    willChange: 'transform',
                   }}
                 >
                   <span className="B03_1_M text-gray-800">현재 글자수</span>
@@ -233,8 +234,8 @@ export const Write = () => {
                   className={`rounded-xl max-w-[368px] w-full h-14 B02_B transition-colors
                     ${
                       !isOpinionLengthValid()
-                        ? 'bg-gray-600 text-white cursor-not-allowed'
-                        : 'bg-[var(--color-b7)] active:bg-[var(--color-b8)] text-white cursor-pointer'
+                        ? 'bg-gray-600 text-white'
+                        : 'bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white cursor-pointer'
                     }`}
                 >
                   피드백 받기
