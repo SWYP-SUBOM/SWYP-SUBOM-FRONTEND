@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import customerservice from '../../assets/Profile/customerservice.svg';
 import post from '../../assets/Profile/post.svg';
 import profile from '../../assets/Profile/Profile.png';
 import reaction from '../../assets/Profile/reaction.svg';
@@ -14,6 +15,10 @@ export const Profile = () => {
 
   const streak = homeData?.streak?.current ?? 0;
   const isLoading = isUserNameLoading || isHomeDataLoading;
+
+  const moveToKakaoChat = () => {
+    window.location.href = 'http://pf.kakao.com/_gPxmgn/chat';
+  };
 
   return (
     <div className="flex flex-col min-h-screen ">
@@ -54,6 +59,14 @@ export const Profile = () => {
             onClick={() => navigate('/profile/my-posts')}
           />
         </div>
+
+        <div className="B02_B text-gray-900 mx-8 mt-10 mb-[14px]">문의하기</div>
+        <ProfileContents
+          icon={customerservice}
+          title="고객센터"
+          righticon={true}
+          onClick={moveToKakaoChat}
+        />
       </div>
     </div>
   );
