@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import { Analytics } from '@vercel/analytics/react';
+import { useEffect } from 'react';
 import { RouterProvider } from 'react-router-dom';
 import { router } from './routes/router';
 import { useAuthStore } from './store/useAuthStore';
