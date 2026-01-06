@@ -174,7 +174,7 @@ export const Complement = () => {
               onClick={handlePublishPost}
               className="cursor-pointer rounded-xl max-w-[368px] w-full h-14 bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white rounded-xl B02_B"
             >
-              보완하기
+              작성 완료
             </button>
           </div>
         </div>
