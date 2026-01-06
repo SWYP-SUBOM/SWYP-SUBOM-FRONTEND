@@ -192,12 +192,12 @@ export const Write = () => {
           isRightActions={true}
           showSaveAlert={showSaveAlert}
         >
-          <div className="px-4 bg-[#F3F5F8] flex flex-col h-[calc(100vh-50px)] overflow-hidden">
+          <div className="px-4 bg-[#F3F5F8] flex flex-col h-[calc(100dvh-50px)] overflow-hidden">
             <div className="pt-[30px] pb-3 flex-shrink-0">
               <CategoryChip categoryName={categoryName}></CategoryChip>
               <div className="py-[10px] B01_M">{topicName}</div>
             </div>
-            <div className="relative w-full h-full flex-1 flex flex-col pb-40 ">
+            <div className="relative w-full flex-1 flex flex-col min-h-0">
               <textarea
                 placeholder="AI 피드백은 100자 이상 작성 시 제공됩니다."
                 value={opinion}
@@ -205,7 +205,7 @@ export const Write = () => {
                 className="min-h-0 h-full hide-scrollbar focus:placeholder-transparent focus:outline-none focus:border-gray-700 hover:border-gray-700 focus:ring-0 bg-[#FFFFFF] B03_M pl-4 pr-2 pt-4 py-10 w-full min-h-[330px] text-gray-800 border border-gray-400 rounded-xl resize-none"
               />
               {!isKeyboardOpen && (
-                <div className="C01_SB absolute bottom-44 right-4 text-gray-700 pointer-events-none">
+                <div className="C01_SB absolute bottom-4 right-4 text-gray-700 pointer-events-none">
                   {opinion.length} / 700
                 </div>
               )}
@@ -213,29 +213,34 @@ export const Write = () => {
             {isKeyboardOpen &&
               createPortal(
                 <div
-                  className="fixed left-0 w-full px-5 flex justify-between items-center bg-white"
+                  className="fixed left-0 w-full px-5 flex justify-between items-center bg-white border-t border-gray-200"
                   style={{
                     zIndex: 9999,
-                    top: `${offsetTop + height - 50}px`,
+                    top: `${height + offsetTop - 50}px`,
                     height: '50px',
-                    pointerEvents: 'none',
-                    transform: 'translate3d(0, 0, 0)',
-                    WebkitTransform: 'translate3d(0, 0, 0)',
                   }}
                 >
                   <span className="B03_1_M text-gray-800">현재 글자수</span>
-                  <span className="B03_1_M text-gray-750"> {opinion.length}/ 700</span>
+                  <span className="B03_1_M text-gray-750">{opinion.length} / 700</span>
                 </div>,
                 document.body,
               )}
-            <button
-              onClick={movetoGetFeedback}
-              disabled={!isOpinionLengthValid()}
-              className={`cursor-pointer rounded-xl max-w-[368px] w-full h-14 B02_B fixed bottom-7 left-1/2 -translate-x-1/2 
-                ${!isOpinionLengthValid() ? 'bg-gray-600 text-white' : 'bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white'}`}
-            >
-              피드백 받기
-            </button>
+            {!isKeyboardOpen && (
+              <div className="py-7 flex-shrink-0 flex justify-center bg-[#F3F5F8]">
+                <button
+                  onClick={movetoGetFeedback}
+                  disabled={!isOpinionLengthValid()}
+                  className={`rounded-xl max-w-[368px] w-full h-14 B02_B transition-colors
+                    ${
+                      !isOpinionLengthValid()
+                        ? 'bg-gray-600 text-white cursor-not-allowed'
+                        : 'bg-[var(--color-b7)] active:bg-[var(--color-b8)] text-white cursor-pointer'
+                    }`}
+                >
+                  피드백 받기
+                </button>
+              </div>
+            )}
             {isBubbleOpen && (
               <SpeechBubble
                 className="fixed bottom-[80px] right-1/2 flex flex-col items-end z-50"
