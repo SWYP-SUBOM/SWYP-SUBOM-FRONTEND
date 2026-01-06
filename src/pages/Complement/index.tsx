@@ -1,5 +1,6 @@
 import { useScroll } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { CategoryChip } from '../../components/common/CategoryChip';
 import type { CategoryNameType } from '../../constants/Category';
@@ -8,6 +9,7 @@ import { useGetAIFeedBack } from '../../hooks/FeedBack/uesGetAIFeedBack';
 import { useGetPost } from '../../hooks/Post/useGetPost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { useModal } from '../../hooks/useModal';
+import { useVisualViewport } from '../../hooks/useVisualViewport';
 import { WriteLayout } from '../../layout/WriteLayout';
 import { useBottomSheetStore } from '../../store/useBottomSheetStore';
 import { getHighlightedHTML } from '../../utils/HighLights';
@@ -19,6 +21,8 @@ export const Complement = () => {
   const location = useLocation();
   const { closeBottomSheet } = useBottomSheetStore();
   const { openModal, Content, isOpen } = useModal();
+  const { isKeyboardOpen, height, offsetTop } = useVisualViewport();
+
   const { categoryName, topicName, topicType } = useParams<{
     categoryName: CategoryNameType;
     topicName: string;
@@ -26,6 +30,9 @@ export const Complement = () => {
   }>();
 
   const [showSaveAlert, setShowSaveAlert] = useState(false);
+
+  const isSafari =
+    typeof window !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
   const { postId, aiFeedbackId } = location.state as {
     postId: number;
@@ -146,12 +153,28 @@ export const Complement = () => {
                   caretColor: '#1F2937',
                 }}
               />
-              {postData && (
+              {postData && !isKeyboardOpen && (
                 <div className="C01_SB absolute bottom-6 right-4 text-gray-700">
                   {opinion!.length} / 700
                 </div>
               )}
             </div>
+            {isKeyboardOpen &&
+              createPortal(
+                <div
+                  className="fixed left-0 w-full px-5 flex justify-between items-center bg-white border-t border-gray-200"
+                  style={{
+                    zIndex: 9999,
+                    top: `${height + offsetTop - 50}px`,
+                    height: '50px',
+                  }}
+                >
+                  <span className="B03_1_M text-gray-800">현재 글자수</span>
+                  <span className="B03_1_M text-gray-750">{opinion.length} / 700</span>
+                </div>,
+                document.body,
+              )}
+
             <div className="pt-[15px]">
               <FeedbackBanner>써봄이의 피드백을{'\n'}참고해서 수정해보세요!</FeedbackBanner>
             </div>
@@ -165,18 +188,20 @@ export const Complement = () => {
             </div>
             <div className="h-[50px]" />
           </div>
-          <div
-            className={`sticky bottom-0 left-0 right-0 flex justify-center bg-[#F3F5F8] pb-7 pt-4 transition-shadow duration-300 ${
-              isScrolled ? 'shadow-[0_-10px_50px_0_#D0D2D9]' : 'shadow-none'
-            }`}
-          >
-            <button
-              onClick={handlePublishPost}
-              className="cursor-pointer rounded-xl max-w-[368px] w-full h-14 bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white rounded-xl B02_B"
+          {!(isSafari && isKeyboardOpen) && (
+            <div
+              className={`sticky bottom-0 left-0 right-0 flex justify-center bg-[#F3F5F8] pb-7 pt-4 transition-shadow duration-300 ${
+                isScrolled ? 'shadow-[0_-10px_50px_0_#D0D2D9]' : 'shadow-none'
+              }`}
             >
-              작성 완료
-            </button>
-          </div>
+              <button
+                onClick={handlePublishPost}
+                className="cursor-pointer rounded-xl max-w-[368px] w-full h-14 bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white rounded-xl B02_B"
+              >
+                작성 완료
+              </button>
+            </div>
+          )}
         </div>
       </WriteLayout>
       {isOpen && Content}
