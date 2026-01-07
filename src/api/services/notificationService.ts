@@ -390,9 +390,25 @@ export const createNotificationStream = (
               clearTimeout(readTimeoutId);
               readTimeoutId = null;
             }
-            // 타임아웃 또는 네트워크 에러 발생 시 재연결
+            // 타임아웃 또는 네트워크 에러 발생 시 Reader 정리 후 재연결
             if (readError instanceof Error && readError.message === 'Read timeout') {
-              console.log('Reader 타임아웃 발생, 재연결 시도');
+              console.log('Reader 타임아웃 발생, Reader 정리 후 재연결 시도');
+
+              // Reader 리소스 정리
+              if (reader) {
+                try {
+                  reader.cancel().catch(() => {
+                    // 취소 실패는 무시
+                  });
+                  reader.releaseLock();
+                } catch (e) {
+                  // 이미 해제된 경우 무시
+                }
+                reader = null;
+              }
+
+              // while 루프 종료를 위해 break
+              break;
             }
             throw readError;
           }
@@ -465,6 +481,7 @@ export const createNotificationStream = (
           }
           reconnectTimeout = window.setTimeout(() => {
             reconnectTimeout = null; // 타이머 실행 후 초기화
+            console.log('SSE 재연결 시도: 새로운 stream 요청 전송');
             fetchStream().catch((err) => {
               // 재연결 실패 시 에러 처리
               console.error('SSE 재연결 실패:', err);
@@ -491,6 +508,7 @@ export const createNotificationStream = (
         }
         reconnectTimeout = window.setTimeout(() => {
           reconnectTimeout = null; // 타이머 실행 후 초기화
+          console.log('SSE 재연결 시도: 새로운 stream 요청 전송');
           fetchStream().catch((err) => {
             // 재연결 실패 시 에러 처리
             console.error('SSE 재연결 실패:', err);
