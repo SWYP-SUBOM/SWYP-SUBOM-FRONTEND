@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import questionFailure from '../../assets/admin/questionfailure.svg';
+import questionFailed from '../../assets/admin/questionfailed.svg';
 
 export const AddQuestionFailure = () => {
   const navigate = useNavigate();
@@ -20,7 +20,7 @@ export const AddQuestionFailure = () => {
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 pb-32">
       <div className="flex items-center justify-center mb-8">
-        <img src={questionFailure} alt="questionFailure" />
+        <img src={questionFailed} alt="questionFailed" />
       </div>
 
       <div className="T02_B text-gray-900 mb-2 text-center">질문 생성을 실패했어요</div>
