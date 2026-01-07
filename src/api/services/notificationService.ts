@@ -47,7 +47,7 @@ export const createNotificationStream = (
   let lastDataReceivedTime: number = Date.now();
   let connectionHealthTimer: number | null = null;
   const MAX_REFRESH_ATTEMPTS = 3;
-  const CONNECTION_HEALTH_CHECK_INTERVAL = 2 * 60 * 1000; // 2분마다 체크 (백엔드 타임아웃 전에 재연결)
+  const CONNECTION_HEALTH_CHECK_INTERVAL = 10 * 60 * 1000; // 8분마다 체크 (백엔드 타임아웃 10분 전에 재연결)
 
   // 토큰 만료 전에 미리 갱신하는 함수
   const refreshTokenBeforeExpiry = async () => {
@@ -189,7 +189,7 @@ export const createNotificationStream = (
         if (isClosed) return;
 
         const timeSinceLastData = Date.now() - lastDataReceivedTime;
-        // 4분 이상 데이터가 없으면 재연결 (타임아웃 전에 재연결)
+        // 8분 이상 데이터가 없으면 재연결 (백엔드 타임아웃 10분 전에 재연결)
         if (timeSinceLastData >= CONNECTION_HEALTH_CHECK_INTERVAL) {
           console.log('연결 상태 체크: 데이터 수신 없음, 재연결 시도');
           // 기존 타이머들 취소
@@ -358,8 +358,8 @@ export const createNotificationStream = (
       let eventType = '';
       let eventData = '';
 
-      // reader.read() 타임아웃 설정 (60초)
-      const readTimeout = 60000;
+      // reader.read() 타임아웃 설정 (360초)
+      const readTimeout = 5 * 60 * 1000;
       let readTimeoutId: number | null = null;
 
       try {
@@ -390,9 +390,25 @@ export const createNotificationStream = (
               clearTimeout(readTimeoutId);
               readTimeoutId = null;
             }
-            // 타임아웃 또는 네트워크 에러 발생 시 재연결
+            // 타임아웃 또는 네트워크 에러 발생 시 Reader 정리 후 재연결
             if (readError instanceof Error && readError.message === 'Read timeout') {
-              console.log('Reader 타임아웃 발생, 재연결 시도');
+              console.log('Reader 타임아웃 발생, Reader 정리 후 재연결 시도');
+
+              // Reader 리소스 정리
+              if (reader) {
+                try {
+                  reader.cancel().catch(() => {
+                    // 취소 실패는 무시
+                  });
+                  reader.releaseLock();
+                } catch (e) {
+                  // 이미 해제된 경우 무시
+                }
+                reader = null;
+              }
+
+              // while 루프 종료를 위해 break
+              break;
             }
             throw readError;
           }
@@ -465,6 +481,7 @@ export const createNotificationStream = (
           }
           reconnectTimeout = window.setTimeout(() => {
             reconnectTimeout = null; // 타이머 실행 후 초기화
+            console.log('SSE 재연결 시도: 새로운 stream 요청 전송');
             fetchStream().catch((err) => {
               // 재연결 실패 시 에러 처리
               console.error('SSE 재연결 실패:', err);
@@ -491,6 +508,7 @@ export const createNotificationStream = (
         }
         reconnectTimeout = window.setTimeout(() => {
           reconnectTimeout = null; // 타이머 실행 후 초기화
+          console.log('SSE 재연결 시도: 새로운 stream 요청 전송');
           fetchStream().catch((err) => {
             // 재연결 실패 시 에러 처리
             console.error('SSE 재연결 실패:', err);
