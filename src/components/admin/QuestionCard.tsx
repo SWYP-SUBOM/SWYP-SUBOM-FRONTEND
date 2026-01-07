@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { CategoryChip } from '../common/CategoryChip';
 import type { CategoryNameType } from '../../constants/Category';
-import menu from '../../assets/admin/menu.svg';
-import Reply from '../../assets/admin/Reply.svg';
-import check from '../../assets/admin/check.svg';
+import menuIcon from '../../assets/admin/menu.svg';
+import replyIcon from '../../assets/admin/Reply.svg';
+import checkIcon from '../../assets/admin/check.svg';
 import deleteIcon from '../../assets/admin/delete.svg';
 
 interface QuestionCardProps {
@@ -132,7 +132,7 @@ export const QuestionCard = ({
               }`}
               disabled={!isChecked}
             >
-              <img src={menu} alt="calendar" />
+              <img src={menuIcon} alt="menuIcon" />
             </button>
             {isEditing ? (
               <button
@@ -142,7 +142,7 @@ export const QuestionCard = ({
                 }}
                 className="B03-1_M flex gap-1 text-b6 px-3 py-1 rounded-md bg-b1 cursor-pointer"
               >
-                <img src={check} alt="check" />
+                <img src={checkIcon} alt="checkIcon" />
                 수정 완료
               </button>
             ) : (
@@ -158,7 +158,7 @@ export const QuestionCard = ({
                 }`}
                 disabled={!isChecked}
               >
-                <img src={Reply} alt="edit" />
+                <img src={replyIcon} alt="replyIcon" />
               </button>
             )}
           </div>
