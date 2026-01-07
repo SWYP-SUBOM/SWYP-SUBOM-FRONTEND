@@ -182,6 +182,15 @@ export const put = async <T>(
   return response.data;
 };
 
+export const patch = async <T>(
+  endpoint: string,
+  data?: unknown,
+  config?: InternalAxiosRequestConfig,
+): Promise<T> => {
+  const response = await axiosInstance.patch<T>(endpoint, data, config);
+  return response.data;
+};
+
 export const remove = async <T>(
   endpoint: string,
   data?: unknown,
@@ -240,6 +249,7 @@ export const apiClient = {
   get,
   post,
   put,
+  patch,
   remove,
   postForm,
   OAuthToken,
