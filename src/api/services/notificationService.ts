@@ -358,8 +358,8 @@ export const createNotificationStream = (
       let eventType = '';
       let eventData = '';
 
-      // reader.read() 타임아웃 설정 (60초)
-      const readTimeout = 60000;
+      // reader.read() 타임아웃 설정 (360초)
+      const readTimeout = 5 * 60 * 1000;
       let readTimeoutId: number | null = null;
 
       try {
