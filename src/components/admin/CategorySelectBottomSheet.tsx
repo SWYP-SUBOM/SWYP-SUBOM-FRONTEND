@@ -1,5 +1,4 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import type { CategoryNameType } from '../../constants/Category';
 import { CategoryTabs } from '../../constants/CategoryMap';
 
 interface CategorySelectBottomSheetProps {
