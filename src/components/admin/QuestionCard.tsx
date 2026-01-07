@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { CategoryChip } from '../common/CategoryChip';
 import type { CategoryNameType } from '../../constants/Category';
-import menuIcon from '../../assets/admin/menu.svg';
+import menuIcon from '../../assets/admin/Menu.svg';
 import replyIcon from '../../assets/admin/Reply.svg';
 import checkIcon from '../../assets/admin/check.svg';
 import deleteIcon from '../../assets/admin/delete.svg';
