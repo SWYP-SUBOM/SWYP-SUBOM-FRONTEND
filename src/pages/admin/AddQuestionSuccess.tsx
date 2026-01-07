@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import questionComplete from '../../assets/admin/questioncomplete.svg';
+import questionSuccess from '../../assets/admin/questionsuccess.svg';
 
 export const AddQuestionSuccess = () => {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ export const AddQuestionSuccess = () => {
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-4 pb-24">
       <div className=" flex items-center justify-center mb-8">
-        <img src={questionComplete} alt="questionComplete" />
+        <img src={questionSuccess} alt="questionSuccess" />
       </div>
 
       <div className="T02_B text-gray-900 mb-12 text-center">질문 생성이 완료됐어요</div>
