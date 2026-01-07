@@ -34,6 +34,7 @@ import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
 // 관리자 페이지
 import { Admin } from '../pages/admin';
 import { AdminLogin } from '../pages/admin/AdminLogin';
+import { AddQuestion } from '../pages/admin/AddQuestion';
 
 export const router = createBrowserRouter([
   // 홈 페이지
@@ -67,6 +68,10 @@ export const router = createBrowserRouter([
           {
             path: 'admin/login',
             element: <AdminLogin />,
+          },
+          {
+            path: 'admin/add-question',
+            element: <AddQuestion />,
           },
 
           {

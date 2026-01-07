@@ -37,6 +37,9 @@ export const NOTIFICATION_ENDPOINTS = {
 
 export const ADMIN_ENDPOINTS = {
   LOGIN: '/api/admin/manage/login',
+  TOPICS: '/api/admin/topics',
+  TOPIC_GENERATION: '/api/admin/topic/generation',
+  TOPIC_RESERVATION: '/api/admin/topic',
 } as const;
 
 export const ENDPOINTS = {

@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { CategoryChip } from '../common/CategoryChip';
 import type { CategoryNameType } from '../../constants/Category';
 import menu from '../../assets/admin/menu.svg';
 import Reply from '../../assets/admin/Reply.svg';
+import check from '../../assets/admin/check.svg';
 
 interface QuestionCardProps {
   id: string | number;
@@ -12,6 +13,10 @@ interface QuestionCardProps {
   isChecked?: boolean;
   onCheckChange?: (id: string | number, checked: boolean) => void;
   onClick?: () => void;
+  onCalendarClick?: (id: string | number) => void;
+  onEditClick?: (id: string | number) => void;
+  onSaveEdit?: (id: string | number, newQuestion: string) => void;
+  isEditing?: boolean;
 }
 
 export const QuestionCard = ({
@@ -22,8 +27,23 @@ export const QuestionCard = ({
   isChecked = false,
   onCheckChange,
   onClick,
+  onCalendarClick,
+  onEditClick,
+  onSaveEdit,
+  isEditing = false,
 }: QuestionCardProps) => {
   const [checked, setChecked] = useState(isChecked);
+  const [editedQuestion, setEditedQuestion] = useState(question);
+
+  // question prop이 변경되면 editedQuestion 업데이트
+  useEffect(() => {
+    setEditedQuestion(question);
+  }, [question]);
+
+  // isChecked prop이 변경되면 내부 state 업데이트
+  useEffect(() => {
+    setChecked(isChecked);
+  }, [isChecked]);
 
   const handleCheckboxClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -63,15 +83,67 @@ export const QuestionCard = ({
       <div className="flex-1">
         <div className="flex items-center justify-between mb-2">
           <CategoryChip categoryName={category} />
-          <span className="C01_SB text-gray-700">{date}</span>
+          {date && <span className="C01_SB text-gray-700">{date}</span>}
         </div>
 
-        <div className="B03_M text-gray-900 leading-relaxed mb-3">{question}</div>
+        {isEditing ? (
+          <div className="mb-3">
+            <input
+              type="text"
+              value={editedQuestion}
+              onChange={(e) => setEditedQuestion(e.target.value)}
+              className="w-full B03_M text-gray-900 leading-relaxed border-b-2 border-b7 focus:outline-none pb-1"
+              autoFocus
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        ) : (
+          <div className="B03_M text-gray-900 leading-relaxed mb-3">{question}</div>
+        )}
 
         <div className="flex justify-end">
           <div className="flex items-center gap-[8px]">
-            <img src={menu} alt="menu" />
-            <img src={Reply} alt="Reply" />
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (isChecked) {
+                  onCalendarClick?.(id);
+                }
+              }}
+              className={`cursor-pointer  transition-opacity ${
+                !isChecked ? '  cursor-not-allowed' : 'bg-gray-200 rounded-md'
+              }`}
+              disabled={!isChecked}
+            >
+              <img src={menu} alt="calendar" />
+            </button>
+            {isEditing ? (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSaveEdit?.(id, editedQuestion);
+                }}
+                className="B03-1_M flex gap-1 text-b6 px-3 py-1 rounded-md bg-b1 cursor-pointer"
+              >
+                <img src={check} alt="check" />
+                수정 완료
+              </button>
+            ) : (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (isChecked) {
+                    onEditClick?.(id);
+                  }
+                }}
+                className={`cursor-pointer transition-opacity ${
+                  !isChecked ? ' cursor-not-allowed' : 'bg-gray-200 rounded-md'
+                }`}
+                disabled={!isChecked}
+              >
+                <img src={Reply} alt="edit" />
+              </button>
+            )}
           </div>
         </div>
       </div>
