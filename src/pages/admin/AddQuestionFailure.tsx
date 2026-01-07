@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
-import questionFailed from '../../assets/admin/questionfailed.svg';
+import questionFailed from '../../assets/admin/questionFailure.svg';
 
 export const AddQuestionFailure = () => {
   const navigate = useNavigate();

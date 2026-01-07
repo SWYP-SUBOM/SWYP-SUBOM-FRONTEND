@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import questionSuccess from '../../assets/admin/questionsuccess.svg';
+import questionSuccess from '../../assets/admin/questionComplete.svg';
 
 export const AddQuestionSuccess = () => {
   const navigate = useNavigate();
