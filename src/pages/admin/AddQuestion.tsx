@@ -54,24 +54,19 @@ export const AddQuestion = () => {
       },
       {
         onSuccess: () => {
-          alert('질문이 추가되었습니다.');
-          navigate(-1);
+          navigate('/admin/add-question/success');
         },
         onError: (error: any) => {
           console.error('질문 추가 실패:', error);
 
-          // 404 에러 처리
-          if (error?.response?.status === 404) {
-            alert(
-              'API 엔드포인트를 찾을 수 없습니다. 서버에 해당 기능이 구현되지 않았을 수 있습니다.',
-            );
-            return;
-          }
-
-          // 서버에서 반환한 에러 메시지
           const errorMessage =
-            error?.response?.data?.message || error?.message || '질문 추가에 실패했습니다.';
-          alert(errorMessage);
+            error?.response?.data?.message ||
+            error?.message ||
+            '생성된 질문과 중복된 질문이 있어요';
+
+          navigate('/admin/add-question/failure', {
+            state: { errorMessage },
+          });
         },
       },
     );
@@ -119,7 +114,6 @@ export const AddQuestion = () => {
           </div>
         </div>
 
-        {/* 질문 유형 선택 */}
         <div className="mb-8">
           <div className="B02_M text-gray-900 mb-4">
             질문 유형 <span className="text-b6">({selectedTypeCount}개)</span>
@@ -153,7 +147,6 @@ export const AddQuestion = () => {
           />
         </div>
 
-        {/* 하단 버튼 */}
         <div className="pb-4">
           <button
             onClick={handleSubmit}

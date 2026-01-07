@@ -1,11 +1,19 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { adminService, type UpdateTopicNameResponse } from '../../api/services/adminService';
+import {
+  adminService,
+  type UpdateTopicResponse,
+  type UpdateTopicRequest,
+} from '../../api/services/adminService';
 
-export const useUpdateTopicName = () => {
+export const useUpdateTopic = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<UpdateTopicNameResponse, Error, { topicId: number; topicName: string }>({
-    mutationFn: ({ topicId, topicName }) => adminService.updateTopicName(topicId, topicName),
+  return useMutation<
+    UpdateTopicResponse,
+    Error,
+    { topicId: number; updateData: UpdateTopicRequest }
+  >({
+    mutationFn: ({ topicId, updateData }) => adminService.updateTopic(topicId, updateData),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['adminTopics'] });
     },

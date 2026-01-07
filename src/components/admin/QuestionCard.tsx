@@ -4,6 +4,7 @@ import type { CategoryNameType } from '../../constants/Category';
 import menu from '../../assets/admin/menu.svg';
 import Reply from '../../assets/admin/Reply.svg';
 import check from '../../assets/admin/check.svg';
+import deleteIcon from '../../assets/admin/delete.svg';
 
 interface QuestionCardProps {
   id: string | number;
@@ -17,6 +18,8 @@ interface QuestionCardProps {
   onEditClick?: (id: string | number) => void;
   onSaveEdit?: (id: string | number, newQuestion: string) => void;
   isEditing?: boolean;
+  isDeleteMode?: boolean;
+  onDeleteClick?: (id: string | number) => void;
 }
 
 export const QuestionCard = ({
@@ -31,6 +34,8 @@ export const QuestionCard = ({
   onEditClick,
   onSaveEdit,
   isEditing = false,
+  isDeleteMode = false,
+  onDeleteClick,
 }: QuestionCardProps) => {
   const [checked, setChecked] = useState(isChecked);
   const [editedQuestion, setEditedQuestion] = useState(question);
@@ -57,27 +62,39 @@ export const QuestionCard = ({
       onClick={onClick}
       className="bg-white rounded-xl p-4 cursor-pointer hover:shadow-md transition-shadow duration-300 flex items-start gap-3"
     >
-      {/* 체크박스 */}
-      <div
-        onClick={handleCheckboxClick}
-        className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${
-          checked ? 'bg-b7 border-b7' : 'bg-white border-gray-400 hover:border-b7'
-        }`}
-      >
-        {checked && (
-          <svg
-            className="w-3 h-3 text-white"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path d="M5 13l4 4L19 7"></path>
-          </svg>
-        )}
-      </div>
+      {/* 삭제 모드일 때 빨간색 마이너스 아이콘, 아니면 체크박스 */}
+      {isDeleteMode ? (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onDeleteClick?.(id);
+          }}
+          className="w-7 h-7 flex items-center justify-center shrink-0 mt-0.5 cursor-pointer "
+        >
+          <img src={deleteIcon} alt="delete" />
+        </button>
+      ) : (
+        <div
+          onClick={handleCheckboxClick}
+          className={`w-7 h-7 rounded-md border flex items-center justify-center shrink-0 mt-0.5 transition-all ${
+            checked ? 'bg-b7 border-b7' : 'bg-gray-300 border-gray-600'
+          }`}
+        >
+          {checked && (
+            <svg
+              className="w-7 h-7 text-white"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path d="M5 13l4 4L19 7"></path>
+            </svg>
+          )}
+        </div>
+      )}
 
       {/* 카드 내용 */}
       <div className="flex-1">

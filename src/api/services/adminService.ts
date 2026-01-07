@@ -151,24 +151,51 @@ export const updateTopicReservation = async (
   return response;
 };
 
-export interface UpdateTopicNameRequest {
-  topicName: string;
+export interface UpdateTopicRequest {
+  topicName?: string;
+  topicType?: 'QUESTION' | 'LOGIC';
+  categoryId?: number;
 }
 
-export interface UpdateTopicNameResponse {
+export interface UpdateTopicResponse {
+  success: boolean;
+  code: string;
+  message: string;
+  data: {
+    categoryName: string;
+    topicName: string;
+    categoryId: number;
+    topicId: number;
+    topicType: string;
+  };
+}
+
+export const updateTopic = async (
+  topicId: number,
+  updateData: UpdateTopicRequest,
+): Promise<UpdateTopicResponse> => {
+  const url = `${ADMIN_ENDPOINTS.TOPIC_RESERVATION}/${topicId}`;
+  console.log('updateTopic API 호출:', { url, topicId, updateData });
+  const response = await apiClient.patch<UpdateTopicResponse>(url, updateData);
+  console.log('updateTopic API 응답:', response);
+  return response;
+};
+
+/**
+ * 토픽 삭제
+ * DELETE /api/admin/topic/{topicId}
+ */
+export interface DeleteTopicResponse {
   success: boolean;
   code: string;
   message: string;
 }
 
-export const updateTopicName = async (
-  topicId: number,
-  topicName: string,
-): Promise<UpdateTopicNameResponse> => {
+export const deleteTopic = async (topicId: number): Promise<DeleteTopicResponse> => {
   const url = `${ADMIN_ENDPOINTS.TOPIC_RESERVATION}/${topicId}`;
-  console.log('updateTopicName API 호출:', { url, topicId, topicName });
-  const response = await apiClient.patch<UpdateTopicNameResponse>(url, { topicName });
-  console.log('updateTopicName API 응답:', response);
+  console.log('deleteTopic API 호출:', { url, topicId });
+  const response = await apiClient.remove<DeleteTopicResponse>(url);
+  console.log('deleteTopic API 응답:', response);
   return response;
 };
 
@@ -179,5 +206,6 @@ export const adminService = {
   startTopicGeneration,
   getTopicGenerationStatus,
   updateTopicReservation,
-  updateTopicName,
+  updateTopic,
+  deleteTopic,
 };

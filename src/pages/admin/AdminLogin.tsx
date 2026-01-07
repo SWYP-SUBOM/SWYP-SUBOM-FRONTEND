@@ -65,7 +65,6 @@ export const AdminLogin = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="w-full mt-10 flex flex-col gap-7">
-        {/* 이메일 */}
         <div className="flex flex-col gap-[14px]">
           <label className="B02_B text-gray-900">아이디</label>
           <input
@@ -82,7 +81,6 @@ export const AdminLogin = () => {
           {errors.email && <div className="B03-1_M text-red-500">{errors.email}</div>}
         </div>
 
-        {/* 비밀번호 */}
         <div className="flex flex-col gap-[14px]">
           <label htmlFor="password" className="B02_B text-gray-900">
             비밀번호
@@ -101,7 +99,6 @@ export const AdminLogin = () => {
           {errors.password && <div className="B03-1_M text-red-500">{errors.password}</div>}
         </div>
 
-        {/* 코드 */}
         <div className="flex flex-col gap-[14px]">
           <label htmlFor="code" className="B02_B text-gray-900">
             코드
@@ -121,7 +118,6 @@ export const AdminLogin = () => {
           {errors.totpCode && <div className="B03-1_M text-red-500">{errors.totpCode}</div>}
         </div>
 
-        {/* 로그인 버튼 */}
         <button
           type="submit"
           disabled={!isFormValid || loginMutation.isPending}

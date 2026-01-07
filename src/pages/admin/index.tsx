@@ -11,8 +11,8 @@ import { useGetTopics } from '../../hooks/Admin/useGetTopics';
 import { useStartTopicGeneration } from '../../hooks/Admin/useStartTopicGeneration';
 import { useGetTopicGenerationStatus } from '../../hooks/Admin/useGetTopicGenerationStatus';
 import { useUpdateTopicReservation } from '../../hooks/Admin/useUpdateTopicReservation';
-import { useUpdateTopicName } from '../../hooks/Admin/useUpdateTopicName';
-import { getTopics } from '../../api/services/adminService';
+import { useUpdateTopic } from '../../hooks/Admin/useUpdateTopicName';
+import { useDeleteTopic } from '../../hooks/Admin/useDeleteTopic';
 import { CategoryTabs } from '../../constants/CategoryMap';
 import type { TopicMode } from '../../api/services/adminService';
 import type { CategoryNameType } from '../../constants/Category';
@@ -43,8 +43,8 @@ export const Admin = () => {
   const [uploadDateModalOpen, setUploadDateModalOpen] = useState(false);
   const [selectedTopicId, setSelectedTopicId] = useState<string | number | null>(null);
   const [editingTopicId, setEditingTopicId] = useState<string | number | null>(null);
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
 
-  // 카테고리 ID 변환
   const categoryId = useMemo(() => {
     if (selectedCategory === '전체') return 'ALL';
     const category = CategoryTabs.find((tab) => tab.categoryName === selectedCategory);
@@ -71,7 +71,8 @@ export const Admin = () => {
   const startGenerationMutation = useStartTopicGeneration();
   const { data: generationStatus } = useGetTopicGenerationStatus(generationId);
   const updateReservationMutation = useUpdateTopicReservation();
-  const updateTopicNameMutation = useUpdateTopicName();
+  const updateTopicMutation = useUpdateTopic();
+  const deleteTopicMutation = useDeleteTopic();
 
   const handleCheckChange = (id: string | number, checked: boolean) => {
     if (checked) {
@@ -118,33 +119,30 @@ export const Admin = () => {
       return;
     }
 
-    updateTopicNameMutation.mutate(
+    updateTopicMutation.mutate(
       {
         topicId: id as number,
-        topicName: newQuestion.trim(),
+        updateData: {
+          topicName: newQuestion.trim(),
+        },
       },
       {
         onSuccess: () => {
           setEditingTopicId(null);
-          alert('질문이 수정되었습니다.');
         },
         onError: (error) => {
           console.error('질문 수정 실패:', error);
-          alert('질문 수정에 실패했습니다.');
         },
       },
     );
   };
 
-  // 내일 업로드하기 선택
   const handleSelectTomorrow = () => {
     if (selectedTopicId === null) return;
 
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     const tomorrowDateString = tomorrow.toISOString().split('T')[0]; // YYYY-MM-DD 형식
-
-    console.log('내일 업로드하기 선택:', { topicId: selectedTopicId, date: tomorrowDateString });
 
     updateReservationMutation.mutate(
       {
@@ -174,8 +172,6 @@ export const Admin = () => {
     const randomDate = new Date(today);
     randomDate.setDate(today.getDate() + randomDays);
     const randomDateString = randomDate.toISOString().split('T')[0];
-
-    console.log('랜덤 업로드하기 선택:', { topicId: selectedTopicId, date: randomDateString });
 
     updateReservationMutation.mutate(
       {
@@ -210,39 +206,15 @@ export const Admin = () => {
 
   useEffect(() => {
     if (generationStatus?.data.status === 'COMPLETED') {
-      console.log('토픽 생성 완료 - 상태:', generationStatus.data);
-
       queryClient.invalidateQueries({ queryKey: ['adminTopics'] });
 
       setTimeout(() => {
-        console.log('토픽 생성 완료 후 refetch 시작');
-        refetchTopics().then((result) => {
-          console.log('refetch 결과:', result);
-          console.log('refetch 후 topics 개수:', result.data?.data?.topics?.length || 0);
-          if (result.data?.data?.topics?.length === 0) {
-            console.warn(
-              '⚠️ 토픽 생성 완료 후에도 데이터가 없습니다. 서버에서 실제로 저장되었는지 확인이 필요합니다.',
-            );
-            console.warn('🔍 문제 진단:');
-            console.warn('1. 서버 로그에서 토픽이 실제로 DB에 저장되었는지 확인');
-            console.warn('2. 생성된 토픽의 status가 현재 필터와 일치하는지 확인');
-            console.warn('3. 생성된 토픽의 categoryId가 현재 필터와 일치하는지 확인');
-          }
-        });
+        refetchTopics();
       }, 10000);
 
       setGenerationId(null);
-
-      console.log('토픽 생성 완료 - 현재 필터:', {
-        mode: selectedMode,
-        categoryId: categoryId === 'ALL' ? 'ALL' : categoryId,
-        queryParams,
-      });
-
       alert('토픽 생성이 완료되었습니다. 잠시 후 목록이 업데이트됩니다.');
     } else if (generationStatus?.data.status === 'COMPLETED_WITH_ERRORS') {
-      console.log('토픽 생성 완료 (일부 오류) - 상태:', generationStatus.data);
-
       queryClient.invalidateQueries({ queryKey: ['adminTopics'] });
 
       setTimeout(() => {
@@ -254,92 +226,44 @@ export const Admin = () => {
         `토픽 생성이 완료되었지만 일부 오류가 발생했습니다: ${generationStatus.data.errorMessage || ''}`,
       );
     } else if (generationStatus?.data.status === 'FAILED') {
-      console.log('토픽 생성 실패 - 상태:', generationStatus.data);
       setGenerationId(null);
       alert(`토픽 생성에 실패했습니다: ${generationStatus.data.errorMessage || ''}`);
     }
-  }, [generationStatus, queryClient, refetchTopics, selectedMode, categoryId, queryParams]);
+  }, [generationStatus, queryClient, refetchTopics]);
 
   const topics = topicsData?.data?.topics || [];
   const isGenerating =
     startGenerationMutation.isPending ||
     (generationId !== null && generationStatus?.data.status === 'PROCESSING');
 
-  useEffect(() => {
-    const testFilters = async () => {
-      console.log('🧪 필터 테스트 시작...');
+  const handleDeleteModeToggle = () => {
+    setIsDeleteMode((prev) => !prev);
 
-      try {
-        const pendingResult = await getTopics({ mode: 'PENDING' });
-        console.log('✅ mode=PENDING 결과:', {
-          totalCount: pendingResult.data?.totalCount,
-          topicsCount: pendingResult.data?.topics?.length,
-          topics: pendingResult.data?.topics,
-        });
-      } catch (error) {
-        console.error('❌ mode=PENDING 실패:', error);
-      }
-
-      try {
-        const category1Result = await getTopics({ mode: 'ALL', categoryId: 1 });
-        console.log('✅ mode=ALL&categoryId=1 결과:', {
-          totalCount: category1Result.data?.totalCount,
-          topicsCount: category1Result.data?.topics?.length,
-          topics: category1Result.data?.topics,
-        });
-      } catch (error) {
-        console.error('❌ mode=ALL&categoryId=1 실패:', error);
-      }
-
-      // 테스트 3: mode=APPROVED
-      try {
-        const approvedResult = await getTopics({ mode: 'APPROVED' });
-        console.log('✅ mode=APPROVED 결과:', {
-          totalCount: approvedResult.data?.totalCount,
-          topicsCount: approvedResult.data?.topics?.length,
-          topics: approvedResult.data?.topics,
-        });
-      } catch (error) {
-        console.error('❌ mode=APPROVED 실패:', error);
-      }
-
-      // 테스트 4: mode=ALL (현재 필터)
-      try {
-        const allResult = await getTopics({ mode: 'ALL' });
-        console.log('✅ mode=ALL 결과:', {
-          totalCount: allResult.data?.totalCount,
-          topicsCount: allResult.data?.topics?.length,
-          topics: allResult.data?.topics,
-        });
-      } catch (error) {
-        console.error('❌ mode=ALL 실패:', error);
-      }
-
-      console.log('🧪 필터 테스트 완료');
-    };
-
-    // 컴포넌트 마운트 시 한 번만 실행
-    testFilters();
-  }, []); // 빈 배열로 마운트 시 한 번만 실행
-
-  // 디버깅: API 응답 확인
-  useEffect(() => {
-    if (topicsData) {
-      console.log('Topics API 응답:', {
-        totalCount: topicsData.data?.totalCount,
-        topicsCount: topicsData.data?.topics?.length,
-        topics: topicsData.data?.topics,
-        currentFilter: {
-          mode: selectedMode,
-          categoryId: categoryId === 'ALL' ? 'ALL' : categoryId,
-        },
-      });
+    if (isDeleteMode) {
+      setCheckedIds(new Set());
     }
-  }, [topicsData, selectedMode, categoryId]);
+  };
+
+  const handleDeleteClick = (id: string | number) => {
+    deleteTopicMutation.mutate(id as number, {
+      onSuccess: () => {
+        refetchTopics();
+      },
+      onError: (error) => {
+        console.error('질문 삭제 실패:', error);
+      },
+    });
+  };
 
   return (
     <div>
-      <Header title="써봄 워크스페이스" button="질문 삭제" />
+      <Header
+        title={isDeleteMode ? '질문 삭제' : '써봄 워크스페이스'}
+        button={isDeleteMode ? '취소' : '질문 삭제'}
+        onButtonClick={handleDeleteModeToggle}
+        isDeleteMode={isDeleteMode}
+        onBackClick={handleDeleteModeToggle}
+      />
 
       <div className="w-full flex flex-col px-4 pt-10 ">
         <div className="B01_M text-gray-900">
@@ -359,7 +283,7 @@ export const Admin = () => {
           </button>
         </div>
 
-        <div className="mt-6 flex flex-col gap-3">
+        <div className="mt-6 flex flex-col gap-3 pb-24">
           {isLoading || isFetching ? (
             <div className="text-center py-4 text-gray-400">불러오는 중...</div>
           ) : isError ? (
@@ -382,6 +306,8 @@ export const Admin = () => {
                 onEditClick={handleEditClick}
                 onSaveEdit={handleSaveEdit}
                 isEditing={editingTopicId === topic.topicId}
+                isDeleteMode={isDeleteMode}
+                onDeleteClick={handleDeleteClick}
               />
             ))
           )}

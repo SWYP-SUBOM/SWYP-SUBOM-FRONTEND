@@ -35,6 +35,8 @@ import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
 import { Admin } from '../pages/admin';
 import { AdminLogin } from '../pages/admin/AdminLogin';
 import { AddQuestion } from '../pages/admin/AddQuestion';
+import { AddQuestionSuccess } from '../pages/admin/AddQuestionSuccess';
+import { AddQuestionFailure } from '../pages/admin/AddQuestionFailure';
 
 export const router = createBrowserRouter([
   // 홈 페이지
@@ -72,6 +74,14 @@ export const router = createBrowserRouter([
           {
             path: 'admin/add-question',
             element: <AddQuestion />,
+          },
+          {
+            path: 'admin/add-question/success',
+            element: <AddQuestionSuccess />,
+          },
+          {
+            path: 'admin/add-question/failure',
+            element: <AddQuestionFailure />,
           },
 
           {
