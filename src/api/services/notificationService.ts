@@ -47,7 +47,7 @@ export const createNotificationStream = (
   let lastDataReceivedTime: number = Date.now();
   let connectionHealthTimer: number | null = null;
   const MAX_REFRESH_ATTEMPTS = 3;
-  const CONNECTION_HEALTH_CHECK_INTERVAL = 2 * 60 * 1000; // 2분마다 체크 (백엔드 타임아웃 전에 재연결)
+  const CONNECTION_HEALTH_CHECK_INTERVAL = 10 * 60 * 1000; // 8분마다 체크 (백엔드 타임아웃 10분 전에 재연결)
 
   // 토큰 만료 전에 미리 갱신하는 함수
   const refreshTokenBeforeExpiry = async () => {
@@ -189,7 +189,7 @@ export const createNotificationStream = (
         if (isClosed) return;
 
         const timeSinceLastData = Date.now() - lastDataReceivedTime;
-        // 4분 이상 데이터가 없으면 재연결 (타임아웃 전에 재연결)
+        // 8분 이상 데이터가 없으면 재연결 (백엔드 타임아웃 10분 전에 재연결)
         if (timeSinceLastData >= CONNECTION_HEALTH_CHECK_INTERVAL) {
           console.log('연결 상태 체크: 데이터 수신 없음, 재연결 시도');
           // 기존 타이머들 취소
