@@ -7,10 +7,15 @@ import App from './App.tsx';
 import './index.css';
 import { initSentry } from './lib/sentry.ts';
 import { NotFound } from './pages/Error/NotFound.tsx';
+import setupLocator from '@locator/runtime';
 
 export const queryClient = new QueryClient();
 
 initSentry();
+
+if (import.meta.env.DEV) {
+  setupLocator();
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
