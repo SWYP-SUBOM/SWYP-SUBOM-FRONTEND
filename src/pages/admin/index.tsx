@@ -36,7 +36,6 @@ const formatDate = (dateString: string | null): string => {
 export const Admin = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [checkedIds, setCheckedIds] = useState<Set<string | number>>(new Set());
   const [selectedCategory, setSelectedCategory] = useState<string>('전체');
   const [selectedMode, setSelectedMode] = useState<TopicMode>('ALL');
   const [isCategorySheetOpen, setIsCategorySheetOpen] = useState(false);
@@ -46,29 +45,47 @@ export const Admin = () => {
   const [editingTopicId, setEditingTopicId] = useState<string | number | null>(null);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
 
+  const updateAllTopicsCache = (updater: (old: any) => any) => {
+    queryClient.setQueriesData({ queryKey: ['adminTopics'] }, updater);
+  };
+
   const categoryId = useMemo(() => {
     if (selectedCategory === '전체') return 'ALL';
     const category = CategoryTabs.find((tab) => tab.categoryName === selectedCategory);
     return category ? category.categoryId : 'ALL';
   }, [selectedCategory]);
 
-  // 쿼리 파라미터 메모이제이션
-  const queryParams = useMemo(
-    () => ({
-      mode: selectedMode,
-      categoryId: categoryId === 'ALL' ? undefined : (categoryId as number),
-    }),
-    [selectedMode, categoryId],
-  );
-
   const {
-    data: topicsData,
+    data: allTopicsData,
     isLoading,
     isError,
     error,
     isFetching,
     refetch: refetchTopics,
-  } = useGetTopics(queryParams);
+  } = useGetTopics({ mode: 'ALL' });
+
+  const topics = useMemo(() => {
+    const allTopics = allTopicsData?.data?.topics || [];
+    let filtered = [...allTopics];
+
+    if (selectedMode === 'APPROVED') {
+      filtered = filtered.filter((topic) => topic.topicStatus === 'APPROVED');
+    } else if (selectedMode === 'PENDING') {
+      filtered = filtered.filter((topic) => topic.topicStatus === 'PENDING');
+    } else if (selectedMode === 'QUESTION') {
+      filtered = filtered.filter((topic) => topic.topicType === 'QUESTION');
+    } else if (selectedMode === 'LOGIC') {
+      filtered = filtered.filter((topic) => topic.topicType === 'LOGIC');
+    }
+
+    // 카테고리 필터링
+    if (categoryId !== 'ALL') {
+      filtered = filtered.filter((topic) => topic.categoryId === categoryId);
+    }
+
+    return filtered;
+  }, [allTopicsData, selectedMode, categoryId]);
+
   const startGenerationMutation = useStartTopicGeneration();
   const { data: generationStatus } = useGetTopicGenerationStatus(generationId);
   const updateReservationMutation = useUpdateTopicReservation();
@@ -86,14 +103,17 @@ export const Admin = () => {
       },
       {
         onSuccess: () => {
-          setCheckedIds((prev) => {
-            const newSet = new Set(prev);
-            if (checked) {
-              newSet.add(id);
-            } else {
-              newSet.delete(id);
-            }
-            return newSet;
+          updateAllTopicsCache((old: any) => {
+            if (!old?.data?.topics) return old;
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                topics: old.data.topics.map((topic: any) =>
+                  topic.topicId === id ? { ...topic, topicStatus: status } : topic,
+                ),
+              },
+            };
           });
         },
         onError: (error) => {
@@ -165,7 +185,21 @@ export const Admin = () => {
         },
       },
       {
-        onSuccess: () => {},
+        onSuccess: () => {
+          // 모든 adminTopics 쿼리 캐시 업데이트
+          updateAllTopicsCache((old: any) => {
+            if (!old?.data?.topics) return old;
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                topics: old.data.topics.map((topic: any) =>
+                  topic.topicId === id ? { ...topic, topicName: fixedQuestion } : topic,
+                ),
+              },
+            };
+          });
+        },
         onError: (error) => {
           console.error('질문 어미 수정 실패:', error);
           alert('질문 어미 수정에 실패했습니다.');
@@ -189,6 +223,19 @@ export const Admin = () => {
       },
       {
         onSuccess: () => {
+          // 모든 adminTopics 쿼리 캐시 업데이트
+          updateAllTopicsCache((old: any) => {
+            if (!old?.data?.topics) return old;
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                topics: old.data.topics.map((topic: any) =>
+                  topic.topicId === id ? { ...topic, topicName: newQuestion.trim() } : topic,
+                ),
+              },
+            };
+          });
           setEditingTopicId(null);
         },
         onError: (error) => {
@@ -211,11 +258,21 @@ export const Admin = () => {
         usedAt: tomorrowDateString,
       },
       {
-        onSuccess: () => {
-          setCheckedIds((prev) => {
-            const newSet = new Set(prev);
-            newSet.add(selectedTopicId);
-            return newSet;
+        onSuccess: (_, variables) => {
+          // 모든 adminTopics 쿼리 캐시 업데이트
+          updateAllTopicsCache((old: any) => {
+            if (!old?.data?.topics) return old;
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                topics: old.data.topics.map((topic: any) =>
+                  topic.topicId === variables.topicId
+                    ? { ...topic, usedAt: variables.usedAt || null }
+                    : topic,
+                ),
+              },
+            };
           });
         },
         onError: (error) => {
@@ -240,11 +297,21 @@ export const Admin = () => {
         usedAt: randomDateString,
       },
       {
-        onSuccess: () => {
-          setCheckedIds((prev) => {
-            const newSet = new Set(prev);
-            newSet.add(selectedTopicId);
-            return newSet;
+        onSuccess: (_, variables) => {
+          // 모든 adminTopics 쿼리 캐시 업데이트
+          updateAllTopicsCache((old: any) => {
+            if (!old?.data?.topics) return old;
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                topics: old.data.topics.map((topic: any) =>
+                  topic.topicId === variables.topicId
+                    ? { ...topic, usedAt: variables.usedAt || null }
+                    : topic,
+                ),
+              },
+            };
           });
         },
         onError: (error) => {
@@ -292,23 +359,29 @@ export const Admin = () => {
     }
   }, [generationStatus, queryClient, refetchTopics]);
 
-  const topics = topicsData?.data?.topics || [];
   const isGenerating =
     startGenerationMutation.isPending ||
     (generationId !== null && generationStatus?.data.status === 'PROCESSING');
 
   const handleDeleteModeToggle = () => {
     setIsDeleteMode((prev) => !prev);
-
-    if (isDeleteMode) {
-      setCheckedIds(new Set());
-    }
   };
 
   const handleDeleteClick = (id: string | number) => {
     deleteTopicMutation.mutate(id as number, {
       onSuccess: () => {
-        refetchTopics();
+        // 모든 adminTopics 쿼리 캐시에서 제거
+        updateAllTopicsCache((old: any) => {
+          if (!old?.data?.topics) return old;
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              topics: old.data.topics.filter((topic: any) => topic.topicId !== id),
+              totalCount: old.data.totalCount - 1,
+            },
+          };
+        });
       },
       onError: (error) => {
         console.error('질문 삭제 실패:', error);
@@ -333,7 +406,6 @@ export const Admin = () => {
 
         <Category onModeSelect={handleModeSelect} selectedMode={selectedMode} />
 
-        {/* 카테고리 선택 버튼 */}
         <div className="flex justify-end">
           <button
             onClick={() => setIsCategorySheetOpen(true)}
