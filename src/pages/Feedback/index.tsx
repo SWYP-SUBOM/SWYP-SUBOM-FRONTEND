@@ -14,9 +14,10 @@ import { FeedbackBox } from './_components/FeedbackBox';
 
 export const FeedBack = () => {
   const location = useLocation();
-  const { postId, aiFeedbackId } = location.state as {
+  const { postId, aiFeedbackId, fromComplement } = location.state as {
     postId: number;
     aiFeedbackId: number;
+    fromComplement: boolean;
   };
 
   const { data: AIFeedBackData, isLoading } = useGetAIFeedBack(postId, aiFeedbackId);
@@ -25,14 +26,17 @@ export const FeedBack = () => {
 
   const isProcessing = AIFeedBackData?.status === 'PROCESSING';
   const grade = AIFeedBackData?.grade;
-  const [showRating, setShowRating] = useState(true);
+
+  const [showRating, setShowRating] = useState(!fromComplement);
 
   useEffect(() => {
-    if (!isProcessing && grade) {
-      const timer = setTimeout(() => setShowRating(false), 3000);
+    if (!isProcessing && grade && showRating) {
+      const timer = setTimeout(() => {
+        setShowRating(false);
+      }, 3000);
       return () => clearTimeout(timer);
     }
-  }, [isProcessing, grade]);
+  }, [isProcessing, grade, showRating]);
 
   const content = postData?.content ?? '';
   const showLoading = isProcessing || isLoading;
