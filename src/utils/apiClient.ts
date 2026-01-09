@@ -64,6 +64,12 @@ const createAxiosInstance = (): AxiosInstance => {
     async (error: AxiosError) => {
       const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
+      // 500에러 뜨는 경우 temporaryerror 페이지로 이동
+      if (error.response && error.response.status == 500) {
+        window.location.href = '/temporaryerror';
+        return Promise.reject(error);
+      }
+
       // 401 에러이고 리프레시 토큰 요청이 아닌 경우
       if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
         // 리프레시 토큰 요청 자체가 401이면 무한 루프 방지

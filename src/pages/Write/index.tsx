@@ -197,19 +197,21 @@ export const Write = () => {
               <CategoryChip categoryName={categoryName}></CategoryChip>
               <div className="py-[10px] B01_M">{topicName}</div>
             </div>
-            <div className="relative w-full flex-1 flex flex-col min-h-0">
+            <div className="relative w-full flex-1 flex flex-col min-h-0 bg-white border border-gray-400 rounded-xl overflow-hidden">
               <textarea
                 placeholder="AI 피드백은 100자 이상 작성 시 제공됩니다."
                 value={opinion}
                 onChange={(e) => setOpinion(e.target.value)}
-                className="min-h-0 h-full hide-scrollbar focus:placeholder-transparent focus:outline-none focus:border-gray-700 hover:border-gray-700 focus:ring-0 bg-[#FFFFFF] B03_M pl-4 pr-2 pt-4 py-10 w-full min-h-[330px] text-gray-800 border border-gray-400 rounded-xl resize-none"
+                maxLength={699}
+                className="w-full h-[calc(100%-40px)] p-4 hide-scrollbar focus:placeholder-transparent focus:outline-none focus:ring-0 bg-transparent B03_M text-gray-800 resize-none"
               />
               {!isKeyboardOpen && (
-                <div className="C01_SB absolute bottom-4 right-4 text-gray-700 pointer-events-none">
-                  {opinion.length} / 700
+                <div className="absolute bottom-0 left-0 w-full h-10 flex items-center justify-end px-4 bg-white pointer-events-none">
+                  <div className="C01_SB text-gray-700">{opinion.length} / 700</div>
                 </div>
               )}
             </div>
+
             {isKeyboardOpen &&
               createPortal(
                 <div

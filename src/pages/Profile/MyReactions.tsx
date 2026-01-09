@@ -1,16 +1,16 @@
-import { useState, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { endOfDay, format, startOfDay, subDays, subMonths, subYears } from 'date-fns';
 import { AnimatePresence } from 'framer-motion';
-import { subDays, subMonths, subYears, startOfDay, endOfDay, format } from 'date-fns';
+import { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { TitleHeader } from '../../components/common/TitleHeader.tsx';
 import { useGetMyReactions } from '../../hooks/Profile/useGetMyReactions.ts';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll.ts';
-import { FilterBar } from './_components/MyReactions/FilterBar.tsx';
-import { SortFilterModal } from './_components/MyReactions/SortFilterModal.tsx';
 import { DateFilterModal } from './_components/MyReactions/DateFilterModal.tsx';
-import { PeriodSelectionModal } from './_components/MyReactions/PeriodSelectionModal.tsx';
 import { DatePicker } from './_components/MyReactions/DatePicker.tsx';
+import { FilterBar } from './_components/MyReactions/FilterBar.tsx';
+import { PeriodSelectionModal } from './_components/MyReactions/PeriodSelectionModal.tsx';
 import { ReactionPostCard } from './_components/MyReactions/ReactionPostCard.tsx';
+import { SortFilterModal } from './_components/MyReactions/SortFilterModal.tsx';
 
 type SortOption = 'latest' | 'oldest';
 type DateOption = 'lastWeek' | 'lastMonth' | 'lastYear' | 'all' | 'custom';
@@ -82,8 +82,8 @@ export const MyReactions = () => {
 
   const getDateLabel = (dateOption: DateOption) => {
     const labels: Record<DateOption, string> = {
-      lastWeek: '지난 주',
-      lastMonth: '지난 달',
+      lastWeek: '최근 일주일',
+      lastMonth: '최근 1달',
       lastYear: '최근 1년',
       all: '날짜 선택',
       custom: '기간 선택',

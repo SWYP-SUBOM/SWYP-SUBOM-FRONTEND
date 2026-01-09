@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
-import { TitleHeader } from '../../components/common/TitleHeader';
 import { CategoryChip } from '../../components/common/CategoryChip';
+import { TitleHeader } from '../../components/common/TitleHeader';
 import type { CategoryNameType } from '../../constants/Category';
 import { useGetAIFeedBack } from '../../hooks/FeedBack/uesGetAIFeedBack';
 import { useGetDraftPost } from '../../hooks/Post/useGetPost';
@@ -58,9 +58,7 @@ export const FeedbackView = () => {
           )}
         </div>
         <div className="pt-[10px]">
-          <FeedbackBanner>
-            막막하다면 써봄이의 피드백을 <br /> 참고해서 수정해보세요!
-          </FeedbackBanner>
+          <FeedbackBanner>써봄이가 피드백을 준비했어요!</FeedbackBanner>
         </div>
         <div>
           {AIFeedBackData && !isLoading && (
