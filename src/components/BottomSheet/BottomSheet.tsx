@@ -10,7 +10,7 @@ export const Overlay = ({ children }: { children: ReactNode }) => {
   return (
     <motion.div
       onClick={closeBottomSheet}
-      className="fixed inset-0 z-200 mx-auto h-full flex items-end justify-center bg-black/50"
+      className="fixed inset-0 z-200 max-w-[400px] mx-auto h-full flex items-end justify-center bg-black/50"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
