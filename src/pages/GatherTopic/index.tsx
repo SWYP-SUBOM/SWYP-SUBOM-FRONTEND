@@ -1,3 +1,4 @@
+import { ScrollToTopButton } from '../../components/common/ScrollTopButton';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { FeedLayout } from '../../layout/FeedLayout';
 import { GatherTopicTab } from './_components/GatherTopicTab';
@@ -9,6 +10,7 @@ export const GatherTopic = () => {
         <div className="px-4">
           <GatherTopicTab />
         </div>
+        <ScrollToTopButton />
       </FeedLayout>
     </div>
   );

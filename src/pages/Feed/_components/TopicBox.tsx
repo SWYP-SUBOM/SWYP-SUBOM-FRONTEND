@@ -7,7 +7,7 @@ import value from '../../../assets/CategoryBox/value.png';
 import right from '../../../assets/Feed/right.svg';
 import { useAuthStore } from '../../../store/useAuthStore';
 
-export const TodayTopicBoxMap = {
+export const TopicBoxMap = {
   일상: {
     categoryId: 1,
     title: '일상',
@@ -45,15 +45,19 @@ export const TodayTopicBoxMap = {
   },
 };
 
-export const TodayTopicBox = ({
+export const TopicBox = ({
   topicText,
   categoryText,
+  title,
+  ismove,
 }: {
   topicText: string;
   categoryText: string;
+  title: string;
+  ismove?: boolean;
 }) => {
-  type CategoryKey = keyof typeof TodayTopicBoxMap;
-  const categoryData = TodayTopicBoxMap[categoryText as CategoryKey];
+  type CategoryKey = keyof typeof TopicBoxMap;
+  const categoryData = TopicBoxMap[categoryText as CategoryKey];
   const { isLoggedIn } = useAuthStore();
 
   const navigate = useNavigate();
@@ -64,13 +68,13 @@ export const TodayTopicBox = ({
   return (
     <>
       <div className={`${categoryData.bgColor} relative w-[400px] h-[270px] px-4 py-7`}>
-        <div className="B01_B text-gray-900 pb-3">오늘의 주제</div>
+        <div className="B01_B text-gray-900 pb-3">{title}</div>
         <div className="B01_B text-gray-800 pb-[23px]">{topicText}</div>
         <img
           src={categoryData.icon}
           className={`absolute right-5 bottom-5 ${categoryData.iconClass}`}
         ></img>
-        {isLoggedIn && (
+        {isLoggedIn && ismove && (
           <div
             className="absolute bottom-5 left-4 flex items-center gap-1 cursor-pointer"
             onClick={movetoGatherTopic}

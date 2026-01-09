@@ -10,6 +10,7 @@ interface TitleHeaderProps {
   onBack?: () => void;
   path?: string;
   onlyNavigateBack?: boolean;
+  headerWithPastTopic?: boolean;
 }
 
 export const TitleHeader = ({
@@ -18,6 +19,7 @@ export const TitleHeader = ({
   onBack,
   path,
   onlyNavigateBack = false,
+  headerWithPastTopic = false,
 }: TitleHeaderProps) => {
   const navigate = useNavigate();
   const unreadCount = useNotificationStore((state) => state.unreadCount);
@@ -56,6 +58,27 @@ export const TitleHeader = ({
           </div>
         )}
         <div className="w-9" />
+      </div>
+    );
+  }
+
+  if (headerWithPastTopic) {
+    return (
+      <div className="flex items-center justify-between w-full px-4 mt-2.5 mb-[14px]">
+        <button className="cursor-pointer" onClick={handleBack}>
+          <img src={left} className="w-9 h-9" alt="뒤로가기" />
+        </button>
+        {title && (
+          <div className="absolute left-1/2 transform -translate-x-1/2 B02_B text-gray-900">
+            {title}
+          </div>
+        )}
+        <button className="relative cursor-pointer pt-1" onClick={() => navigate('/notification')}>
+          <img src={alarm_black} className="w-9 h-6" alt="알림" />
+          {unreadCount > 0 && (
+            <div className="absolute top-0 right-2 w-2 h-2 bg-red-500 rounded-full" />
+          )}
+        </button>
       </div>
     );
   }
