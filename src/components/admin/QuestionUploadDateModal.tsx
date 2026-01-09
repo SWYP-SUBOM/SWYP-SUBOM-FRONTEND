@@ -20,7 +20,7 @@ export const QuestionUploadDateModal = ({
     <AnimatePresence>
       <div
         onClick={onClose}
-        className="fixed inset-0 flex max-w-[400px] mx-auto bg-black/50 justify-center items-end z-200"
+        className="fixed inset-0 flex max-w-[400px] mx-auto bg-[#121212]/70 justify-center items-end z-200"
       >
         <motion.div
           onClick={(e) => e.stopPropagation()}

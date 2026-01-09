@@ -13,6 +13,7 @@ import { useGetTopicGenerationStatus } from '../../hooks/Admin/useGetTopicGenera
 import { useUpdateTopicReservation } from '../../hooks/Admin/useUpdateTopicReservation';
 import { useUpdateTopic } from '../../hooks/Admin/useUpdateTopicName';
 import { useDeleteTopic } from '../../hooks/Admin/useDeleteTopic';
+import { useUpdateTopicStatus } from '../../hooks/Admin/useUpdateTopicStatus';
 import { CategoryTabs } from '../../constants/CategoryMap';
 import type { TopicMode } from '../../api/services/adminService';
 import type { CategoryNameType } from '../../constants/Category';
@@ -73,17 +74,34 @@ export const Admin = () => {
   const updateReservationMutation = useUpdateTopicReservation();
   const updateTopicMutation = useUpdateTopic();
   const deleteTopicMutation = useDeleteTopic();
+  const updateTopicStatusMutation = useUpdateTopicStatus();
 
   const handleCheckChange = (id: string | number, checked: boolean) => {
-    setCheckedIds((prev) => {
-      const newSet = new Set(prev);
-      if (checked) {
-        newSet.add(id);
-      } else {
-        newSet.delete(id);
-      }
-      return newSet;
-    });
+    const status = checked ? 'APPROVED' : 'PENDING';
+
+    updateTopicStatusMutation.mutate(
+      {
+        topicId: id as number,
+        status,
+      },
+      {
+        onSuccess: () => {
+          setCheckedIds((prev) => {
+            const newSet = new Set(prev);
+            if (checked) {
+              newSet.add(id);
+            } else {
+              newSet.delete(id);
+            }
+            return newSet;
+          });
+        },
+        onError: (error) => {
+          console.error('질문 상태 변경 실패:', error);
+          alert('질문 상태 변경에 실패했습니다.');
+        },
+      },
+    );
   };
 
   const handleCategorySelect = (category: string) => {
@@ -343,7 +361,7 @@ export const Admin = () => {
                 category={topic.categoryName as CategoryNameType}
                 question={topic.topicName}
                 date={formatDate(topic.usedAt)}
-                isChecked={checkedIds.has(topic.topicId)}
+                isChecked={topic.topicStatus === 'APPROVED'}
                 onCheckChange={handleCheckChange}
                 onCalendarClick={handleCalendarClick}
                 onEditClick={handleEditClick}
