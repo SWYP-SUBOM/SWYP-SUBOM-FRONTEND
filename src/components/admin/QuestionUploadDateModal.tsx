@@ -47,16 +47,6 @@ export const QuestionUploadDateModal = ({
             >
               내일 업로드하기
             </button>
-
-            <button
-              onClick={() => {
-                onSelectRandom();
-                onClose();
-              }}
-              className="w-full h-14 rounded-xl bg-b7 text-white B02_B cursor-pointer"
-            >
-              랜덤 업로드하기
-            </button>
           </div>
         </motion.div>
       </div>
