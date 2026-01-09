@@ -103,64 +103,29 @@ export const QuestionCard = ({
           {date && <span className="C01_SB text-gray-700">{date}</span>}
         </div>
 
-        {isEditing ? (
-          <div className="mb-3">
-            <input
-              type="text"
-              value={editedQuestion}
-              onChange={(e) => setEditedQuestion(e.target.value)}
-              className="w-full B03_M text-gray-900 leading-relaxed border-b-2 border-b7 focus:outline-none pb-1"
-              autoFocus
-              onClick={(e) => e.stopPropagation()}
-            />
-          </div>
-        ) : (
-          <div className="B03_M text-gray-900 leading-relaxed mb-3">{question}</div>
-        )}
+        <div className="B03_M text-gray-900 leading-relaxed mb-3">{question}</div>
 
         <div className="flex justify-end">
           <div className="flex items-center gap-[8px]">
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                if (isChecked) {
-                  onCalendarClick?.(id);
-                }
+                onCalendarClick?.(id);
               }}
-              className={`cursor-pointer  transition-opacity ${
-                !isChecked ? '  cursor-not-allowed' : 'bg-gray-200 rounded-md'
-              }`}
-              disabled={!isChecked}
+              className="cursor-pointer bg-gray-200 rounded-md transition-opacity hover:opacity-80"
             >
               <img src={menuIcon} alt="menuIcon" />
             </button>
-            {isEditing ? (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onSaveEdit?.(id, editedQuestion);
-                }}
-                className="B03-1_M flex gap-1 text-b6 px-3 py-1 rounded-md bg-b1 cursor-pointer"
-              >
-                <img src={checkIcon} alt="checkIcon" />
-                수정 완료
-              </button>
-            ) : (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (isChecked) {
-                    onEditClick?.(id);
-                  }
-                }}
-                className={`cursor-pointer transition-opacity ${
-                  !isChecked ? ' cursor-not-allowed' : 'bg-gray-200 rounded-md'
-                }`}
-                disabled={!isChecked}
-              >
-                <img src={replyIcon} alt="replyIcon" />
-              </button>
-            )}
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onEditClick?.(id);
+              }}
+              className="cursor-pointer bg-gray-200 rounded-md transition-opacity hover:opacity-80"
+            >
+              <img src={replyIcon} alt="replyIcon" />
+            </button>
           </div>
         </div>
       </div>

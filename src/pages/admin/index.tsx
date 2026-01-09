@@ -75,16 +75,6 @@ export const Admin = () => {
   const deleteTopicMutation = useDeleteTopic();
 
   const handleCheckChange = (id: string | number, checked: boolean) => {
-    if (checked) {
-      const topic = topics.find((t) => t.topicId === id);
-
-      if (topic && !topic.usedAt) {
-        setSelectedTopicId(id);
-        setUploadDateModalOpen(true);
-        return;
-      }
-    }
-
     setCheckedIds((prev) => {
       const newSet = new Set(prev);
       if (checked) {
@@ -109,8 +99,61 @@ export const Admin = () => {
     setUploadDateModalOpen(true);
   };
 
+  const fixQuestionEnding = (question: string): string => {
+    const endings = [
+      /나요\?$/,
+      /인가요\?$/,
+      /일까요\?$/,
+      /을까요\?$/,
+      /를까요\?$/,
+      /까요\?$/,
+      /나요$/,
+      /인가요$/,
+      /일까요$/,
+      /을까요$/,
+      /를까요$/,
+      /까요$/,
+    ];
+
+    if (question.trim().endsWith('까요?')) {
+      return question;
+    }
+
+    for (const pattern of endings) {
+      if (pattern.test(question.trim())) {
+        return question.replace(pattern, '까요?');
+      }
+    }
+
+    return question.trim() + '까요?';
+  };
+
   const handleEditClick = (id: string | number) => {
-    setEditingTopicId(id);
+    const topic = topics.find((t) => t.topicId === id);
+    if (!topic) return;
+
+    const fixedQuestion = fixQuestionEnding(topic.topicName);
+
+    if (fixedQuestion === topic.topicName) {
+      alert('이미 올바른 어미로 끝나는 질문입니다.');
+      return;
+    }
+
+    updateTopicMutation.mutate(
+      {
+        topicId: id as number,
+        updateData: {
+          topicName: fixedQuestion,
+        },
+      },
+      {
+        onSuccess: () => {},
+        onError: (error) => {
+          console.error('질문 어미 수정 실패:', error);
+          alert('질문 어미 수정에 실패했습니다.');
+        },
+      },
+    );
   };
 
   const handleSaveEdit = (id: string | number, newQuestion: string) => {
@@ -142,7 +185,7 @@ export const Admin = () => {
 
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowDateString = tomorrow.toISOString().split('T')[0]; // YYYY-MM-DD 형식
+    const tomorrowDateString = tomorrow.toISOString().split('T')[0];
 
     updateReservationMutation.mutate(
       {
