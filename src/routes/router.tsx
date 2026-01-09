@@ -33,16 +33,20 @@ import { FeedbackLoading } from '../pages/Write/FeedbackLoading';
 
 // 관리자 페이지
 import { Admin } from '../pages/admin';
-import { AdminLogin } from '../pages/admin/AdminLogin';
 import { AddQuestion } from '../pages/admin/AddQuestion';
-import { AddQuestionSuccess } from '../pages/admin/AddQuestionSuccess';
 import { AddQuestionFailure } from '../pages/admin/AddQuestionFailure';
+import { AddQuestionSuccess } from '../pages/admin/AddQuestionSuccess';
+import { AdminLogin } from '../pages/admin/AdminLogin';
+import { NotFound } from '../pages/Error/NotFound';
+import { TemporaryError } from '../pages/Error/TemporaryError';
+import { PastTopic } from '../pages/Feed/PastTopic/PastTopic';
 
 export const router = createBrowserRouter([
   // 홈 페이지
   {
     path: '/',
     element: <RootLayout />,
+    errorElement: <NotFound />,
     children: [
       {
         path: '/home',
@@ -208,6 +212,18 @@ export const router = createBrowserRouter([
           {
             path: 'notification',
             element: <Notification />,
+          },
+          {
+            path: 'notfound',
+            element: <NotFound />,
+          },
+          {
+            path: 'temporaryerror',
+            element: <TemporaryError />,
+          },
+          {
+            path: 'feed/:topicId/:categoryId',
+            element: <PastTopic />,
           },
         ],
       },
