@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import {
   adminService,
   type UpdateTopicStatusResponse,
@@ -6,12 +6,7 @@ import {
 } from '../../api/services/adminService';
 
 export const useUpdateTopicStatus = () => {
-  const queryClient = useQueryClient();
-
   return useMutation<UpdateTopicStatusResponse, Error, { topicId: number; status: TopicStatus }>({
     mutationFn: ({ topicId, status }) => adminService.updateTopicStatus(topicId, status),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['adminTopics'] });
-    },
   });
 };

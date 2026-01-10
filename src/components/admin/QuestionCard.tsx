@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { CategoryChip } from '../common/CategoryChip';
 import type { CategoryNameType } from '../../constants/Category';
 import menuIcon from '../../assets/admin/Menu.svg';
@@ -22,7 +22,7 @@ interface QuestionCardProps {
   onDeleteClick?: (id: string | number) => void;
 }
 
-export const QuestionCard = ({
+const QuestionCardComponent = ({
   id,
   category,
   question,
@@ -52,6 +52,7 @@ export const QuestionCard = ({
 
   const handleCheckboxClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     const newChecked = !checked;
     setChecked(newChecked);
     onCheckChange?.(id, newChecked);
@@ -132,3 +133,5 @@ export const QuestionCard = ({
     </div>
   );
 };
+
+export const QuestionCard = memo(QuestionCardComponent);
