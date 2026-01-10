@@ -2,8 +2,8 @@ import { useState, useEffect, memo } from 'react';
 import { CategoryChip } from '../common/CategoryChip';
 import type { CategoryNameType } from '../../constants/Category';
 import menuIcon from '../../assets/admin/Menu.svg';
-import replyIcon from '../../assets/admin/Reply.svg';
 import checkIcon from '../../assets/admin/check.svg';
+import replyIcon from '../../assets/admin/Reply.svg';
 import deleteIcon from '../../assets/admin/delete.svg';
 
 interface QuestionCardProps {
@@ -32,18 +32,10 @@ const QuestionCardComponent = ({
   onClick,
   onCalendarClick,
   onEditClick,
-  onSaveEdit,
-  isEditing = false,
   isDeleteMode = false,
   onDeleteClick,
 }: QuestionCardProps) => {
   const [checked, setChecked] = useState(isChecked);
-  const [editedQuestion, setEditedQuestion] = useState(question);
-
-  // question prop이 변경되면 editedQuestion 업데이트
-  useEffect(() => {
-    setEditedQuestion(question);
-  }, [question]);
 
   // isChecked prop이 변경되면 내부 state 업데이트
   useEffect(() => {
@@ -77,23 +69,11 @@ const QuestionCardComponent = ({
       ) : (
         <div
           onClick={handleCheckboxClick}
-          className={`w-7 h-7 rounded-md border flex items-center justify-center shrink-0 mt-0.5 transition-all ${
-            checked ? 'bg-b7 border-b7' : 'bg-gray-300 border-gray-600'
+          className={`w-7 h-7 rounded-md border flex items-center justify-center shrink-0 mt-0.5 transition-all  ${
+            checked ? 'border-b7' : 'bg-gray-300 border-gray-600'
           }`}
         >
-          {checked && (
-            <svg
-              className="w-7 h-7 text-white"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path d="M5 13l4 4L19 7"></path>
-            </svg>
-          )}
+          {checked && <img src={checkIcon} alt="checkIcon" />}
         </div>
       )}
 

@@ -17,8 +17,9 @@ import { useUpdateTopicStatus } from '../../hooks/Admin/useUpdateTopicStatus';
 import { CategoryTabs } from '../../constants/CategoryMap';
 import type { TopicMode } from '../../api/services/adminService';
 import type { CategoryNameType } from '../../constants/Category';
-
+import { useScroll } from '../../hooks/useScroll';
 import arrowdown from '../../assets/admin/arrowdown.svg';
+import scrollToTop from '../../assets/admin/Scroll.svg';
 
 const month = new Date().getMonth() + 1;
 const day = new Date().getDate();
@@ -282,45 +283,6 @@ export const Admin = () => {
     );
   };
 
-  const handleSelectRandom = () => {
-    if (selectedTopicId === null) return;
-
-    const today = new Date();
-    const randomDays = Math.floor(Math.random() * 30) + 1;
-    const randomDate = new Date(today);
-    randomDate.setDate(today.getDate() + randomDays);
-    const randomDateString = randomDate.toISOString().split('T')[0];
-
-    updateReservationMutation.mutate(
-      {
-        topicId: selectedTopicId as number,
-        usedAt: randomDateString,
-      },
-      {
-        onSuccess: (_, variables) => {
-          // 모든 adminTopics 쿼리 캐시 업데이트
-          updateAllTopicsCache((old: any) => {
-            if (!old?.data?.topics) return old;
-            return {
-              ...old,
-              data: {
-                ...old.data,
-                topics: old.data.topics.map((topic: any) =>
-                  topic.topicId === variables.topicId
-                    ? { ...topic, usedAt: variables.usedAt || null }
-                    : topic,
-                ),
-              },
-            };
-          });
-        },
-        onError: (error) => {
-          console.error('예약 업데이트 실패:', error);
-        },
-      },
-    );
-  };
-
   const handleCreateQuestion = () => {
     startGenerationMutation.mutate(undefined, {
       onSuccess: (data) => {
@@ -389,6 +351,12 @@ export const Admin = () => {
     });
   };
 
+  const isScrolled = useScroll();
+
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div>
       <Header
@@ -444,6 +412,15 @@ export const Admin = () => {
               />
             ))
           )}
+
+          {isScrolled && (
+            <button
+              onClick={handleScrollToTop}
+              className="fixed bottom-16 right-[40%] translate-x-1/2  flex items-center justify-center cursor-pointer"
+            >
+              <img src={scrollToTop} alt="scrollToTop" />
+            </button>
+          )}
         </div>
       </div>
 
@@ -473,7 +450,6 @@ export const Admin = () => {
           setSelectedTopicId(null);
         }}
         onSelectTomorrow={handleSelectTomorrow}
-        onSelectRandom={handleSelectRandom}
       />
     </div>
   );
