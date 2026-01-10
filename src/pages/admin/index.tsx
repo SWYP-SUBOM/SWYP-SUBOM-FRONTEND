@@ -74,8 +74,8 @@ export const Admin = () => {
       filtered = filtered.filter((topic) => topic.topicStatus === 'PENDING');
     } else if (selectedMode === 'QUESTION') {
       filtered = filtered.filter((topic) => topic.topicType === 'QUESTION');
-    } else if (selectedMode === 'LOGIC') {
-      filtered = filtered.filter((topic) => topic.topicType === 'LOGIC');
+    } else if (selectedMode === 'LOGICAL') {
+      filtered = filtered.filter((topic) => topic.topicType === 'LOGICAL');
     }
 
     // 카테고리 필터링

@@ -10,7 +10,7 @@ export const useCreateTopic = () => {
       topicData,
     }: {
       categoryId: number;
-      topicData: { topicName: string; topicType: 'QUESTION' | 'LOGIC' };
+      topicData: { topicName: string; topicType: 'QUESTION' | 'LOGICAL' };
     }) => adminService.createTopic(categoryId, topicData),
     onSuccess: () => {
       // topics 리스트 새로고침
