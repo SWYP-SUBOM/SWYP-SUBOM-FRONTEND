@@ -5,14 +5,12 @@ interface QuestionUploadDateModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSelectTomorrow: () => void;
-  onSelectRandom: () => void;
 }
 
 export const QuestionUploadDateModal = ({
   isOpen,
   onClose,
   onSelectTomorrow,
-  onSelectRandom,
 }: QuestionUploadDateModalProps) => {
   if (!isOpen) return null;
 
