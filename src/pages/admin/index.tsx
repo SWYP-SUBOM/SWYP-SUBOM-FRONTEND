@@ -138,75 +138,8 @@ export const Admin = () => {
     setUploadDateModalOpen(true);
   };
 
-  const fixQuestionEnding = (question: string): string => {
-    const endings = [
-      /나요\?$/,
-      /인가요\?$/,
-      /일까요\?$/,
-      /을까요\?$/,
-      /를까요\?$/,
-      /까요\?$/,
-      /나요$/,
-      /인가요$/,
-      /일까요$/,
-      /을까요$/,
-      /를까요$/,
-      /까요$/,
-    ];
-
-    if (question.trim().endsWith('까요?')) {
-      return question;
-    }
-
-    for (const pattern of endings) {
-      if (pattern.test(question.trim())) {
-        return question.replace(pattern, '까요?');
-      }
-    }
-
-    return question.trim() + '까요?';
-  };
-
   const handleEditClick = (id: string | number) => {
-    const topic = topics.find((t) => t.topicId === id);
-    if (!topic) return;
-
-    const fixedQuestion = fixQuestionEnding(topic.topicName);
-
-    if (fixedQuestion === topic.topicName) {
-      alert('이미 올바른 어미로 끝나는 질문입니다.');
-      return;
-    }
-
-    updateTopicMutation.mutate(
-      {
-        topicId: id as number,
-        updateData: {
-          topicName: fixedQuestion,
-        },
-      },
-      {
-        onSuccess: () => {
-          // 모든 adminTopics 쿼리 캐시 업데이트
-          updateAllTopicsCache((old: any) => {
-            if (!old?.data?.topics) return old;
-            return {
-              ...old,
-              data: {
-                ...old.data,
-                topics: old.data.topics.map((topic: any) =>
-                  topic.topicId === id ? { ...topic, topicName: fixedQuestion } : topic,
-                ),
-              },
-            };
-          });
-        },
-        onError: (error) => {
-          console.error('질문 어미 수정 실패:', error);
-          alert('질문 어미 수정에 실패했습니다.');
-        },
-      },
-    );
+    setEditingTopicId(id);
   };
 
   const handleSaveEdit = (id: string | number, newQuestion: string) => {
