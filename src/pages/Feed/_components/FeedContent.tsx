@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { GuestBottomSheet } from '../../../components/common/GuestBottomSheet';
+import { ScrollToTopButton } from '../../../components/common/ScrollTopButton';
 import { useGetFeed } from '../../../hooks/Feed/useGetFeed';
 import { useBottomSheet } from '../../../hooks/useBottomSheet';
 import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
 import { useAuthStore } from '../../../store/useAuthStore';
 import { PostBox } from './PostBox';
-import { TodayTopicBox } from './TodayTopicBox';
+import { TopicBox } from './TopicBox';
 
 const FeedContent = ({ categoryId }: { categoryId: number }) => {
   const { isLoggedIn } = useAuthStore();
@@ -33,9 +34,11 @@ const FeedContent = ({ categoryId }: { categoryId: number }) => {
   return (
     <>
       {feedData && (
-        <TodayTopicBox
+        <TopicBox
           topicText={feedData.pages[0].topicName}
           categoryText={feedData.pages[0].categoryName}
+          title="오늘의 주제"
+          ismove={true}
         />
       )}
       <div className="B02_M text-gray-900 pt-6 px-4 pb-3">다른 사람들은 어떻게 생각할까요?</div>
@@ -53,6 +56,7 @@ const FeedContent = ({ categoryId }: { categoryId: number }) => {
         ))}
         <div ref={loadMoreRef} className="h-6" />
         {isFetchingNextPage && <div className="text-center py-4 text-gray-400">불러오는 중...</div>}
+        <ScrollToTopButton />
       </div>
     </>
   );

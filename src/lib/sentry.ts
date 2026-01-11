@@ -1,10 +1,15 @@
 import * as Sentry from '@sentry/react';
 
 export const initSentry = () => {
-  if (import.meta.env.VERCEL_ENV !== 'production') return;
+  if (!import.meta.env.PROD) return;
 
   Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DSN,
     environment: 'production',
+
+    integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
+    tracesSampleRate: 1.0,
+    replaysSessionSampleRate: 0.1,
+    replaysOnErrorSampleRate: 1.0,
   });
 };

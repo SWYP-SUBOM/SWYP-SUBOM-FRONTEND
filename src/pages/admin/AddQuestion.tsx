@@ -5,7 +5,7 @@ import type { CategoryNameType } from '../../constants/Category';
 import { useCreateTopic } from '../../hooks/Admin/useCreateTopic';
 import left from '../../assets/Header/left.svg';
 
-type QuestionType = 'QUESTION' | 'LOGIC';
+type QuestionType = 'QUESTION' | 'LOGICAL';
 
 export const AddQuestion = () => {
   const navigate = useNavigate();
@@ -16,8 +16,8 @@ export const AddQuestion = () => {
 
   const categories: CategoryNameType[] = ['일상', '인간관계', '문화·트렌드', '가치관', '시대·사회'];
   const questionTypes: { label: string; value: QuestionType }[] = [
-    { label: '논리형 질문', value: 'QUESTION' },
-    { label: '구조형 질문', value: 'LOGIC' },
+    { label: '논리형 질문', value: 'LOGICAL' },
+    { label: '구조형 질문', value: 'QUESTION' },
   ];
 
   const selectedCategoryCount = selectedCategory ? 1 : 0;

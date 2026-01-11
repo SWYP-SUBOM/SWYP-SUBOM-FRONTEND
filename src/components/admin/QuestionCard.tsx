@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { CategoryChip } from '../common/CategoryChip';
 import type { CategoryNameType } from '../../constants/Category';
 import menuIcon from '../../assets/admin/Menu.svg';
-import replyIcon from '../../assets/admin/Reply.svg';
 import checkIcon from '../../assets/admin/check.svg';
+import replyIcon from '../../assets/admin/Reply.svg';
 import deleteIcon from '../../assets/admin/delete.svg';
 
 interface QuestionCardProps {
@@ -22,7 +22,7 @@ interface QuestionCardProps {
   onDeleteClick?: (id: string | number) => void;
 }
 
-export const QuestionCard = ({
+const QuestionCardComponent = ({
   id,
   category,
   question,
@@ -32,18 +32,10 @@ export const QuestionCard = ({
   onClick,
   onCalendarClick,
   onEditClick,
-  onSaveEdit,
-  isEditing = false,
   isDeleteMode = false,
   onDeleteClick,
 }: QuestionCardProps) => {
   const [checked, setChecked] = useState(isChecked);
-  const [editedQuestion, setEditedQuestion] = useState(question);
-
-  // question prop이 변경되면 editedQuestion 업데이트
-  useEffect(() => {
-    setEditedQuestion(question);
-  }, [question]);
 
   // isChecked prop이 변경되면 내부 state 업데이트
   useEffect(() => {
@@ -52,6 +44,7 @@ export const QuestionCard = ({
 
   const handleCheckboxClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     const newChecked = !checked;
     setChecked(newChecked);
     onCheckChange?.(id, newChecked);
@@ -76,23 +69,11 @@ export const QuestionCard = ({
       ) : (
         <div
           onClick={handleCheckboxClick}
-          className={`w-7 h-7 rounded-md border flex items-center justify-center shrink-0 mt-0.5 transition-all ${
-            checked ? 'bg-b7 border-b7' : 'bg-gray-300 border-gray-600'
+          className={`w-7 h-7 rounded-md border flex items-center justify-center shrink-0 mt-0.5 transition-all  ${
+            checked ? 'border-b7' : 'bg-gray-300 border-gray-600'
           }`}
         >
-          {checked && (
-            <svg
-              className="w-7 h-7 text-white"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path d="M5 13l4 4L19 7"></path>
-            </svg>
-          )}
+          {checked && <img src={checkIcon} alt="checkIcon" />}
         </div>
       )}
 
@@ -103,67 +84,34 @@ export const QuestionCard = ({
           {date && <span className="C01_SB text-gray-700">{date}</span>}
         </div>
 
-        {isEditing ? (
-          <div className="mb-3">
-            <input
-              type="text"
-              value={editedQuestion}
-              onChange={(e) => setEditedQuestion(e.target.value)}
-              className="w-full B03_M text-gray-900 leading-relaxed border-b-2 border-b7 focus:outline-none pb-1"
-              autoFocus
-              onClick={(e) => e.stopPropagation()}
-            />
-          </div>
-        ) : (
-          <div className="B03_M text-gray-900 leading-relaxed mb-3">{question}</div>
-        )}
+        <div className="B03_M text-gray-900 leading-relaxed mb-3">{question}</div>
 
         <div className="flex justify-end">
           <div className="flex items-center gap-[8px]">
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                if (isChecked) {
-                  onCalendarClick?.(id);
-                }
+                onCalendarClick?.(id);
               }}
-              className={`cursor-pointer  transition-opacity ${
-                !isChecked ? '  cursor-not-allowed' : 'bg-gray-200 rounded-md'
-              }`}
-              disabled={!isChecked}
+              className="cursor-pointer bg-gray-200 rounded-md transition-opacity hover:opacity-80"
             >
               <img src={menuIcon} alt="menuIcon" />
             </button>
-            {isEditing ? (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onSaveEdit?.(id, editedQuestion);
-                }}
-                className="B03-1_M flex gap-1 text-b6 px-3 py-1 rounded-md bg-b1 cursor-pointer"
-              >
-                <img src={checkIcon} alt="checkIcon" />
-                수정 완료
-              </button>
-            ) : (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (isChecked) {
-                    onEditClick?.(id);
-                  }
-                }}
-                className={`cursor-pointer transition-opacity ${
-                  !isChecked ? ' cursor-not-allowed' : 'bg-gray-200 rounded-md'
-                }`}
-                disabled={!isChecked}
-              >
-                <img src={replyIcon} alt="replyIcon" />
-              </button>
-            )}
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onEditClick?.(id);
+              }}
+              className="cursor-pointer bg-gray-200 rounded-md transition-opacity hover:opacity-80"
+            >
+              <img src={replyIcon} alt="replyIcon" />
+            </button>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+export const QuestionCard = memo(QuestionCardComponent);

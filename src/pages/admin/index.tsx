@@ -13,11 +13,13 @@ import { useGetTopicGenerationStatus } from '../../hooks/Admin/useGetTopicGenera
 import { useUpdateTopicReservation } from '../../hooks/Admin/useUpdateTopicReservation';
 import { useUpdateTopic } from '../../hooks/Admin/useUpdateTopicName';
 import { useDeleteTopic } from '../../hooks/Admin/useDeleteTopic';
+import { useUpdateTopicStatus } from '../../hooks/Admin/useUpdateTopicStatus';
 import { CategoryTabs } from '../../constants/CategoryMap';
 import type { TopicMode } from '../../api/services/adminService';
 import type { CategoryNameType } from '../../constants/Category';
-
+import { useScroll } from '../../hooks/useScroll';
 import arrowdown from '../../assets/admin/arrowdown.svg';
+import scrollToTop from '../../assets/admin/Scroll.svg';
 
 const month = new Date().getMonth() + 1;
 const day = new Date().getDate();
@@ -35,7 +37,6 @@ const formatDate = (dateString: string | null): string => {
 export const Admin = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [checkedIds, setCheckedIds] = useState<Set<string | number>>(new Set());
   const [selectedCategory, setSelectedCategory] = useState<string>('전체');
   const [selectedMode, setSelectedMode] = useState<TopicMode>('ALL');
   const [isCategorySheetOpen, setIsCategorySheetOpen] = useState(false);
@@ -45,55 +46,83 @@ export const Admin = () => {
   const [editingTopicId, setEditingTopicId] = useState<string | number | null>(null);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
 
+  const updateAllTopicsCache = (updater: (old: any) => any) => {
+    queryClient.setQueriesData({ queryKey: ['adminTopics'] }, updater);
+  };
+
   const categoryId = useMemo(() => {
     if (selectedCategory === '전체') return 'ALL';
     const category = CategoryTabs.find((tab) => tab.categoryName === selectedCategory);
     return category ? category.categoryId : 'ALL';
   }, [selectedCategory]);
 
-  // 쿼리 파라미터 메모이제이션
-  const queryParams = useMemo(
-    () => ({
-      mode: selectedMode,
-      categoryId: categoryId === 'ALL' ? undefined : (categoryId as number),
-    }),
-    [selectedMode, categoryId],
-  );
-
   const {
-    data: topicsData,
+    data: allTopicsData,
     isLoading,
     isError,
     error,
     isFetching,
     refetch: refetchTopics,
-  } = useGetTopics(queryParams);
+  } = useGetTopics({ mode: 'ALL' });
+
+  const topics = useMemo(() => {
+    const allTopics = allTopicsData?.data?.topics || [];
+    let filtered = [...allTopics];
+
+    if (selectedMode === 'APPROVED') {
+      filtered = filtered.filter((topic) => topic.topicStatus === 'APPROVED');
+    } else if (selectedMode === 'PENDING') {
+      filtered = filtered.filter((topic) => topic.topicStatus === 'PENDING');
+    } else if (selectedMode === 'QUESTION') {
+      filtered = filtered.filter((topic) => topic.topicType === 'QUESTION');
+    } else if (selectedMode === 'LOGICAL') {
+      filtered = filtered.filter((topic) => topic.topicType === 'LOGICAL');
+    }
+
+    // 카테고리 필터링
+    if (categoryId !== 'ALL') {
+      filtered = filtered.filter((topic) => topic.categoryId === categoryId);
+    }
+
+    return filtered;
+  }, [allTopicsData, selectedMode, categoryId]);
+
   const startGenerationMutation = useStartTopicGeneration();
   const { data: generationStatus } = useGetTopicGenerationStatus(generationId);
   const updateReservationMutation = useUpdateTopicReservation();
   const updateTopicMutation = useUpdateTopic();
   const deleteTopicMutation = useDeleteTopic();
+  const updateTopicStatusMutation = useUpdateTopicStatus();
 
   const handleCheckChange = (id: string | number, checked: boolean) => {
-    if (checked) {
-      const topic = topics.find((t) => t.topicId === id);
+    const status = checked ? 'APPROVED' : 'PENDING';
 
-      if (topic && !topic.usedAt) {
-        setSelectedTopicId(id);
-        setUploadDateModalOpen(true);
-        return;
-      }
-    }
-
-    setCheckedIds((prev) => {
-      const newSet = new Set(prev);
-      if (checked) {
-        newSet.add(id);
-      } else {
-        newSet.delete(id);
-      }
-      return newSet;
-    });
+    updateTopicStatusMutation.mutate(
+      {
+        topicId: id as number,
+        status,
+      },
+      {
+        onSuccess: () => {
+          updateAllTopicsCache((old: any) => {
+            if (!old?.data?.topics) return old;
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                topics: old.data.topics.map((topic: any) =>
+                  topic.topicId === id ? { ...topic, topicStatus: status } : topic,
+                ),
+              },
+            };
+          });
+        },
+        onError: (error) => {
+          console.error('질문 상태 변경 실패:', error);
+          alert('질문 상태 변경에 실패했습니다.');
+        },
+      },
+    );
   };
 
   const handleCategorySelect = (category: string) => {
@@ -109,8 +138,75 @@ export const Admin = () => {
     setUploadDateModalOpen(true);
   };
 
+  const fixQuestionEnding = (question: string): string => {
+    const endings = [
+      /나요\?$/,
+      /인가요\?$/,
+      /일까요\?$/,
+      /을까요\?$/,
+      /를까요\?$/,
+      /까요\?$/,
+      /나요$/,
+      /인가요$/,
+      /일까요$/,
+      /을까요$/,
+      /를까요$/,
+      /까요$/,
+    ];
+
+    if (question.trim().endsWith('까요?')) {
+      return question;
+    }
+
+    for (const pattern of endings) {
+      if (pattern.test(question.trim())) {
+        return question.replace(pattern, '까요?');
+      }
+    }
+
+    return question.trim() + '까요?';
+  };
+
   const handleEditClick = (id: string | number) => {
-    setEditingTopicId(id);
+    const topic = topics.find((t) => t.topicId === id);
+    if (!topic) return;
+
+    const fixedQuestion = fixQuestionEnding(topic.topicName);
+
+    if (fixedQuestion === topic.topicName) {
+      alert('이미 올바른 어미로 끝나는 질문입니다.');
+      return;
+    }
+
+    updateTopicMutation.mutate(
+      {
+        topicId: id as number,
+        updateData: {
+          topicName: fixedQuestion,
+        },
+      },
+      {
+        onSuccess: () => {
+          // 모든 adminTopics 쿼리 캐시 업데이트
+          updateAllTopicsCache((old: any) => {
+            if (!old?.data?.topics) return old;
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                topics: old.data.topics.map((topic: any) =>
+                  topic.topicId === id ? { ...topic, topicName: fixedQuestion } : topic,
+                ),
+              },
+            };
+          });
+        },
+        onError: (error) => {
+          console.error('질문 어미 수정 실패:', error);
+          alert('질문 어미 수정에 실패했습니다.');
+        },
+      },
+    );
   };
 
   const handleSaveEdit = (id: string | number, newQuestion: string) => {
@@ -128,6 +224,19 @@ export const Admin = () => {
       },
       {
         onSuccess: () => {
+          // 모든 adminTopics 쿼리 캐시 업데이트
+          updateAllTopicsCache((old: any) => {
+            if (!old?.data?.topics) return old;
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                topics: old.data.topics.map((topic: any) =>
+                  topic.topicId === id ? { ...topic, topicName: newQuestion.trim() } : topic,
+                ),
+              },
+            };
+          });
           setEditingTopicId(null);
         },
         onError: (error) => {
@@ -142,7 +251,7 @@ export const Admin = () => {
 
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowDateString = tomorrow.toISOString().split('T')[0]; // YYYY-MM-DD 형식
+    const tomorrowDateString = tomorrow.toISOString().split('T')[0];
 
     updateReservationMutation.mutate(
       {
@@ -150,40 +259,21 @@ export const Admin = () => {
         usedAt: tomorrowDateString,
       },
       {
-        onSuccess: () => {
-          setCheckedIds((prev) => {
-            const newSet = new Set(prev);
-            newSet.add(selectedTopicId);
-            return newSet;
-          });
-        },
-        onError: (error) => {
-          console.error('예약 업데이트 실패:', error);
-        },
-      },
-    );
-  };
-
-  const handleSelectRandom = () => {
-    if (selectedTopicId === null) return;
-
-    const today = new Date();
-    const randomDays = Math.floor(Math.random() * 30) + 1;
-    const randomDate = new Date(today);
-    randomDate.setDate(today.getDate() + randomDays);
-    const randomDateString = randomDate.toISOString().split('T')[0];
-
-    updateReservationMutation.mutate(
-      {
-        topicId: selectedTopicId as number,
-        usedAt: randomDateString,
-      },
-      {
-        onSuccess: () => {
-          setCheckedIds((prev) => {
-            const newSet = new Set(prev);
-            newSet.add(selectedTopicId);
-            return newSet;
+        onSuccess: (_, variables) => {
+          // 모든 adminTopics 쿼리 캐시 업데이트
+          updateAllTopicsCache((old: any) => {
+            if (!old?.data?.topics) return old;
+            return {
+              ...old,
+              data: {
+                ...old.data,
+                topics: old.data.topics.map((topic: any) =>
+                  topic.topicId === variables.topicId
+                    ? { ...topic, usedAt: variables.usedAt || null }
+                    : topic,
+                ),
+              },
+            };
           });
         },
         onError: (error) => {
@@ -231,28 +321,40 @@ export const Admin = () => {
     }
   }, [generationStatus, queryClient, refetchTopics]);
 
-  const topics = topicsData?.data?.topics || [];
   const isGenerating =
     startGenerationMutation.isPending ||
     (generationId !== null && generationStatus?.data.status === 'PROCESSING');
 
   const handleDeleteModeToggle = () => {
     setIsDeleteMode((prev) => !prev);
-
-    if (isDeleteMode) {
-      setCheckedIds(new Set());
-    }
   };
 
   const handleDeleteClick = (id: string | number) => {
     deleteTopicMutation.mutate(id as number, {
       onSuccess: () => {
-        refetchTopics();
+        // 모든 adminTopics 쿼리 캐시에서 제거
+        updateAllTopicsCache((old: any) => {
+          if (!old?.data?.topics) return old;
+          return {
+            ...old,
+            data: {
+              ...old.data,
+              topics: old.data.topics.filter((topic: any) => topic.topicId !== id),
+              totalCount: old.data.totalCount - 1,
+            },
+          };
+        });
       },
       onError: (error) => {
         console.error('질문 삭제 실패:', error);
       },
     });
+  };
+
+  const isScrolled = useScroll();
+
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -272,7 +374,6 @@ export const Admin = () => {
 
         <Category onModeSelect={handleModeSelect} selectedMode={selectedMode} />
 
-        {/* 카테고리 선택 버튼 */}
         <div className="flex justify-end">
           <button
             onClick={() => setIsCategorySheetOpen(true)}
@@ -300,7 +401,7 @@ export const Admin = () => {
                 category={topic.categoryName as CategoryNameType}
                 question={topic.topicName}
                 date={formatDate(topic.usedAt)}
-                isChecked={checkedIds.has(topic.topicId)}
+                isChecked={topic.topicStatus === 'APPROVED'}
                 onCheckChange={handleCheckChange}
                 onCalendarClick={handleCalendarClick}
                 onEditClick={handleEditClick}
@@ -310,6 +411,15 @@ export const Admin = () => {
                 onDeleteClick={handleDeleteClick}
               />
             ))
+          )}
+
+          {isScrolled && (
+            <button
+              onClick={handleScrollToTop}
+              className="fixed bottom-16 right-[40%] translate-x-1/2  flex items-center justify-center cursor-pointer"
+            >
+              <img src={scrollToTop} alt="scrollToTop" />
+            </button>
           )}
         </div>
       </div>
@@ -340,7 +450,6 @@ export const Admin = () => {
           setSelectedTopicId(null);
         }}
         onSelectTomorrow={handleSelectTomorrow}
-        onSelectRandom={handleSelectRandom}
       />
     </div>
   );

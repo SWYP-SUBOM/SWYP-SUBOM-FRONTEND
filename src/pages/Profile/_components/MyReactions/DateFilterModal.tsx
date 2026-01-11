@@ -9,8 +9,8 @@ interface DateFilterModalProps {
 }
 
 const dateOptions = [
-  { label: '지난 주', value: 'lastWeek' as DateOption },
-  { label: '지난 달', value: 'lastMonth' as DateOption },
+  { label: '최근 일주일', value: 'lastWeek' as DateOption },
+  { label: '최근 1달', value: 'lastMonth' as DateOption },
   { label: '최근 1년', value: 'lastYear' as DateOption },
   { label: '모든 날짜', value: 'all' as DateOption },
   { label: '기간 선택', value: 'custom' as DateOption },

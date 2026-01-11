@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 import { Tabs } from '../../../components/Tabs/UnderlineTab/Tabs';
 import { CategoryTabs } from '../../../constants/CategoryMap';
 import { PostBoxSkeleton } from '../Skeleton/PostBoxSkeleton';
-import { TodayTopicBoxSkeleton } from '../Skeleton/TodayTopicBoxSkeleton';
+import { TopicBoxSkeleton } from '../Skeleton/TopicBoxSkeleton';
 import FeedContent from './FeedContent';
 
 export const FeedTab = () => {
@@ -25,7 +25,7 @@ export const FeedTab = () => {
               <Suspense
                 fallback={
                   <>
-                    <TodayTopicBoxSkeleton />
+                    <TopicBoxSkeleton />
                     <div className="mx-4 h-6 w-48 bg-gray-300 rounded mt-6 mb-3 animate-pulse"></div>
                     <div className="flex flex-col gap-4 px-4 pb-24">
                       <PostBoxSkeleton />

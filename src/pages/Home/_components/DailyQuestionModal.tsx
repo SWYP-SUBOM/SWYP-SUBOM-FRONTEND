@@ -93,6 +93,8 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
     navigate('/onboarding/Login');
   };
 
+  console.log(isLoading);
+
   return (
     <Modal>
       <Modal.Overlay>
@@ -102,7 +104,10 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
           <Modal.Description>
             {isLoading ? '로딩중...' : dailyQuestionData?.topicName}
           </Modal.Description>
-          <Modal.Trigger handleClickButton={isLoggedIn ? onMoveToWrite : onMoveLogin}>
+          <Modal.Trigger
+            isLoading={isLoading}
+            handleClickButton={isLoggedIn ? onMoveToWrite : onMoveLogin}
+          >
             {isLoggedIn ? '글 쓰러 가기' : '로그인 후 작성하기'}
           </Modal.Trigger>
         </Modal.Content>
