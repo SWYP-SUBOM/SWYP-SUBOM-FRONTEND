@@ -1,4 +1,5 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { GuestBottomSheet } from '../../../components/common/GuestBottomSheet';
 import { ScrollToTopButton } from '../../../components/common/ScrollTopButton';
 import { TitleHeader } from '../../../components/common/TitleHeader';
@@ -14,6 +15,14 @@ export const PastTopic = () => {
   const { topicId, categoryId } = useParams();
   const numericTopicId = topicId ? Number(topicId) : undefined;
   const numericCategoryId = Number(categoryId);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.fromGather) {
+      window.scrollTo(0, 0);
+    }
+  }, []);
 
   const { isLoggedIn } = useAuthStore();
   const { openBottomSheet } = useBottomSheet();
