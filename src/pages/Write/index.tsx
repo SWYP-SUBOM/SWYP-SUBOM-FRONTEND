@@ -21,6 +21,8 @@ export const Write = () => {
   const { closeBottomSheet } = useBottomSheetStore();
   const { openModal, Content, isOpen } = useModal();
 
+  const MAX_LENGTH = 700;
+
   const categoryName = location.state.categoryName;
   const categoryId = location.state.categoryId;
   const topicName = location.state.topicName;
@@ -49,6 +51,16 @@ export const Write = () => {
   const { data: draftPostData } = useGetDraftPost(draftPostId, 'edit', {
     enabled: !!draftPostId && isTodayDraft,
   });
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+
+    if (value.length <= MAX_LENGTH) {
+      setOpinion(value);
+    } else {
+      setOpinion(value.slice(0, MAX_LENGTH));
+    }
+  };
 
   useEffect(() => {
     if (draftPostData && isTodayDraft) {
@@ -201,8 +213,8 @@ export const Write = () => {
               <textarea
                 placeholder="AI 피드백은 100자 이상 작성 시 제공됩니다."
                 value={opinion}
-                onChange={(e) => setOpinion(e.target.value)}
-                maxLength={699}
+                onChange={handleTextChange}
+                maxLength={700}
                 className="w-full h-[calc(100%-40px)] p-4 hide-scrollbar focus:placeholder-transparent focus:outline-none focus:ring-0 bg-transparent B03_M text-gray-800 resize-none"
               />
               {!isKeyboardOpen && (
