@@ -11,7 +11,7 @@ export interface AdminLoginResponse {
   accessToken: string;
 }
 
-export type TopicMode = 'ALL' | 'APPROVED' | 'PENDING' | 'QUESTION' | 'LOGIC';
+export type TopicMode = 'ALL' | 'APPROVED' | 'PENDING' | 'QUESTION' | 'LOGICAL';
 
 export interface GetTopicsRequest {
   mode?: TopicMode;
@@ -60,7 +60,7 @@ export const getTopics = async (params?: GetTopicsRequest): Promise<GetTopicsRes
 
 export interface CreateTopicRequest {
   topicName: string;
-  topicType: 'QUESTION' | 'LOGIC';
+  topicType: 'QUESTION' | 'LOGICAL';
 }
 
 export interface CreateTopicResponse {
@@ -153,7 +153,7 @@ export const updateTopicReservation = async (
 
 export interface UpdateTopicRequest {
   topicName?: string;
-  topicType?: 'QUESTION' | 'LOGIC';
+  topicType?: 'QUESTION' | 'LOGICAL';
   categoryId?: number;
 }
 
@@ -199,6 +199,25 @@ export const deleteTopic = async (topicId: number): Promise<DeleteTopicResponse>
   return response;
 };
 
+export interface UpdateTopicStatusResponse {
+  success: boolean;
+  code: string;
+  message: string;
+}
+
+export type TopicStatus = 'APPROVED' | 'PENDING';
+
+export const updateTopicStatus = async (
+  topicId: number,
+  status: TopicStatus,
+): Promise<UpdateTopicStatusResponse> => {
+  const url = `${ADMIN_ENDPOINTS.TOPIC_RESERVATION}/${topicId}/status?status=${status}`;
+  console.log('updateTopicStatus API 호출:', { url, topicId, status });
+  const response = await apiClient.patch<UpdateTopicStatusResponse>(url, {});
+  console.log('updateTopicStatus API 응답:', response);
+  return response;
+};
+
 export const adminService = {
   adminLogin,
   getTopics,
@@ -208,4 +227,5 @@ export const adminService = {
   updateTopicReservation,
   updateTopic,
   deleteTopic,
+  updateTopicStatus,
 };

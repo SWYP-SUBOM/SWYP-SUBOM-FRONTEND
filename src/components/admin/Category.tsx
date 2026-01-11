@@ -9,8 +9,8 @@ const MODE_MAP: Record<string, TopicMode> = {
   전체: 'ALL',
   '승인 질문': 'APPROVED',
   '미승인 질문': 'PENDING',
-  '논리형 질문': 'QUESTION',
-  '구조형 질문': 'LOGIC',
+  '논리형 질문': 'LOGICAL',
+  '구조형 질문': 'QUESTION',
 } as const;
 
 interface CategoryProps {

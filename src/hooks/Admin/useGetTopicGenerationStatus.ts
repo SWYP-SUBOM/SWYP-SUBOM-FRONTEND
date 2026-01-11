@@ -29,12 +29,26 @@ export const useGetTopicGenerationStatus = (generationId: number | null) => {
     queryKey: ['topicGenerationStatus', generationId],
     queryFn: () => adminService.getTopicGenerationStatus(generationId!),
     enabled: generationId !== null,
+    staleTime: (query) => {
+      const data = query.state.data;
+
+      if (
+        data?.data.status === 'COMPLETED' ||
+        data?.data.status === 'COMPLETED_WITH_ERRORS' ||
+        data?.data.status === 'FAILED'
+      ) {
+        return 5 * 60 * 1000;
+      }
+
+      return 0;
+    },
+    gcTime: 10 * 60 * 1000,
     refetchInterval: (query) => {
       const data = query.state.data;
       if (data?.data.status === 'PROCESSING') {
-        return 3000; // 3초마다 폴링
+        return 3000;
       }
-      return false; // 완료되면 폴링 중지
+      return false;
     },
     refetchOnWindowFocus: false,
   });
