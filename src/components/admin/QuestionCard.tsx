@@ -3,6 +3,7 @@ import { CategoryChip } from '../common/CategoryChip';
 import type { CategoryNameType } from '../../constants/Category';
 import menuIcon from '../../assets/admin/Menu.svg';
 import checkIcon from '../../assets/admin/check.svg';
+import checkUpdateIcon from '../../assets/admin/checkupdate.svg';
 import replyIcon from '../../assets/admin/Reply.svg';
 import deleteIcon from '../../assets/admin/delete.svg';
 
@@ -32,12 +33,18 @@ const QuestionCardComponent = ({
   onClick,
   onCalendarClick,
   onEditClick,
+  onSaveEdit,
+  isEditing = false,
   isDeleteMode = false,
   onDeleteClick,
 }: QuestionCardProps) => {
   const [checked, setChecked] = useState(isChecked);
+  const [editedQuestion, setEditedQuestion] = useState(question);
 
-  // isChecked prop이 변경되면 내부 state 업데이트
+  useEffect(() => {
+    setEditedQuestion(question);
+  }, [question]);
+
   useEffect(() => {
     setChecked(isChecked);
   }, [isChecked]);
@@ -84,7 +91,30 @@ const QuestionCardComponent = ({
           {date && <span className="C01_SB text-gray-700">{date}</span>}
         </div>
 
-        <div className="B03_M text-gray-900 leading-relaxed mb-3">{question}</div>
+        {isEditing ? (
+          <div className="mb-3">
+            <input
+              type="text"
+              value={editedQuestion}
+              onChange={(e) => setEditedQuestion(e.target.value)}
+              onBlur={() => onSaveEdit?.(id, editedQuestion)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  onSaveEdit?.(id, editedQuestion);
+                }
+                if (e.key === 'Escape') {
+                  setEditedQuestion(question);
+                }
+              }}
+              className="w-full B03_M text-gray-900 leading-relaxed border-b-2 border-b7 focus:outline-none pb-1"
+              autoFocus
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>
+        ) : (
+          <div className="B03_M text-gray-900 leading-relaxed mb-3">{question}</div>
+        )}
 
         <div className="flex justify-end">
           <div className="flex items-center gap-[8px]">
@@ -98,15 +128,28 @@ const QuestionCardComponent = ({
               <img src={menuIcon} alt="menuIcon" />
             </button>
 
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onEditClick?.(id);
-              }}
-              className="cursor-pointer bg-gray-200 rounded-md transition-opacity hover:opacity-80"
-            >
-              <img src={replyIcon} alt="replyIcon" />
-            </button>
+            {isEditing ? (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSaveEdit?.(id, editedQuestion);
+                }}
+                className="B03-1_M flex gap-1 text-b6 px-3 py-1 rounded-md bg-b1 cursor-pointer"
+              >
+                <img src={checkUpdateIcon} alt="checkIcon" />
+                수정 완료
+              </button>
+            ) : (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onEditClick?.(id);
+                }}
+                className="cursor-pointer bg-gray-200 rounded-md transition-opacity hover:opacity-80"
+              >
+                <img src={replyIcon} alt="replyIcon" />
+              </button>
+            )}
           </div>
         </div>
       </div>
