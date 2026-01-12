@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useOAuthToken } from '../../../hooks/User/useOAuthToken';
 import { ROUTES } from '../../../routes/routes';
 import { useAuthStore } from '../../../store/useAuthStore';
+import { GAEvents } from '../../../utils/GAEvent';
 
 export const OAuthCallback = () => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ export const OAuthCallback = () => {
         // 로그인 성공 시 토큰을 store에 저장
         if (token) {
           setToken(token);
+          GAEvents.loginSuccess();
         }
 
         // URL 쿼리 파라미터에서 name 가져오기
