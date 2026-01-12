@@ -34,4 +34,8 @@ export const GAEvents = {
       ...(topicId && { topic_id: topicId }),
       ...(topicName && { topic_name: topicName }),
     }),
+
+  // 3. 글쓰기
+  writeView: () => sendGAEvent('write_view'),
+  writingStart: (opinion: string) => sendGAEvent('writing_start', { opinion }),
 } as const;
