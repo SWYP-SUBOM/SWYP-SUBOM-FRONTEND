@@ -31,7 +31,11 @@ export const WriteLayout = ({
       GAEvents.writeView();
       hasSentWriteView.current = true;
     }
-  }, []);
+
+    if (pathname !== '/write') {
+      hasSentWriteView.current = false;
+    }
+  }, [pathname]);
 
   const isWritePage = pathname === '/write';
 
