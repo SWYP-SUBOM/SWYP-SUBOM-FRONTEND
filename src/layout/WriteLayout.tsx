@@ -1,7 +1,9 @@
+import { useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import circleCheck from '../assets/Write/circle-check.svg';
 import { HeaderwithSavePost } from './HeaderwithSavePost';
 
+import { GAEvents } from '../utils/GAEvent';
 interface WriteLayoutProps {
   children?: React.ReactNode;
   handleClickSaveButton?: () => void;
@@ -22,6 +24,18 @@ export const WriteLayout = ({
   showSaveAlert = false,
 }: WriteLayoutProps) => {
   const { pathname } = useLocation();
+  const hasSentWriteView = useRef(false);
+
+  useEffect(() => {
+    if (pathname === '/write' && !hasSentWriteView.current) {
+      GAEvents.writeView();
+      hasSentWriteView.current = true;
+    }
+
+    if (pathname !== '/write') {
+      hasSentWriteView.current = false;
+    }
+  }, [pathname]);
 
   const isWritePage = pathname === '/write';
 

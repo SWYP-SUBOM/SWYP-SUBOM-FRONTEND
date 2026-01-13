@@ -107,6 +107,8 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
           <Modal.Trigger
             isLoading={isLoading}
             handleClickButton={isLoggedIn ? onMoveToWrite : onMoveLogin}
+            topicId={dailyQuestionData?.topicId}
+            topicName={dailyQuestionData?.topicName}
           >
             {isLoggedIn ? '글 쓰러 가기' : '로그인 후 작성하기'}
           </Modal.Trigger>

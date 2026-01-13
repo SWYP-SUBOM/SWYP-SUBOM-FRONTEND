@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useGetHome } from '../../hooks/Home/useGetHome';
-// import { useNotificationStream } from '../../hooks/Notification/useNotificationStream'; // SSE 관련 코드 주석처리
 import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { useModal } from '../../hooks/useModal';
 import { useGetUserName } from '../../hooks/User/useGetUserName';
@@ -9,6 +8,8 @@ import { useTodayPostInfoStore } from '../../store/useTodayPostInfo';
 import { IsDraftBottomSheet } from './_components/IsDraftBottomSheet';
 import { CategoryBoxGrid } from './CategoryBox/CategoryBoxGrid';
 import { HomeBanner } from './HomeBanner/HomeBanner';
+
+import { GAEvents } from '../../utils/GAEvent';
 
 const Home = () => {
   const { isOpen, Content } = useModal();
@@ -19,9 +20,6 @@ const Home = () => {
   const { data: homeData } = useGetHome();
   const setTodayPostInfo = useTodayPostInfoStore((state) => state.setTodayPostInfo);
 
-  // Home 페이지에 도착했을 때만 SSE 알림 스트림 연결
-  // useNotificationStream(); // SSE 관련 코드 주석처리
-
   const isTodayDraft = homeData?.todayPost?.postStatus === 'DRAFT';
   const draftPostId = homeData?.todayPost?.postId;
   const categoryName = homeData?.todayPost?.categoryName;
@@ -30,6 +28,10 @@ const Home = () => {
   const topicId = homeData?.todayPost?.topicId;
   const aiFeedbackId = homeData?.todayPost?.aiFeedbackId;
   const topicType = homeData?.todayPost?.topicType;
+
+  useEffect(() => {
+    GAEvents.topicListView();
+  }, []);
 
   useEffect(() => {
     if (!homeData?.todayPost) return;

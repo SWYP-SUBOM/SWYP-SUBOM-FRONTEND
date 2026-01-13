@@ -6,6 +6,8 @@ import { CompleteDailyQuestionModal } from '../_components/CompleteDailyQuestion
 import { DailyQuestionModal } from '../_components/DailyQuestionModal';
 import type { CategoryBoxPropsType } from './CategoryBox.types';
 
+import { GAEvents } from '../../../utils/GAEvent';
+
 export const CategoryBox = ({
   title,
   titleColor,
@@ -33,6 +35,7 @@ export const CategoryBox = ({
       prefetchQuestion(categoryId);
       openModal(<DailyQuestionModal categoryId={categoryId} key={categoryId} />);
     }
+    GAEvents.topicClick(title);
   };
 
   return (

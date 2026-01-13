@@ -4,6 +4,8 @@ import { createPortal } from 'react-dom';
 import xButton from '../../assets/Modal/xbutton.svg';
 import { useModal } from '../../hooks/useModal';
 
+import { GAEvents } from '../../utils/GAEvent';
+
 export const FadeOverlay = ({ children }: { children: ReactNode }) => (
   <motion.div
     initial={{ opacity: 0 }}
@@ -78,14 +80,21 @@ export const Trigger = ({
   children,
   handleClickButton,
   isLoading,
+  topicId,
+  topicName,
 }: {
   children: ReactNode;
   handleClickButton: () => void;
   isLoading?: boolean;
+  topicId?: number;
+  topicName?: string;
 }) => {
   return (
     <button
-      onClick={handleClickButton}
+      onClick={() => {
+        handleClickButton();
+        GAEvents.topicSelect(topicId, topicName);
+      }}
       className={`
         cursor-pointer rounded-xl 
         bg-[var(--color-b7)] active:bg-[var(--color-b8)]

@@ -3,9 +3,15 @@ import { ProgressIndicator } from '../_components/ProgressIndicator';
 import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
 import { Button } from '../../../components/common/Button';
 import guide4 from '../../../assets/Onboarding/guide4.png';
+import { GAEvents } from '../../../utils/GAEvent';
 
 export const GuideScreen4 = () => {
   const { handleNext } = useOnboardingNavigation();
+
+  const handleComplete = () => {
+    GAEvents.onboardingComplete();
+    handleNext();
+  };
 
   return (
     <>
@@ -30,7 +36,7 @@ export const GuideScreen4 = () => {
         }}
       />
       <div className="absolute top-[520px] sm:top-[654px] left-0 right-0 flex flex-col justify-center items-center px-4  z-5">
-        <Button label="시작하기" onClick={handleNext} />
+        <Button label="시작하기" onClick={handleComplete} />
       </div>
     </>
   );
