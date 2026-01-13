@@ -3,6 +3,7 @@ import {
   usePutReaction,
   type ReactionNameType,
 } from '../../../hooks/Post/useToggleReaction';
+import { GAEvents } from '../../../utils/GAEvent';
 
 export type ReactionButtonProps = {
   reactionName: string;
@@ -26,6 +27,7 @@ export function ReactionButton({
 
   const handleClickReaction = (reactionValue: ReactionNameType) => {
     if (!isReactioned) {
+      GAEvents.reactionClick(reactionValue);
       putReaciontMutation.mutate(
         { reactionTypeName: reactionValue },
         {
@@ -36,6 +38,7 @@ export function ReactionButton({
         },
       );
     } else {
+      GAEvents.reactionCancel(reactionValue);
       deleteReaciontMutation.mutate(
         { postId },
         {
