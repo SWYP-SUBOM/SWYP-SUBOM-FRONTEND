@@ -5,6 +5,7 @@ import saveIcon from '../assets/Write/save-icon.svg';
 import writeGuide from '../assets/Write/write_guide.svg';
 import { useBottomSheet } from '../hooks/useBottomSheet';
 import { IsDirtyBottomSheet } from '../pages/Write/_components/IsDirtyBottomSheet';
+import { GAEvents } from '../utils/GAEvent';
 
 export type HeaderwithSavePostProps = {
   handleClickSaveButton?: (shouldNavigateHome: boolean) => void;
@@ -34,6 +35,7 @@ export const HeaderwithSavePost = ({
     if (isDirty) {
       openBottomSheet(<IsDirtyBottomSheet handleClickSaveButton={handleClickSaveButton} />);
     } else if (iscomplementPage) {
+      GAEvents.reviseExit();
       const feedbackPath = pathname.replace('/complement', '/feedback');
       navigate(feedbackPath, {
         state: {
