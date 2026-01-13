@@ -57,6 +57,7 @@ export const Complement = () => {
   const [initialOpinion, setInitialOpinion] = useState('');
 
   const openGuideModal = (topicType: guideTopicType) => {
+    GAEvents.writingGuideClick();
     openModal(<GuideModal topicType={topicType} />);
   };
 

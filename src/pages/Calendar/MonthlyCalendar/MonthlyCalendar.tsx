@@ -8,6 +8,8 @@ import { getDateColor } from './MonthlyCalendar.utils';
 import { WEEKDAYS } from './MonthlyCalendar.constants';
 import { NavigationButtons } from './NavigationButtons';
 
+import { GAEvents } from '../../../utils/GAEvent';
+
 export const MonthlyCalendar = ({
   datesWithStatus = [],
   currentDate: externalCurrentDate,
@@ -94,6 +96,9 @@ export const MonthlyCalendar = ({
                 <div className="absolute inset-0 flex justify-center items-center ">
                   <div
                     className={`w-10 h-10 rounded-full ${color} flex items-center justify-center`}
+                    onClick={() => {
+                      GAEvents.calendarDateClick(format(date, 'yyyy-MM-dd'));
+                    }}
                   >
                     <span className="text-white B03_B">{format(date, 'd')}</span>
                   </div>

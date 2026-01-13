@@ -1,10 +1,11 @@
 import { endOfDay, format, startOfDay, subDays, subMonths, subYears } from 'date-fns';
 import { AnimatePresence } from 'framer-motion';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TitleHeader } from '../../components/common/TitleHeader.tsx';
 import { useGetMyWritings } from '../../hooks/Profile/useGetMyWritings.ts';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll.ts';
+import { GAEvents } from '../../utils/GAEvent';
 import { MyPostCard } from './_components/MyPosts/MyPostCard.tsx';
 import { DateFilterModal } from './_components/MyReactions/DateFilterModal.tsx';
 import { DatePicker } from './_components/MyReactions/DatePicker.tsx';
@@ -18,6 +19,10 @@ type DateOption = 'lastWeek' | 'lastMonth' | 'lastYear' | 'all' | 'custom';
 export const MyPosts = () => {
   const navigate = useNavigate();
   const [sort, setSort] = useState<SortOption>('latest');
+
+  useEffect(() => {
+    GAEvents.myWritingListView();
+  }, []);
   const [dateFilter, setDateFilter] = useState<DateOption>('all');
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
@@ -207,7 +212,10 @@ export const MyPosts = () => {
                 summary={post.summary}
                 status={post.status}
                 date={formatDate(post.updatedAt)}
-                onClick={() => navigate(`/profile/my-posts/feedbackview/${post.postId}`)}
+                onClick={() => {
+                  GAEvents.myWritingPostClick(post.postId);
+                  navigate(`/profile/my-posts/feedbackview/${post.postId}`);
+                }}
               />
             ))}
             <div ref={loadMoreRef} className="h-6" />

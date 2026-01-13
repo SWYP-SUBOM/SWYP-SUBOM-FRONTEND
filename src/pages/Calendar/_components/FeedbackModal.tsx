@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import type { ReactNode } from 'react';
+import { useEffect } from 'react';
 import pointsToImproveIcon from '../../../assets/Feedback/pointsToImprove.svg';
 import strengthIcon from '../../../assets/Feedback/strength.svg';
 import xButton from '../../../assets/Modal/xbutton.svg';
@@ -7,13 +8,18 @@ import { BottomSheet } from '../../../components/BottomSheet/BottomSheet';
 import { useGetAIFeedBack } from '../../../hooks/FeedBack/uesGetAIFeedBack';
 import { useBottomSheet } from '../../../hooks/useBottomSheet';
 
+import { GAEvents } from '../../../utils/GAEvent';
 interface FeedbackModalProps {
   postId: number;
   aiFeedbackId: number;
 }
 
 const CenterOverlay = ({ children }: { children: ReactNode }) => {
+  useEffect(() => {
+    GAEvents.calendarFeedbackView();
+  }, []);
   const { closeBottomSheet } = useBottomSheet();
+
   return (
     <motion.div
       onClick={closeBottomSheet}

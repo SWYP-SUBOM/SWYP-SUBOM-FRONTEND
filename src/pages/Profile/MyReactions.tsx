@@ -1,10 +1,11 @@
 import { endOfDay, format, startOfDay, subDays, subMonths, subYears } from 'date-fns';
 import { AnimatePresence } from 'framer-motion';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TitleHeader } from '../../components/common/TitleHeader.tsx';
 import { useGetMyReactions } from '../../hooks/Profile/useGetMyReactions.ts';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll.ts';
+import { GAEvents } from '../../utils/GAEvent';
 import { DateFilterModal } from './_components/MyReactions/DateFilterModal.tsx';
 import { DatePicker } from './_components/MyReactions/DatePicker.tsx';
 import { FilterBar } from './_components/MyReactions/FilterBar.tsx';
@@ -18,6 +19,10 @@ type DateOption = 'lastWeek' | 'lastMonth' | 'lastYear' | 'all' | 'custom';
 export const MyReactions = () => {
   const navigate = useNavigate();
   const [sort, setSort] = useState<SortOption>('latest');
+
+  useEffect(() => {
+    GAEvents.myReactionListView();
+  }, []);
   const [dateFilter, setDateFilter] = useState<DateOption>('all');
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
@@ -206,7 +211,10 @@ export const MyReactions = () => {
                 question={post.topicInfo.topicName}
                 reaction={post.summary}
                 date={formatDate(post.updatedAt)}
-                onClick={() => navigate(`/postdetail/${post.postId}`)}
+                onClick={() => {
+                  GAEvents.myReactionPostClick(post.postId);
+                  navigate(`/postdetail/${post.postId}`);
+                }}
               />
             ))}
             <div ref={loadMoreRef} className="h-6" />

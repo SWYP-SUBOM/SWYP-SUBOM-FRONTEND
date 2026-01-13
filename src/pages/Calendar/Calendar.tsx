@@ -1,5 +1,5 @@
 import { eachDayOfInterval, endOfWeek, format, isSameDay, startOfWeek } from 'date-fns';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { useGetCalendar } from '../../hooks/Calendar/useGetCalendar';
@@ -8,7 +8,21 @@ import type { CalendarDateStatus } from './MonthlyCalendar/MonthlyCalendar.types
 import { MonthlyTrainingStatusBox } from './MonthlyTrainingStatusBox/MonthlyTrainingStatusBox';
 import { WeeklyChallengeBox } from './WeeklyChallengeBox/WeeklyChallengeBox';
 
+import { GAEvents } from '../../utils/GAEvent';
+
 export const Calendar = () => {
+  useEffect(() => {
+    GAEvents.calendarView();
+
+    return () => {
+      const currentPath = window.location.pathname;
+      const targetPaths = ['/home', '/', '/feed', '/profile'];
+      if (targetPaths.some((path) => currentPath === path)) {
+        GAEvents.calendarExit();
+      }
+    };
+  }, []);
+
   const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(new Date());
   const year = currentDate.getFullYear();

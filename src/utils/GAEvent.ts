@@ -51,7 +51,15 @@ export const GAEvents = {
   reviseExit: () => sendGAEvent('revise_exit'),
   reviseEditComplete: () => sendGAEvent('revise_edit_complete'),
 
-  // 5. 피드
+  // 캘린더
+  calendarView: () => sendGAEvent('calendar_view'),
+  calendarDateClick: (date: string) => sendGAEvent('calendar_date_click', { date }),
+  calendarWritingView: (postId: number) =>
+    sendGAEvent('calendar_writing_view', { post_id: postId }),
+  calendarFeedbackView: () => sendGAEvent('calendar_feedback_view'),
+  calendarExit: () => sendGAEvent('calendar_exit'),
+
+  // 6. 피드
   feedView: () => sendGAEvent('feed_view'),
   feedExit: () => sendGAEvent('feed_exit'),
 
@@ -71,4 +79,14 @@ export const GAEvents = {
   topicArchiveClick: () => sendGAEvent('topic_archive_click'),
   pastTopicFeedView: (topicId: number) =>
     sendGAEvent('past_topic_feed_view', { topic_id: topicId }),
+
+  // 7. 마이페이지
+  mypageView: () => sendGAEvent('mypage_view'),
+  mypageExit: () => sendGAEvent('mypage_exit'),
+  profileManageView: () => sendGAEvent('profile_manage_view'),
+  myReactionListView: () => sendGAEvent('my_reaction_list_view'),
+  myReactionPostClick: (postId: number) =>
+    sendGAEvent('my_reaction_post_click', { post_id: postId }),
+  myWritingListView: () => sendGAEvent('my_writing_list_view'),
+  myWritingPostClick: (postId: number) => sendGAEvent('my_writing_post_click', { post_id: postId }),
 } as const;
