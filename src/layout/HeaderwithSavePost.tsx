@@ -61,7 +61,10 @@ export const HeaderwithSavePost = ({
             <button
               disabled={isSaveDisabled}
               className="w-9 h-9 flex items-center justify-center cursor-pointer"
-              onClick={() => handleClickSaveButton?.(false)}
+              onClick={() => {
+                GAEvents.tempSave();
+                handleClickSaveButton?.(false);
+              }}
             >
               <img
                 src={isSaveDisabled ? saveDisabledIcon : saveIcon}
