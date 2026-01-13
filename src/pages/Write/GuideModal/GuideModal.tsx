@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion';
+import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import xButton from '../../../assets/Modal/xbutton.svg';
 import { GUIDE_MAP, type guideTopicType } from '../../../constants/Guide';
 import { useModal } from '../../../hooks/useModal';
 import { GuideContent } from './GuideContent';
+
+import { GAEvents } from '../../../utils/GAEvent';
 
 interface GuideModalProps {
   topicType: guideTopicType;
@@ -52,6 +55,10 @@ export const Xbutton = () => {
 };
 
 export function GuideModal({ topicType }: GuideModalProps) {
+  useEffect(() => {
+    GAEvents.writingGuideClick();
+  }, []);
+
   return createPortal(
     <>
       <GuideOverlay>
