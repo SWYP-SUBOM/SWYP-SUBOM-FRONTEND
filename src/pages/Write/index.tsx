@@ -113,6 +113,7 @@ export const Write = () => {
   const navigate = useNavigate();
   /* 피드백 받기 요청 보낼때 저장을 안했으면 저장 후 피드백 요청*/
   const movetoGetFeedback = () => {
+    GAEvents.aiFeedbackClick();
     setIsLoading(true);
     setShowSkeleton(true);
     const saveAndRequestFeedback = (postId: number) => {
@@ -159,6 +160,7 @@ export const Write = () => {
   };
 
   const handleSavePost = (shouldNavigateHome = false) => {
+    GAEvents.tempSave();
     if (isFirst) {
       saveMutation.mutate(
         { categoryId: categoryId, topicId: topicId, content: opinion },
@@ -196,6 +198,7 @@ export const Write = () => {
   };
 
   const openGuideModal = (topicType: guideTopicType) => {
+    GAEvents.writingGuideClick();
     openModal(<GuideModal topicType={topicType} />);
   };
 

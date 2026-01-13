@@ -93,8 +93,6 @@ export const DailyQuestionModal = ({ categoryId }: TopicPropsType) => {
     navigate('/onboarding/Login');
   };
 
-  console.log(isLoading);
-
   return (
     <Modal>
       <Modal.Overlay>
