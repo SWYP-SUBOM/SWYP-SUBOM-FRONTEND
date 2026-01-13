@@ -1,0 +1,48 @@
+# CodeRabbit 설정 파일
+language: 'ko-KR'
+early_access: false
+
+reviews:
+  profile: 'chill'
+  request_changes_workflow: false
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+    base_branches:
+      - "/*"
+
+chat:
+  auto_reply: true
+
+# 제외할 파일/디렉토리
+ignore:
+  paths:
+    - "node_modules/**"
+    - "dist/**"
+    - ".next/**"
+    - "build/**"
+    - "coverage/**"
+    - "*.min.js"
+    - "*.min.css"
+    - "pnpm-lock.yaml"
+    - "package-lock.json"
+    - "yarn.lock"
+    - ".git/**"
+    - ".vscode/**"
+    - ".idea/**"
+    - "*.log"
+    - ".env*"
+    - "public/**"
+    - "*.config.js"
+    - "*.config.ts"
+    - "vite.config.ts"
+    - "tsconfig*.json"
+    - "eslint.config.js"
+    - ".storybook/**"
+    - "stories/**"
+    - "*.stories.tsx"
+    - "*.stories.ts"
