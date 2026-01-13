@@ -23,8 +23,6 @@ export const Write = () => {
   const { closeBottomSheet } = useBottomSheetStore();
   const { openModal, Content, isOpen } = useModal();
 
-  const MAX_LENGTH = 700;
-
   const categoryName = location.state.categoryName;
   const categoryId = location.state.categoryId;
   const topicName = location.state.topicName;
@@ -54,16 +52,6 @@ export const Write = () => {
   const { data: draftPostData } = useGetDraftPost(draftPostId, 'edit', {
     enabled: !!draftPostId && isTodayDraft,
   });
-
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-
-    if (value.length <= MAX_LENGTH) {
-      setOpinion(value);
-    } else {
-      setOpinion(value.slice(0, MAX_LENGTH));
-    }
-  };
 
   useEffect(() => {
     if (draftPostData && isTodayDraft) {
