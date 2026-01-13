@@ -4,9 +4,11 @@ import { kakaoLoginUrl } from '../../../api/services/authService';
 import onboardingLogin from '../../../assets/Onboarding/onboardingLogin.gif';
 import arrowRight from '../../../assets/Onboarding/arrowRight.svg';
 import kakao from '../../../assets/Onboarding/kakao.png';
+import { GAEvents } from '../../../utils/GAEvent';
 
 export const Login = () => {
   const handleKakaoLogin = () => {
+    GAEvents.loginClick();
     window.location.href = kakaoLoginUrl();
   };
 

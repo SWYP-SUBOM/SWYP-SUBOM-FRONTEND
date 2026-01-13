@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import customerservice from '../../assets/Profile/customerservice.svg';
 import post from '../../assets/Profile/post.svg';
@@ -6,9 +7,21 @@ import reaction from '../../assets/Profile/reaction.svg';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { useGetHome } from '../../hooks/Home/useGetHome';
 import { useGetUserName } from '../../hooks/User/useGetUserName';
+import { GAEvents } from '../../utils/GAEvent';
 import { ProfileContents } from './_components/Profilecontents';
 
 export const Profile = () => {
+  useEffect(() => {
+    GAEvents.mypageView();
+
+    return () => {
+      const currentPath = window.location.pathname;
+      const targetPaths = ['/home', '/', '/calendar', '/feed'];
+      if (targetPaths.some((path) => currentPath === path)) {
+        GAEvents.mypageExit();
+      }
+    };
+  }, []);
   const navigate = useNavigate();
   const { data: userName, isLoading: isUserNameLoading } = useGetUserName();
   const { data: homeData, isLoading: isHomeDataLoading } = useGetHome();

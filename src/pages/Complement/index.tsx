@@ -12,6 +12,7 @@ import { useModal } from '../../hooks/useModal';
 import { useVisualViewport } from '../../hooks/useVisualViewport';
 import { WriteLayout } from '../../layout/WriteLayout';
 import { useBottomSheetStore } from '../../store/useBottomSheetStore';
+import { GAEvents } from '../../utils/GAEvent';
 import { getHighlightedHTML } from '../../utils/HighLights';
 import { FeedbackBanner } from '../Feedback/_components/FeedbackBanner';
 import { FeedbackBox } from '../Feedback/_components/FeedbackBox';
@@ -22,6 +23,11 @@ export const Complement = () => {
   const { closeBottomSheet } = useBottomSheetStore();
   const { openModal, Content, isOpen } = useModal();
   const { isKeyboardOpen, height, offsetTop } = useVisualViewport();
+  const hasSentEditStartEvent = useRef(false);
+
+  useEffect(() => {
+    GAEvents.reviseView();
+  }, []);
 
   const { categoryName, topicName, topicType } = useParams<{
     categoryName: CategoryNameType;
@@ -51,6 +57,7 @@ export const Complement = () => {
   const [initialOpinion, setInitialOpinion] = useState('');
 
   const openGuideModal = (topicType: guideTopicType) => {
+    GAEvents.writingGuideClick();
     openModal(<GuideModal topicType={topicType} />);
   };
 
@@ -66,7 +73,12 @@ export const Complement = () => {
   const [isDirty, setIsDirty] = useState(false);
 
   useEffect(() => {
-    setIsDirty(opinion !== initialOpinion);
+    const dirty = opinion !== initialOpinion;
+
+    if (dirty && !hasSentEditStartEvent.current) {
+      GAEvents.reviseEditStart();
+      hasSentEditStartEvent.current = true;
+    }
   }, [opinion, initialOpinion]);
 
   const isScrolled = useScroll();
@@ -106,6 +118,7 @@ export const Complement = () => {
       {
         onSuccess: () => {
           try {
+            GAEvents.reviseEditComplete();
             navigate('/complete');
           } catch (err) {
             console.error('작성완료 실패:', err);

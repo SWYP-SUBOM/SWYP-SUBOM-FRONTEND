@@ -16,12 +16,12 @@ import { SpeechBubble } from './_components/SpeechBubble';
 import { FeedbackLoading } from './FeedbackLoading';
 import { GuideModal } from './GuideModal/GuideModal';
 
+import { GAEvents } from '../../utils/GAEvent';
+
 export const Write = () => {
   const location = useLocation();
   const { closeBottomSheet } = useBottomSheetStore();
   const { openModal, Content, isOpen } = useModal();
-
-  const MAX_LENGTH = 700;
 
   const categoryName = location.state.categoryName;
   const categoryId = location.state.categoryId;
@@ -35,6 +35,7 @@ export const Write = () => {
   const [initialOpinion, setInitialOpinion] = useState('');
   const [isBubbleOpen, setIsBubbleOpen] = useState(false);
   const hasClosedBubble = useRef(false);
+  const hasWritingStarted = useRef(false);
   const [isDirty, setIsDirty] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showSkeleton, setShowSkeleton] = useState(false);
@@ -51,16 +52,6 @@ export const Write = () => {
   const { data: draftPostData } = useGetDraftPost(draftPostId, 'edit', {
     enabled: !!draftPostId && isTodayDraft,
   });
-
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-
-    if (value.length <= MAX_LENGTH) {
-      setOpinion(value);
-    } else {
-      setOpinion(value.slice(0, MAX_LENGTH));
-    }
-  };
 
   useEffect(() => {
     if (draftPostData && isTodayDraft) {
@@ -99,9 +90,18 @@ export const Write = () => {
     hasClosedBubble.current = true;
   };
 
+  const handleOpinionChange = (newValue: string) => {
+    setOpinion(newValue);
+    if (!hasWritingStarted.current && newValue.trim().length > 0) {
+      hasWritingStarted.current = true;
+      GAEvents.writingStart(newValue.trim());
+    }
+  };
+
   const navigate = useNavigate();
   /* 피드백 받기 요청 보낼때 저장을 안했으면 저장 후 피드백 요청*/
   const movetoGetFeedback = () => {
+    GAEvents.aiFeedbackClick();
     setIsLoading(true);
     setShowSkeleton(true);
     const saveAndRequestFeedback = (postId: number) => {
@@ -148,6 +148,7 @@ export const Write = () => {
   };
 
   const handleSavePost = (shouldNavigateHome = false) => {
+    GAEvents.tempSave();
     if (isFirst) {
       saveMutation.mutate(
         { categoryId: categoryId, topicId: topicId, content: opinion },
@@ -185,6 +186,7 @@ export const Write = () => {
   };
 
   const openGuideModal = (topicType: guideTopicType) => {
+    GAEvents.writingGuideClick();
     openModal(<GuideModal topicType={topicType} />);
   };
 
@@ -213,8 +215,8 @@ export const Write = () => {
               <textarea
                 placeholder="AI 피드백은 100자 이상 작성 시 제공됩니다."
                 value={opinion}
-                onChange={handleTextChange}
-                maxLength={700}
+                onChange={(e) => handleOpinionChange(e.target.value)}
+                maxLength={699}
                 className="w-full h-[calc(100%-40px)] p-4 hide-scrollbar focus:placeholder-transparent focus:outline-none focus:ring-0 bg-transparent B03_M text-gray-800 resize-none"
               />
               {!isKeyboardOpen && (

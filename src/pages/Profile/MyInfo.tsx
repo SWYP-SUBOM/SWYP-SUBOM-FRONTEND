@@ -1,14 +1,19 @@
+import { useEffect } from 'react';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { useModal } from '../../hooks/useModal';
 import { useGetMe } from '../../hooks/User/useGetMe';
 import { useLogout } from '../../hooks/User/useLogout';
 import { useUnregister } from '../../hooks/User/useUnregister';
+import { GAEvents } from '../../utils/GAEvent';
 import { ActionButtons } from './_components/ActionButtons';
 import { InfoCard } from './_components/InfoCard';
 import { InfoNotice } from './_components/InfoNotice';
 import { NameChangeModal } from './_components/NameChangeModal';
 
 export const MyInfo = () => {
+  useEffect(() => {
+    GAEvents.profileManageView();
+  }, []);
   const { data: meData, isLoading } = useGetMe();
   const logoutMutation = useLogout();
   const unregisterMutation = useUnregister();

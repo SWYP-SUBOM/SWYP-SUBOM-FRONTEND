@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SelectBox } from '../../../components/SelectBox/SelectBox';
 import { useGetTopics } from '../../../hooks/Feed/useGetTopics';
+import { GAEvents } from '../../../utils/GAEvent';
 import { SelectSortBottomSheet } from './SelectSortBottomSheet';
 
 export const GatherTopicContent = ({ categoryId }: { categoryId: number }) => {
@@ -19,9 +20,8 @@ export const GatherTopicContent = ({ categoryId }: { categoryId: number }) => {
   const navigate = useNavigate();
 
   const movetoFeedByTopic = (topicId: number, categoryId: number) => {
-    navigate(`/feed/${topicId}/${categoryId}`, {
-      state: { fromGather: true },
-    });
+    GAEvents.pastTopicFeedView(topicId);
+    navigate(`/feed/${topicId}/${categoryId}`);
   };
 
   return (

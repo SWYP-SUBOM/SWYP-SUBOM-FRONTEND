@@ -7,6 +7,7 @@ import { useGetAIFeedBack } from '../../hooks/FeedBack/uesGetAIFeedBack';
 import { useGetPost } from '../../hooks/Post/useGetPost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { WriteLayout } from '../../layout/WriteLayout';
+import { GAEvents } from '../../utils/GAEvent';
 import { FeedbackLoading } from '../Write/FeedbackLoading';
 import { Rating } from '../Write/Rating/Rating';
 import { FeedbackBanner } from './_components/FeedbackBanner';
@@ -19,6 +20,10 @@ export const FeedBack = () => {
     aiFeedbackId: number;
     fromComplement: boolean;
   };
+
+  useEffect(() => {
+    GAEvents.aiFeedbackView();
+  }, []);
 
   const { data: AIFeedBackData, isLoading } = useGetAIFeedBack(postId, aiFeedbackId);
   const updateAndSaveMutation = useUpdateAndSavePost();
@@ -53,12 +58,14 @@ export const FeedBack = () => {
 
   const navigate = useNavigate();
   const movetoComplement = () => {
+    GAEvents.reviseClick();
     navigate(`/complement/${categoryName}/${encodedTopicName}/${topicType}`, {
       state: { postId, aiFeedbackId },
     });
   };
 
   const handlePublishPost = () => {
+    GAEvents.writingComplete();
     updateAndSaveMutation.mutate(
       { postId, status: 'PUBLISHED', content },
       {
