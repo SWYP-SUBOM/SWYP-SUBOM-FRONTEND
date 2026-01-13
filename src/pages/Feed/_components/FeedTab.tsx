@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Tabs } from '../../../components/Tabs/UnderlineTab/Tabs';
 import { CategoryTabs } from '../../../constants/CategoryMap';
+import { GAEvents } from '../../../utils/GAEvent';
 import { PostBoxSkeleton } from '../Skeleton/PostBoxSkeleton';
 import { TopicBoxSkeleton } from '../Skeleton/TopicBoxSkeleton';
 import FeedContent from './FeedContent';
@@ -12,7 +13,13 @@ export const FeedTab = () => {
         <div className="sticky top-[65px] z-100 bg-[var(--color-white)] w-full">
           <Tabs.TabList>
             {CategoryTabs.map((tab) => (
-              <Tabs.Trigger key={tab.categoryId} categoryId={tab.categoryId}>
+              <Tabs.Trigger
+                key={tab.categoryId}
+                categoryId={tab.categoryId}
+                onClick={() => {
+                  GAEvents.feedCategoryClick(tab.categoryId, tab.categoryName);
+                }}
+              >
                 {tab.categoryName}
               </Tabs.Trigger>
             ))}

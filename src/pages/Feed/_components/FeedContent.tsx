@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GuestBottomSheet } from '../../../components/common/GuestBottomSheet';
 import { ScrollToTopButton } from '../../../components/common/ScrollTopButton';
@@ -5,19 +6,37 @@ import { useGetFeed } from '../../../hooks/Feed/useGetFeed';
 import { useBottomSheet } from '../../../hooks/useBottomSheet';
 import { useInfiniteScroll } from '../../../hooks/useInfiniteScroll';
 import { useAuthStore } from '../../../store/useAuthStore';
+import { GAEvents } from '../../../utils/GAEvent';
 import { PostBox } from './PostBox';
 import { TopicBox } from './TopicBox';
 
 const FeedContent = ({ categoryId }: { categoryId: number }) => {
   const { isLoggedIn } = useAuthStore();
   const { openBottomSheet } = useBottomSheet();
+  const [hasScrolled, setHasScrolled] = useState(false);
   const { data: feedData, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetFeed(categoryId);
 
   const allPosts = feedData?.pages.flatMap((page) => page.postList) ?? [];
 
+  useEffect(() => {
+    const handleFirstScroll = () => {
+      if (window.scrollY > 0 && !hasScrolled) {
+        GAEvents.feedScroll();
+        setHasScrolled(true);
+      }
+    };
+
+    window.addEventListener('scroll', handleFirstScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleFirstScroll);
+    };
+  }, [hasScrolled]);
+
   const navigate = useNavigate();
   const movetoDetail = (postId: number) => {
     if (isLoggedIn) {
+      GAEvents.feedPostClick(postId);
       navigate(`/postdetail/${postId}`);
     } else {
       openBottomSheet(<GuestBottomSheet />);

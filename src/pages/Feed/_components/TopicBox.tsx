@@ -6,6 +6,7 @@ import relationship from '../../../assets/CategoryBox/relationship.png';
 import value from '../../../assets/CategoryBox/value.png';
 import right from '../../../assets/Feed/right.svg';
 import { useAuthStore } from '../../../store/useAuthStore';
+import { GAEvents } from '../../../utils/GAEvent';
 
 export const TopicBoxMap = {
   일상: {
@@ -62,6 +63,7 @@ export const TopicBox = ({
 
   const navigate = useNavigate();
   const movetoGatherTopic = () => {
+    GAEvents.topicArchiveClick();
     navigate('/gathertopic');
   };
 
