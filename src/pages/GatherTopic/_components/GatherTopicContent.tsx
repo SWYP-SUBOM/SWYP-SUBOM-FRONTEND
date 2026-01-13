@@ -19,7 +19,9 @@ export const GatherTopicContent = ({ categoryId }: { categoryId: number }) => {
   const navigate = useNavigate();
 
   const movetoFeedByTopic = (topicId: number, categoryId: number) => {
-    navigate(`/feed/${topicId}/${categoryId}`);
+    navigate(`/feed/${topicId}/${categoryId}`, {
+      state: { fromGather: true },
+    });
   };
 
   return (
