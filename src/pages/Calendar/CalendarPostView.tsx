@@ -13,6 +13,10 @@ import { FeedbackModal } from './_components/FeedbackModal';
 import { GAEvents } from '../../utils/GAEvent';
 
 export const CalendarPostView = () => {
+  useEffect(() => {
+    GAEvents.calendarWritingView(postId);
+  }, []);
+
   const params = useParams<{ postId: string }>();
   const postId = Number(params.postId);
 
