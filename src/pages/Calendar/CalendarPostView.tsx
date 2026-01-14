@@ -13,12 +13,13 @@ import { FeedbackModal } from './_components/FeedbackModal';
 import { GAEvents } from '../../utils/GAEvent';
 
 export const CalendarPostView = () => {
+  const params = useParams<{ postId: string }>();
+  const postId = Number(params.postId);
+
   useEffect(() => {
     GAEvents.calendarWritingView(postId);
   }, []);
 
-  const params = useParams<{ postId: string }>();
-  const postId = Number(params.postId);
   const { openBottomSheet } = useBottomSheet();
   const { data: editPostData } = useGetDraftPost(postId, 'edit', {
     enabled: !!postId,

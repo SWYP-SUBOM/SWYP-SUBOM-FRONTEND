@@ -18,6 +18,8 @@ import { GuideModal } from './GuideModal/GuideModal';
 
 import { GAEvents } from '../../utils/GAEvent';
 
+const MAX_LENGTH = 700;
+
 export const Write = () => {
   const location = useLocation();
   const { closeBottomSheet } = useBottomSheetStore();
@@ -90,11 +92,14 @@ export const Write = () => {
     hasClosedBubble.current = true;
   };
 
-  const handleOpinionChange = (newValue: string) => {
-    setOpinion(newValue);
-    if (!hasWritingStarted.current && newValue.trim().length > 0) {
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    const limitedValue = value.length <= MAX_LENGTH ? value : value.slice(0, MAX_LENGTH);
+
+    setOpinion(limitedValue);
+    if (!hasWritingStarted.current && limitedValue.trim().length > 0) {
       hasWritingStarted.current = true;
-      GAEvents.writingStart(newValue.trim());
+      GAEvents.writingStart(limitedValue.trim());
     }
   };
 
@@ -215,8 +220,8 @@ export const Write = () => {
               <textarea
                 placeholder="AI 피드백은 100자 이상 작성 시 제공됩니다."
                 value={opinion}
-                onChange={(e) => handleOpinionChange(e.target.value)}
-                maxLength={699}
+                onChange={handleTextChange}
+                maxLength={MAX_LENGTH}
                 className="w-full h-[calc(100%-40px)] p-4 hide-scrollbar focus:placeholder-transparent focus:outline-none focus:ring-0 bg-transparent B03_M text-gray-800 resize-none"
               />
               {!isKeyboardOpen && (
