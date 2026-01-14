@@ -74,6 +74,7 @@ export const Complement = () => {
 
   useEffect(() => {
     const dirty = opinion !== initialOpinion;
+    setIsDirty(dirty);
 
     if (dirty && !hasSentEditStartEvent.current) {
       GAEvents.reviseEditStart();

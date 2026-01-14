@@ -307,10 +307,14 @@ export const Admin = () => {
 
         <Category onModeSelect={handleModeSelect} selectedMode={selectedMode} />
 
-        <div className="flex justify-end">
+        <div className="flex justify-between items-center mt-4">
+          <div className="B01_M text-gray-900 pl-2">
+            총 <span className="B01_B text-b7 underline">{topics.length}</span>개
+          </div>
+
           <button
             onClick={() => setIsCategorySheetOpen(true)}
-            className="w-[110px] mt-4  flex items-center  px-[10px] gap-2 justify-center border border-gray-500 rounded-lg  py-2 cursor-pointer"
+            className="w-[110px]   flex items-center  px-[10px] gap-2 justify-center border border-gray-500 rounded-lg  py-2 cursor-pointer"
           >
             <span className="B02_M text-gray-800">카테고리</span>
             <img src={arrowdown} alt="arrowdown" />
