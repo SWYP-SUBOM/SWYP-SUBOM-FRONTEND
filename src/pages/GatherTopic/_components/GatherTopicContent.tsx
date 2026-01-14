@@ -21,7 +21,9 @@ export const GatherTopicContent = ({ categoryId }: { categoryId: number }) => {
 
   const movetoFeedByTopic = (topicId: number, categoryId: number) => {
     GAEvents.pastTopicFeedView(topicId);
-    navigate(`/feed/${topicId}/${categoryId}`);
+    navigate(`/feed/${topicId}/${categoryId}`, {
+      state: { fromGather: true },
+    });
   };
 
   return (
