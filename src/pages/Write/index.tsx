@@ -47,6 +47,8 @@ export const Write = () => {
   const [isFirst, setIsFirst] = useState(true);
 
   const [showSaveAlert, setShowSaveAlert] = useState(false);
+  const textRef = useRef<HTMLTextAreaElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const saveMutation = useSavePost();
   const updateAndSaveMutation = useUpdateAndSavePost();
@@ -87,6 +89,36 @@ export const Write = () => {
     }
   }, [opinion]);
 
+  useEffect(() => {
+    if (isKeyboardOpen && textRef.current && containerRef.current) {
+      setTimeout(() => {
+        const textarea = textRef.current;
+        if (textarea) {
+          textarea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+          const selectionStart = textarea.selectionStart;
+          const textBeforeCursor = textarea.value.substring(0, selectionStart);
+          const lines = textBeforeCursor.split('\n');
+          const currentLine = lines.length - 1;
+
+          const style = window.getComputedStyle(textarea);
+          const lineHeight = parseFloat(style.lineHeight) || 24;
+          const paddingTop = parseFloat(style.paddingTop) || 16;
+
+          const cursorTop = currentLine * lineHeight + paddingTop;
+          const textareaHeight = textarea.clientHeight;
+          const bottomOffset = 70;
+
+          // 커서가 하단 영역에 가려지면 스크롤
+          if (cursorTop + lineHeight > textareaHeight - bottomOffset) {
+            const targetScrollTop = cursorTop + lineHeight - textareaHeight + bottomOffset;
+            textarea.scrollTop = Math.max(0, targetScrollTop);
+          }
+        }
+      }, 100);
+    }
+  }, [isKeyboardOpen, opinion]);
+
   const handleCloseBubble = () => {
     setIsBubbleOpen(false);
     hasClosedBubble.current = true;
@@ -100,6 +132,35 @@ export const Write = () => {
     if (!hasWritingStarted.current && limitedValue.trim().length > 0) {
       hasWritingStarted.current = true;
       GAEvents.writingStart(limitedValue.trim());
+    }
+
+    if (isKeyboardOpen && textRef.current) {
+      requestAnimationFrame(() => {
+        const textarea = textRef.current!;
+        const textLength = limitedValue.length;
+        const lines = limitedValue.split('\n');
+        const lineCount = lines.length;
+
+        if (textLength >= 50 || lineCount >= 3) {
+          const style = window.getComputedStyle(textarea);
+          const lineHeight = parseFloat(style.lineHeight) || 24;
+          const paddingTop = parseFloat(style.paddingTop) || 16;
+
+          const selectionStart = textarea.selectionStart;
+          const textBeforeCursor = limitedValue.substring(0, selectionStart);
+          const currentLine = textBeforeCursor.split('\n').length - 1;
+
+          const cursorTop = currentLine * lineHeight + paddingTop;
+          const textareaHeight = textarea.clientHeight;
+          const bottomOffset = 70; // 글자수 박스 높이 + 여유 공간
+
+          // 커서가 하단 영역에 가려지면 스크롤
+          if (cursorTop + lineHeight > textareaHeight - bottomOffset) {
+            const targetScrollTop = cursorTop + lineHeight - textareaHeight + bottomOffset;
+            textarea.scrollTop = Math.max(0, targetScrollTop);
+          }
+        }
+      });
     }
   };
 
@@ -211,13 +272,17 @@ export const Write = () => {
           isRightActions={true}
           showSaveAlert={showSaveAlert}
         >
-          <div className="px-4 bg-[#F3F5F8] flex flex-col h-[calc(100dvh-50px)] overflow-hidden">
+          <div
+            ref={containerRef}
+            className="px-4 bg-[#F3F5F8] flex flex-col h-[calc(100dvh-50px)] overflow-hidden"
+          >
             <div className="pt-[30px] pb-3 flex-shrink-0">
               <CategoryChip categoryName={categoryName}></CategoryChip>
               <div className="py-[10px] B01_M">{topicName}</div>
             </div>
             <div className="relative w-full flex-1 flex flex-col min-h-0 bg-white border border-gray-400 rounded-xl overflow-hidden">
               <textarea
+                ref={textRef}
                 placeholder="AI 피드백은 100자 이상 작성 시 제공됩니다."
                 value={opinion}
                 onChange={handleTextChange}
