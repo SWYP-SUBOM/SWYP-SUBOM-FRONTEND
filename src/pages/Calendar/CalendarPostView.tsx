@@ -13,7 +13,6 @@ import { FeedbackModal } from './_components/FeedbackModal';
 import { GAEvents } from '../../utils/GAEvent';
 
 export const CalendarPostView = () => {
-
   const params = useParams<{ postId: string }>();
   const postId = Number(params.postId);
 
