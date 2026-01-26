@@ -36,23 +36,23 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
       manifest: {
-        name: "My App Name",
-        short_name: "App Name",
-        description: "My Awesome React App",
+        name: "써봄",
+        short_name: "써봄",
+        description: "써봄",
         theme_color: "#ffffff",
         icons: [
           {
-            src: "Thumbnail.png",
+            src: "icon-192x192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "Thumbnail.png",
+            src: "icon-512x512.png",
             sizes: "512x512",
             type: "image/png",
           },
           {
-            src: "Thumbnail.png",
+            src: "icon-512x512.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "any maskable",
