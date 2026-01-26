@@ -2,7 +2,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import left from '../assets/Header/left.svg';
 import saveDisabledIcon from '../assets/Write/save-disabled-icon.svg';
 import saveIcon from '../assets/Write/save-icon.svg';
-import writeGuide from '../assets/Write/write_guide.svg';
 import { useBottomSheet } from '../hooks/useBottomSheet';
 import { IsDirtyBottomSheet } from '../pages/Write/_components/IsDirtyBottomSheet';
 import { GAEvents } from '../utils/GAEvent';
@@ -12,7 +11,6 @@ export type HeaderwithSavePostProps = {
   isSaveDisabled?: boolean;
   isRightActions?: boolean;
   isDirty?: boolean;
-  openGuideModal?: () => void;
 };
 
 export const HeaderwithSavePost = ({
@@ -20,7 +18,6 @@ export const HeaderwithSavePost = ({
   isSaveDisabled,
   isRightActions,
   isDirty,
-  openGuideModal,
 }: HeaderwithSavePostProps) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -71,13 +68,6 @@ export const HeaderwithSavePost = ({
                 className="w-9 h-9"
                 alt="saveIcon"
               />
-            </button>
-
-            <button
-              className="w-12 h-12 flex items-center justify-center cursor-pointer"
-              onClick={openGuideModal}
-            >
-              <img src={writeGuide} className="w-12 h-12" alt="writeguide" />
             </button>
           </div>
         )}
