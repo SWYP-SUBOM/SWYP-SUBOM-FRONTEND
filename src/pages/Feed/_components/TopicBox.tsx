@@ -5,7 +5,6 @@ import hobby from '../../../assets/CategoryBox/hobby.png';
 import relationship from '../../../assets/CategoryBox/relationship.png';
 import value from '../../../assets/CategoryBox/value.png';
 import right from '../../../assets/Feed/right.svg';
-import { useAuthStore } from '../../../store/useAuthStore';
 import { GAEvents } from '../../../utils/GAEvent';
 
 export const TopicBoxMap = {
@@ -59,7 +58,6 @@ export const TopicBox = ({
 }) => {
   type CategoryKey = keyof typeof TopicBoxMap;
   const categoryData = TopicBoxMap[categoryText as CategoryKey];
-  const { isLoggedIn } = useAuthStore();
 
   const navigate = useNavigate();
   const movetoGatherTopic = () => {
@@ -76,7 +74,7 @@ export const TopicBox = ({
           src={categoryData.icon}
           className={`absolute right-5 bottom-5 ${categoryData.iconClass}`}
         ></img>
-        {isLoggedIn && ismove && (
+        {ismove && (
           <div
             className="absolute bottom-5 left-4 flex items-center gap-1 cursor-pointer"
             onClick={movetoGatherTopic}
