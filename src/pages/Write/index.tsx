@@ -88,6 +88,7 @@ export const Write = () => {
     return temp.join('').trim().length;
   };
 
+  /* 100자 이상일때 피드백 요청 가능 */
   const isTotalLengthValid = () => {
     return getTotalLength() >= MIN_LENGTH;
   };
@@ -155,6 +156,20 @@ export const Write = () => {
     }
   }, [step, opinion]);
 
+  useEffect(() => {
+    if (step === 3) {
+      if (!isTotalLengthValid()) {
+        if (!hasClosedBubble.current) {
+          setIsBubbleOpen(true);
+        }
+      } else {
+        setIsBubbleOpen(false);
+      }
+    } else {
+      setIsBubbleOpen(false);
+    }
+  }, [step, opinion]);
+
   const handleCloseBubble = () => {
     setIsBubbleOpen(false);
     hasClosedBubble.current = true;
@@ -162,7 +177,14 @@ export const Write = () => {
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
-    const limitedValue = value.length <= MAX_LENGTH ? value : value.slice(0, MAX_LENGTH);
+
+    const otherStepsLength = contents.reduce((sum, content, index) => {
+      return index === step - 1 ? sum : sum + content.length;
+    }, 0);
+
+    const availableLength = MAX_LENGTH - otherStepsLength;
+
+    const limitedValue = value.length <= availableLength ? value : value.slice(0, availableLength);
 
     setOpinion(limitedValue);
     if (!hasWritingStarted.current && limitedValue.trim().length > 0) {
