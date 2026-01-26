@@ -94,9 +94,7 @@ const Home = () => {
           </p>
           <TodayHotPostBox
             categoryName="일상"
-            onClick={() => {
-              console.log('TodayHotPostBox 클릭!');
-            }}
+            onClick={() => {}}
             nickname="닉네임"
             summary="오늘의 기록"
             heart={24}

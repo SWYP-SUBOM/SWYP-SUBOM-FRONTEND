@@ -47,12 +47,13 @@ export const DailyTopicBox = ({ categoryId, categoryName, isActive }: DailyTopic
 
       <div className={`mt-[6px] transition-all duration-300 ${isActive ? 'visible' : 'invisible'}`}>
         <button
+          disabled={isTodayPublished}
           onClick={() => navigate('/write', { state: { categoryId, categoryName, topicName } })}
-          className="w-full rounded-xl bg-white py-2 B03-1_M
-              transition-transform border border-gray-500 text-gray-750
-              cursor-pointer"
+          className={`w-full rounded-xl bg-white py-2 B03-1_M transition-transform border border-gray-500 text-gray-750
+    ${isTodayPublished ? 'cursor-pointer opacity-70' : 'cursor-pointer'}
+  `}
         >
-          {isTodayPublished ? '다음에 만나요!' : '글쓰러 가기'}
+          {isTodayPublished ? '글쓰기 완료!' : '글쓰러 가기'}
         </button>
       </div>
     </div>
