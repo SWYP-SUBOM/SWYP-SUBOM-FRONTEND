@@ -182,7 +182,7 @@ export const Write = () => {
       return index === step - 1 ? sum : sum + content.length;
     }, 0);
 
-    const availableLength = MAX_LENGTH - otherStepsLength;
+    const availableLength = Math.max(0, MAX_LENGTH - otherStepsLength);
 
     const limitedValue = value.length <= availableLength ? value : value.slice(0, availableLength);
 
