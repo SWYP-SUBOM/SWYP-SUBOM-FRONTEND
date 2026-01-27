@@ -156,3 +156,21 @@ export interface MyReactionsResponse {
     };
   } | null;
 }
+
+export interface PopularPostResponse {
+  success: boolean;
+  code: string;
+  message: string;
+  data: {
+    postId: number;
+    nickname: string;
+    summary: string;
+    updatedAt: string;
+    totalReactions: number;
+    postViews: number;
+    category: {
+      categoryId: number;
+      categoryName: string;
+    };
+  };
+}
