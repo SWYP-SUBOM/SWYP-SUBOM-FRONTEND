@@ -10,18 +10,18 @@ interface TodayHotPostBoxProps {
   onClick: () => void;
   nickname: string;
   summary: string;
-  heart: number;
-  completedAt: string;
-  view: number;
+  totalReactions: number;
+  updatedAt: string;
+  postViews: number;
 }
 export const TodayHotPostBox = ({
   categoryName,
   onClick,
   nickname,
   summary,
-  heart,
-  completedAt,
-  view,
+  totalReactions,
+  updatedAt,
+  postViews,
 }: TodayHotPostBoxProps) => {
   const summaryShort = summary.length > 100 ? summary.slice(0, 100) : summary;
   return (
@@ -48,15 +48,15 @@ export const TodayHotPostBox = ({
             <div className="flex gap-3">
               <div className="flex gap-2">
                 <img src={heartIcon} className="w-5 h-5 -translate-y-1/9" />
-                <div className="C01_M text-gray-700">{heart}</div>
+                <div className="C01_M text-gray-700">{totalReactions}</div>
               </div>
               <div className="flex gap-2">
                 <img src={viewIcon} className="w-5 h-5 -translate-y-1/9" />
-                <div className="C01_M text-gray-700">{view}</div>
+                <div className="C01_M text-gray-700">{postViews}</div>
               </div>
             </div>
           </div>
-          <div className="C01_M text-gray-700">{DateFormatter(completedAt)}</div>
+          <div className="C01_M text-gray-700">{DateFormatter(updatedAt)}</div>
         </div>
       </div>
     </>

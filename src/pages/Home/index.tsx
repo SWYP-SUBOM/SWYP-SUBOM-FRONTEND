@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import hotright from '../../assets/Home/hotright.svg';
+import type { CategoryNameType } from '../../constants/Category';
 import { useGetHome } from '../../hooks/Home/useGetHome';
+import { useGetPopularPost } from '../../hooks/Post/useGetPopularPost';
 import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { useGetUserName } from '../../hooks/User/useGetUserName';
 import { useHomeDraftSheetStore } from '../../store/useHomeDraftSheetStore';
@@ -18,6 +20,7 @@ const Home = () => {
 
   const { data: userNameData } = useGetUserName();
   const { data: homeData } = useGetHome();
+  const { data: popularPostData } = useGetPopularPost();
   const setTodayPostInfo = useTodayPostInfoStore((state) => state.setTodayPostInfo);
 
   const isTodayDraft = homeData?.todayPost?.postStatus === 'DRAFT';
@@ -92,15 +95,17 @@ const Home = () => {
           <p className="mb-4 pt-1 B03_1_M text-gray-750 pb-1">
             조회수, 반응수에 따라 실시간으로 갱신!
           </p>
-          <TodayHotPostBox
-            categoryName="일상"
-            onClick={() => {}}
-            nickname="닉네임"
-            summary="오늘의 기록"
-            heart={24}
-            completedAt="2026-01-22"
-            view={132}
-          />
+          {popularPostData && (
+            <TodayHotPostBox
+              categoryName={popularPostData?.category.categoryName as CategoryNameType}
+              onClick={() => {}}
+              nickname={popularPostData?.nickname}
+              summary={popularPostData?.summary}
+              totalReactions={popularPostData?.totalReactions}
+              updatedAt={popularPostData.updatedAt.split('T')[0]}
+              postViews={popularPostData?.postViews}
+            />
+          )}
         </div>
       </div>
       {BottomContent}

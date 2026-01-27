@@ -8,16 +8,24 @@ interface DailyTopicBoxProps {
   categoryId: number;
   categoryName: string;
   isActive: boolean;
+  topicName?: string;
+  topicId?: number;
+  topicType?: string;
 }
 
-export const DailyTopicBox = ({ categoryId, categoryName, isActive }: DailyTopicBoxProps) => {
+export const DailyTopicBox = ({
+  categoryId,
+  categoryName,
+  isActive,
+  topicName,
+  topicId,
+  topicType,
+}: DailyTopicBoxProps) => {
   const navigate = useNavigate();
   const todayPost = useTodayPostInfoStore((state) => state.todayPost);
   const isTodayPublished =
     todayPost.postStatus === 'PUBLISHED' || todayPost.postStatus === 'PUBLISHED_WITHCLICK';
 
-  const topicName =
-    "인생에서 '이것만은 절대 포기할 수 없다'고 느끼는 당신의 핵심 가치는 무엇인가요?";
   const category = CATEGORIES.find((c) => c.categoryId === categoryId) || CATEGORIES[0];
 
   return (
@@ -47,13 +55,23 @@ export const DailyTopicBox = ({ categoryId, categoryName, isActive }: DailyTopic
 
       <div className={`mt-[6px] transition-all duration-300 ${isActive ? 'visible' : 'invisible'}`}>
         <button
-          disabled={isTodayPublished}
-          onClick={() => navigate('/write', { state: { categoryId, categoryName, topicName } })}
+          disabled={isTodayPublished || !topicId}
+          onClick={() =>
+            navigate('/write', {
+              state: {
+                categoryId,
+                categoryName,
+                topicName,
+                topicId,
+                topicType,
+              },
+            })
+          }
           className={`w-full rounded-xl bg-white py-2 B03-1_M transition-transform border border-gray-500 text-gray-750
     ${isTodayPublished ? 'cursor-pointer opacity-70' : 'cursor-pointer'}
   `}
         >
-          {isTodayPublished ? '글쓰기 완료!' : '글쓰러 가기'}
+          {topicId ? (isTodayPublished ? '글쓰기 완료!' : '글쓰러 가기') : '로딩 중'}
         </button>
       </div>
     </div>

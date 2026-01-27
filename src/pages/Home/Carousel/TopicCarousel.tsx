@@ -1,6 +1,7 @@
 import { animate, motion } from 'framer-motion';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { CATEGORIES } from '../../../constants/Categories';
+import { useGetDailyQuestions } from '../../../hooks/Home/useGetDailyQuestions';
 import { DailyTopicBox } from './DailyTopicBox';
 
 export const TopicCarousel = () => {
@@ -9,6 +10,7 @@ export const TopicCarousel = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const { data: dailyQuestionsData } = useGetDailyQuestions();
 
   const extendedCategories = useMemo(() => [...CATEGORIES, ...CATEGORIES, ...CATEGORIES], []);
 
@@ -132,6 +134,10 @@ export const TopicCarousel = () => {
         {extendedCategories.map((category, index) => {
           const isCenter = activeIndex === index % CATEGORIES.length;
 
+          const matchedTopic = dailyQuestionsData?.topics.find(
+            (t) => t.categoryId === category.categoryId,
+          );
+
           return (
             <motion.div
               key={`${category.categoryId}-${index}`}
@@ -145,6 +151,9 @@ export const TopicCarousel = () => {
                 categoryId={category.categoryId}
                 categoryName={category.name}
                 isActive={isCenter}
+                topicName={matchedTopic?.topicName}
+                topicId={matchedTopic?.topicId}
+                topicType={matchedTopic?.topicType}
               />
             </motion.div>
           );
