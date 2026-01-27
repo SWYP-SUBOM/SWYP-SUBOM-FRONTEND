@@ -3,7 +3,7 @@ import type { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import axios, { AxiosError } from 'axios';
 import { OAUTH_ENDPOINTS } from '../api/endpoints';
 import { useAuthStore } from '../store/useAuthStore';
-import { getAccessToken, setAccessToken } from './api';
+import { getAccessToken, setAccessToken, isTokenExpiringSoon } from './api';
 
 // 리프레시 토큰 재발급 중복 방지
 let isRefreshing = false;
@@ -34,7 +34,7 @@ const createAxiosInstance = (): AxiosInstance => {
   });
 
   axiosInstance.interceptors.request.use(
-    (config: InternalAxiosRequestConfig) => {
+    async (config: InternalAxiosRequestConfig) => {
       const token = getAccessToken();
 
       // 리프레시 토큰 요청 시 Authorization 헤더 제거
@@ -47,9 +47,71 @@ const createAxiosInstance = (): AxiosInstance => {
         delete config.headers?.Authorization;
         return config;
       }
-      if (token && config.headers) {
+
+      // 토큰이 곧 만료될 예정이면 미리 재발급 (Proactive)
+      if (token && isTokenExpiringSoon(token, 2)) {
+        // 이미 리프레시 중이면 대기
+        if (isRefreshing) {
+          await new Promise((resolve) => {
+            failedQueue.push({
+              resolve: (newToken) => {
+                if (config.headers && newToken) {
+                  config.headers.Authorization = `Bearer ${newToken as string}`;
+                }
+                resolve(newToken);
+              },
+              reject: () => resolve(null),
+            });
+          });
+        } else {
+          // 리프레시 토큰 재발급 시도
+          try {
+            isRefreshing = true;
+            const response = await axiosInstance.post(
+              OAUTH_ENDPOINTS.REISSUE,
+              {},
+              {
+                headers: {
+                  Authorization: undefined,
+                },
+              },
+            );
+
+            const authorizationHeader =
+              response.headers.authorization || response.headers.Authorization;
+            if (authorizationHeader) {
+              const newToken =
+                typeof authorizationHeader === 'string'
+                  ? authorizationHeader.replace('Bearer ', '')
+                  : authorizationHeader[0]?.replace('Bearer ', '') || '';
+
+              if (newToken) {
+                setAccessToken(newToken);
+                isRefreshing = false;
+                processQueue(null, newToken);
+
+                if (config.headers) {
+                  config.headers.Authorization = `Bearer ${newToken}`;
+                }
+                return config;
+              }
+            }
+          } catch (refreshError) {
+            // 미리 재발급 실패해도 원래 토큰으로 요청 시도
+            // 401 발생 시 Response Interceptor에서 재시도
+            isRefreshing = false;
+            processQueue(refreshError as Error, null);
+            // 원래 토큰으로 계속 진행
+            if (token && config.headers) {
+              config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+          }
+        }
+      } else if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
       }
+
       return config;
     },
     (error) => {
