@@ -42,17 +42,17 @@ export default defineConfig({
         theme_color: "#ffffff",
         icons: [
           {
-            src: "icon-192x192.png",
+            src: "pwaicon-192x192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "icon-512x512.png",
+            src: "pwaicon-512x512.png",
             sizes: "512x512",
             type: "image/png",
           },
           {
-            src: "icon-512x512.png",
+            src: "pwaicon-512x512.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "any maskable",
