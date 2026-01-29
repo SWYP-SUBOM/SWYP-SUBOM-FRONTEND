@@ -351,7 +351,7 @@ export const Write = () => {
                   </motion.div>
                 </AnimatePresence>
               </div>
-              <div className="py-7 flex-shrink-0 flex justify-center w-full max-w-[368px] mx-auto">
+              <div className="py-7 pb-[calc(1.75rem+env(safe-area-inset-bottom))] flex-shrink-0 flex justify-center w-full max-w-[368px] mx-auto">
                 {step === 1 ? (
                   <button
                     onClick={handleNextStep}
