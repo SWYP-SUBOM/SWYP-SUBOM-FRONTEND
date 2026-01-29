@@ -49,11 +49,13 @@ export const DailyTopicBox = ({
         <CategoryChip categoryName={category?.name as CategoryNameType} />
       </div>
 
-      <div className="flex-1">
+      <div className="flex-grow flex items-start">
         <p className="text-left text-gray-900 B03-1_M">{topicName}</p>
       </div>
 
-      <div className={`mt-[6px] transition-all duration-300 ${isActive ? 'visible' : 'invisible'}`}>
+      <div
+        className={`mt-4 flex-shrink-0 transition-all duration-300 ${isActive ? 'visible' : 'invisible'}`}
+      >
         <button
           disabled={isTodayPublished || !topicId}
           onClick={() =>

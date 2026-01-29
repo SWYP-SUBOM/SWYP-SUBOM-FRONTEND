@@ -145,7 +145,7 @@ export const TopicCarousel = () => {
                 opacity: isCenter ? 1 : 0.6,
               }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-              className="snap-center shrink-0 w-[85%] max-w-[320px] min-h-[332px]"
+              className="snap-center shrink-0 w-[85%] max-w-[320px] self-stretch"
             >
               <DailyTopicBox
                 categoryId={category.categoryId}
