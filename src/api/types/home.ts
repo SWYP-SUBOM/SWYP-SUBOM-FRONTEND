@@ -25,6 +25,23 @@ export interface homeResponse {
   };
 }
 
+export interface Topic {
+  categoryName: string;
+  topicName: string;
+  topicId: number;
+  categoryId: number;
+  topicType: string;
+}
+
+export interface dailyQuestionsResponse {
+  success: boolean;
+  code: string;
+  message: string;
+  data: {
+    topics: Topic[];
+  };
+}
+
 export interface dailyQuestionResponse {
   success: boolean;
   code: string;

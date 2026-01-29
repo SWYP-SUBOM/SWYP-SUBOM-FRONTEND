@@ -1,29 +1,32 @@
+import type { Variants } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
+import downStep from '../../assets/Write/downstep.svg';
+import upStep from '../../assets/Write/upstep.svg';
 import { CategoryChip } from '../../components/common/CategoryChip';
-import type { guideTopicType } from '../../constants/Guide';
 import { usePostAIFeedBack } from '../../hooks/FeedBack/usePostAIFeedBack';
 import { useGetDraftPost } from '../../hooks/Post/useGetPost';
 import { useSavePost } from '../../hooks/Post/useSavePost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
-import { useModal } from '../../hooks/useModal';
-import { useVisualViewport } from '../../hooks/useVisualViewport';
 import { WriteLayout } from '../../layout/WriteLayout';
 import { useBottomSheetStore } from '../../store/useBottomSheetStore';
 import { Skeleton } from '../Feedback/Skeleton';
 import { SpeechBubble } from './_components/SpeechBubble';
 import { FeedbackLoading } from './FeedbackLoading';
-import { GuideModal } from './GuideModal/GuideModal';
 
+import { CATEGORIES } from '../../constants/Categories';
+import { STEP_MESSAGES } from '../../constants/Guide';
 import { GAEvents } from '../../utils/GAEvent';
-
-const MAX_LENGTH = 700;
+import { StepIndicator } from './Step/StepIndicator';
 
 export const Write = () => {
   const location = useLocation();
   const { closeBottomSheet } = useBottomSheetStore();
-  const { openModal, Content, isOpen } = useModal();
+
+  const MAX_LENGTH = 700;
+  const MIN_LENGTH = 100;
+  const STEP_DELIMITER = ':::';
 
   const categoryName = location.state.categoryName;
   const categoryId = location.state.categoryId;
@@ -41,14 +44,15 @@ export const Write = () => {
   const [isDirty, setIsDirty] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showSkeleton, setShowSkeleton] = useState(false);
-  const { isKeyboardOpen, height, offsetTop } = useVisualViewport();
 
   const [currentPostId, setCurrentPostId] = useState(0);
   const [isFirst, setIsFirst] = useState(true);
 
   const [showSaveAlert, setShowSaveAlert] = useState(false);
-  const textRef = useRef<HTMLTextAreaElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+
+  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [contents, setContents] = useState(['', '', '']);
+  const [direction, setDirection] = useState(0);
 
   const saveMutation = useSavePost();
   const updateAndSaveMutation = useUpdateAndSavePost();
@@ -57,67 +61,117 @@ export const Write = () => {
     enabled: !!draftPostId && isTodayDraft,
   });
 
+  const currentCategory = CATEGORIES.find((c) => c.name === categoryName) || CATEGORIES[0];
+  const currentStepData =
+    STEP_MESSAGES[topicType as keyof typeof STEP_MESSAGES] || STEP_MESSAGES.LOGICAL;
+
+  const variants: Variants = {
+    initial: (direction: number) => ({
+      y: direction === 0 ? 0 : direction > 0 ? 50 : -50,
+      opacity: 0,
+    }),
+    animate: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.3, ease: 'easeOut' },
+    },
+    exit: (direction: number) => ({
+      y: direction === 0 ? 0 : direction > 0 ? -50 : 50,
+      opacity: 0,
+      transition: { duration: 0.2, ease: 'easeIn' },
+    }),
+  };
+
+  const getTotalLength = () => {
+    const temp = [...contents];
+    temp[step - 1] = opinion;
+    return temp.join('').trim().length;
+  };
+
+  /* 100자 이상일때 피드백 요청 가능 */
+  const isTotalLengthValid = () => {
+    return getTotalLength() >= MIN_LENGTH;
+  };
+
+  const handleNextStep = () => {
+    const newContents = [...contents];
+    newContents[step - 1] = opinion;
+    setContents(newContents);
+
+    if (step < 3) {
+      setDirection(1);
+      const nextStep = (step + 1) as 1 | 2 | 3;
+      setStep(nextStep);
+      setOpinion(newContents[nextStep - 1] || '');
+    } else {
+      const finalContent = newContents
+        .map((content) => content.trim())
+        .filter((content) => content.length > 0)
+        .join(' ');
+      movetoGetFeedback(finalContent);
+    }
+  };
+
+  const handlePrevStep = () => {
+    if (step === 1) return;
+    setDirection(-1);
+    const newContents = [...contents];
+    newContents[step - 1] = opinion;
+    setContents(newContents);
+    const prevStep = (step - 1) as 1 | 2 | 3;
+    setStep(prevStep);
+    setOpinion(newContents[prevStep - 1] || '');
+  };
+
   useEffect(() => {
     if (draftPostData && isTodayDraft) {
-      setOpinion(draftPostData.content);
-      setInitialOpinion(draftPostData.content);
+      const fullContent = draftPostData.content || '';
+      const splitContents = fullContent.split(STEP_DELIMITER);
+
+      const newContents = [splitContents[0] || '', splitContents[1] || '', splitContents[2] || ''];
+
+      setContents(newContents);
+      setOpinion(newContents[step - 1]);
+      setInitialOpinion(fullContent);
       setIsFirst(false);
       setCurrentPostId(draftPostId);
     }
   }, [draftPostData, isTodayDraft]);
 
-  const isWriteOpinion = () => {
-    return opinion.trim() !== '';
-  };
-
-  const isOpinionLengthValid = () => {
-    return opinion.trim().length >= 100;
+  const getUpdatedContents = (currentOpinion: string) => {
+    const newContents = [...contents];
+    newContents[step - 1] = currentOpinion;
+    return newContents;
   };
 
   useEffect(() => {
+    const currentFullContent = getUpdatedContents(opinion).join(STEP_DELIMITER);
     if (draftPostData) {
-      const hasChanged = opinion.trim() !== initialOpinion.trim();
-      setIsDirty(hasChanged);
+      setIsDirty(currentFullContent.trim() !== initialOpinion.trim());
     } else {
-      setIsDirty(isWriteOpinion());
+      setIsDirty(opinion.trim() !== '' || contents.some((c) => c.trim() !== ''));
     }
-  }, [opinion, initialOpinion, draftPostData]);
+  }, [opinion, contents, initialOpinion, draftPostData]);
 
   useEffect(() => {
-    if (isWriteOpinion() && !hasClosedBubble.current) {
+    if (step === 3 && !isTotalLengthValid() && !hasClosedBubble.current) {
       setIsBubbleOpen(true);
     }
-  }, [opinion]);
+  }, [step, opinion]);
 
   useEffect(() => {
-    if (isKeyboardOpen && textRef.current && containerRef.current) {
-      setTimeout(() => {
-        const textarea = textRef.current;
-        if (textarea) {
-          textarea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-          const selectionStart = textarea.selectionStart;
-          const textBeforeCursor = textarea.value.substring(0, selectionStart);
-          const lines = textBeforeCursor.split('\n');
-          const currentLine = lines.length - 1;
-
-          const style = window.getComputedStyle(textarea);
-          const lineHeight = parseFloat(style.lineHeight) || 24;
-          const paddingTop = parseFloat(style.paddingTop) || 16;
-
-          const cursorTop = currentLine * lineHeight + paddingTop;
-          const textareaHeight = textarea.clientHeight;
-          const bottomOffset = 70;
-
-          // 커서가 하단 영역에 가려지면 스크롤
-          if (cursorTop + lineHeight > textareaHeight - bottomOffset) {
-            const targetScrollTop = cursorTop + lineHeight - textareaHeight + bottomOffset;
-            textarea.scrollTop = Math.max(0, targetScrollTop);
-          }
+    if (step === 3) {
+      if (!isTotalLengthValid()) {
+        if (!hasClosedBubble.current) {
+          setIsBubbleOpen(true);
         }
-      }, 100);
+      } else {
+        setIsBubbleOpen(false);
+      }
+    } else {
+      setIsBubbleOpen(false);
     }
-  }, [isKeyboardOpen, opinion]);
+  }, [step, opinion]);
 
   const handleCloseBubble = () => {
     setIsBubbleOpen(false);
@@ -126,47 +180,25 @@ export const Write = () => {
 
   const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
-    const limitedValue = value.length <= MAX_LENGTH ? value : value.slice(0, MAX_LENGTH);
+
+    const otherStepsLength = contents.reduce((sum, content, index) => {
+      return index === step - 1 ? sum : sum + content.length;
+    }, 0);
+
+    const availableLength = Math.max(0, MAX_LENGTH - otherStepsLength);
+
+    const limitedValue = value.length <= availableLength ? value : value.slice(0, availableLength);
 
     setOpinion(limitedValue);
     if (!hasWritingStarted.current && limitedValue.trim().length > 0) {
       hasWritingStarted.current = true;
       GAEvents.writingStart(limitedValue.trim());
     }
-
-    if (isKeyboardOpen && textRef.current) {
-      requestAnimationFrame(() => {
-        const textarea = textRef.current!;
-        const textLength = limitedValue.length;
-        const lines = limitedValue.split('\n');
-        const lineCount = lines.length;
-
-        if (textLength >= 50 || lineCount >= 3) {
-          const style = window.getComputedStyle(textarea);
-          const lineHeight = parseFloat(style.lineHeight) || 24;
-          const paddingTop = parseFloat(style.paddingTop) || 16;
-
-          const selectionStart = textarea.selectionStart;
-          const textBeforeCursor = limitedValue.substring(0, selectionStart);
-          const currentLine = textBeforeCursor.split('\n').length - 1;
-
-          const cursorTop = currentLine * lineHeight + paddingTop;
-          const textareaHeight = textarea.clientHeight;
-          const bottomOffset = 70; // 글자수 박스 높이 + 여유 공간
-
-          // 커서가 하단 영역에 가려지면 스크롤
-          if (cursorTop + lineHeight > textareaHeight - bottomOffset) {
-            const targetScrollTop = cursorTop + lineHeight - textareaHeight + bottomOffset;
-            textarea.scrollTop = Math.max(0, targetScrollTop);
-          }
-        }
-      });
-    }
   };
 
   const navigate = useNavigate();
-  /* 피드백 받기 요청 보낼때 저장을 안했으면 저장 후 피드백 요청*/
-  const movetoGetFeedback = () => {
+
+  const movetoGetFeedback = (finalContent: string) => {
     GAEvents.aiFeedbackClick();
     setIsLoading(true);
     setShowSkeleton(true);
@@ -183,41 +215,38 @@ export const Write = () => {
       });
     };
 
-    if (isFirst || isDirty) {
-      if (isFirst) {
-        saveMutation.mutate(
-          { categoryId, topicId, content: opinion },
-          {
-            onSuccess: (res) => {
-              const postId = res.postId;
-              setCurrentPostId(postId);
-              setIsFirst(false);
-              setIsDirty(false);
-              saveAndRequestFeedback(postId);
-            },
+    if (isFirst) {
+      saveMutation.mutate(
+        { categoryId, topicId, content: finalContent },
+        {
+          onSuccess: (res) => {
+            const postId = res.postId;
+            setCurrentPostId(postId);
+            setIsFirst(false);
+            setIsDirty(false);
+            saveAndRequestFeedback(postId);
           },
-        );
-      } else {
-        updateAndSaveMutation.mutate(
-          { postId: currentPostId, status: 'DRAFT', content: opinion },
-          {
-            onSuccess: () => {
-              setIsDirty(false);
-              saveAndRequestFeedback(currentPostId!);
-            },
-          },
-        );
-      }
+        },
+      );
     } else {
-      saveAndRequestFeedback(currentPostId!);
+      updateAndSaveMutation.mutate(
+        { postId: currentPostId, status: 'DRAFT', content: finalContent },
+        {
+          onSuccess: () => {
+            setIsDirty(false);
+            saveAndRequestFeedback(currentPostId!);
+          },
+        },
+      );
     }
   };
 
   const handleSavePost = (shouldNavigateHome = false) => {
     GAEvents.tempSave();
+    const currentFullContent = getUpdatedContents(opinion).join(STEP_DELIMITER);
     if (isFirst) {
       saveMutation.mutate(
-        { categoryId: categoryId, topicId: topicId, content: opinion },
+        { categoryId: categoryId, topicId: topicId, content: currentFullContent },
         {
           onSuccess: (response) => {
             const postId = response.postId;
@@ -236,7 +265,7 @@ export const Write = () => {
       );
     } else {
       updateAndSaveMutation.mutate(
-        { postId: currentPostId, status: 'DRAFT', content: opinion },
+        { postId: currentPostId, status: 'DRAFT', content: currentFullContent },
         {
           onSuccess: () => {
             setShowSaveAlert(true);
@@ -251,10 +280,7 @@ export const Write = () => {
     }
   };
 
-  const openGuideModal = (topicType: guideTopicType) => {
-    GAEvents.writingGuideClick();
-    openModal(<GuideModal topicType={topicType} />);
-  };
+  const isDisabled = step === 3 ? !isTotalLengthValid() : opinion.trim().length < 1;
 
   return (
     <>
@@ -268,81 +294,117 @@ export const Write = () => {
           handleClickSaveButton={handleSavePost}
           isDirty={isDirty}
           isSaveDisabled={!isDirty}
-          openGuideModal={() => openGuideModal(topicType)}
           isRightActions={true}
           showSaveAlert={showSaveAlert}
         >
-          <div
-            ref={containerRef}
-            className="px-4 bg-[#F3F5F8] flex flex-col h-[calc(100dvh-50px)] overflow-hidden"
-          >
-            <div className="pt-[30px] pb-3 flex-shrink-0">
-              <CategoryChip categoryName={categoryName}></CategoryChip>
-              <div className="py-[10px] B01_M">{topicName}</div>
-            </div>
-            <div className="relative w-full flex-1 flex flex-col min-h-0 bg-white border border-gray-400 rounded-xl overflow-hidden">
-              <textarea
-                ref={textRef}
-                placeholder="AI 피드백은 100자 이상 작성 시 제공됩니다."
-                value={opinion}
-                onChange={handleTextChange}
-                maxLength={MAX_LENGTH}
-                className="w-full h-[calc(100%-40px)] p-4 hide-scrollbar focus:placeholder-transparent focus:outline-none focus:ring-0 bg-transparent B03_M text-gray-800 resize-none"
-              />
-              {!isKeyboardOpen && (
-                <div className="absolute bottom-0 left-0 w-full h-10 flex items-center justify-end px-4 bg-white pointer-events-none">
-                  <div className="C01_SB text-gray-700">{opinion.length} / 700</div>
-                </div>
-              )}
-            </div>
-
-            {isKeyboardOpen &&
-              createPortal(
-                <div
-                  className="fixed left-0 w-full px-5 flex justify-between items-center bg-white"
-                  style={{
-                    zIndex: 9999,
-                    top: `${height + offsetTop - 50}px`,
-                    height: '50px',
-                    willChange: 'transform',
-                  }}
-                >
-                  <span className="B03_1_M text-gray-800">현재 글자수</span>
-                  <span className="B03_1_M text-gray-750">{opinion.length} / 700</span>
-                </div>,
-                document.body,
-              )}
-            {!isKeyboardOpen && (
-              <div className="py-7 flex-shrink-0 flex justify-center bg-[#F3F5F8]">
-                <button
-                  onClick={movetoGetFeedback}
-                  disabled={!isOpinionLengthValid()}
-                  className={`rounded-xl max-w-[368px] w-full h-14 B02_B transition-colors
-                    ${
-                      !isOpinionLengthValid()
-                        ? 'bg-gray-600 text-white'
-                        : 'bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white cursor-pointer'
-                    }`}
-                >
-                  피드백 받기
-                </button>
+          <div className="bg-[#F3F5F8] flex flex-col h-[calc(100dvh-50px)] overflow-hidden">
+            <div className={`px-[18px] py-[14px] flex-shrink-0 ${currentCategory.bgColor}`}>
+              <div className="max-w-[368px] mx-auto w-full">
+                <CategoryChip categoryName={categoryName} />
+                <div className={`pt-[10px] B03_B ${currentCategory.textColor}`}>{topicName}</div>
               </div>
-            )}
-            {isBubbleOpen && (
-              <SpeechBubble
-                className="fixed bottom-[80px] right-1/2 flex flex-col items-end z-50"
-                bubbleText={
-                  <>
-                    피드백은 <span className="text-[var(--color-b4)] ">한 번</span>만 가능해요
-                  </>
-                }
-                onBubbleClose={handleCloseBubble}
+            </div>
+            <div className="px-4 flex-1 flex flex-col overflow-hidden">
+              <StepIndicator
+                step={step}
+                prevText={step > 1 ? contents[step - 2] : ''}
+                currentLength={getTotalLength()}
               />
-            )}
+              <div className="flex-1 flex flex-col min-h-0 relative">
+                <AnimatePresence mode="wait" custom={direction}>
+                  <motion.div
+                    key={step}
+                    custom={direction}
+                    variants={variants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    className="flex-1 flex flex-col"
+                  >
+                    <div className="pt-6">
+                      <div className="B01_B text-gray-900">{currentStepData[step].q}</div>
+                    </div>
+                    <div className="relative pt-4 w-full flex-1 flex flex-col min-h-0 overflow-hidden">
+                      <div
+                        className="flex-1 pt-[1px]"
+                        style={{
+                          backgroundImage:
+                            'linear-gradient(transparent, transparent calc(14px * 1.6 - 1px), #D1D5DB calc(14px * 1.6 - 1px), #D1D5DB calc(14px * 1.6))',
+                          backgroundSize: '100% calc(14px * 1.6)',
+                          backgroundRepeat: 'repeat',
+                          backgroundAttachment: 'local',
+                        }}
+                      >
+                        <textarea
+                          placeholder={currentStepData[step].p}
+                          value={opinion}
+                          onChange={handleTextChange}
+                          className="w-full h-full bg-transparent focus:outline-none B03_M text-gray-800 resize-none hide-scrollbar placeholder:text-blue-500 placeholder:opacity-100 focus:placeholder:text-transparent"
+                          style={{
+                            lineHeight: 'calc(14px * 1.6)',
+                            paddingTop: '0px',
+                            marginTop: '0px',
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+              <div className="py-7 flex-shrink-0 flex justify-center w-full max-w-[368px] mx-auto">
+                {step === 1 ? (
+                  <button
+                    onClick={handleNextStep}
+                    disabled={opinion.length < 1}
+                    className={`rounded-xl w-full h-14 B02_B text-white transition-colors
+          ${opinion.length < 1 ? 'bg-gray-600' : 'bg-b7'}`}
+                  >
+                    다음
+                  </button>
+                ) : (
+                  <div className="flex w-full gap-2">
+                    <button
+                      onClick={handlePrevStep}
+                      className="flex-[1] h-14 rounded-xl bg-gray-300 flex items-center justify-center transition-colors hover:bg-gray-400"
+                    >
+                      <div className="flex items-center justify-center">
+                        <img src={upStep} className="w-6 h-6" alt="upstep" />
+                      </div>
+                    </button>
+
+                    <button
+                      onClick={handleNextStep}
+                      disabled={isDisabled}
+                      className={`flex-[5] h-14 rounded-xl B02_B text-white ${isDisabled ? 'bg-gray-600' : 'bg-b7'}`}
+                    >
+                      <div className="flex items-center justify-center gap-1">
+                        {step !== 3 && (
+                          <div className="items-center justify-center">
+                            <img src={downStep} className="w-6 h-6" alt="downStep" />
+                          </div>
+                        )}
+                        <span>{step === 3 ? '피드백 받기' : '다음'}</span>
+                      </div>
+                    </button>
+                  </div>
+                )}
+              </div>
+              {isBubbleOpen && (
+                <SpeechBubble
+                  className="fixed bottom-[70px] left-1/2 -translate-x-5 z-50"
+                  bubbleText={
+                    <>
+                      <span className="text-[var(--color-b4)] ">100자 이상</span> 작성 시 피드백
+                      제공
+                    </>
+                  }
+                  onBubbleClose={handleCloseBubble}
+                />
+              )}
+            </div>
           </div>
         </WriteLayout>
       )}
-      {isOpen && Content}
     </>
   );
 };

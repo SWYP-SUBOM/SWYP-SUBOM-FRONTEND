@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GuestBottomSheet } from '../../../components/common/GuestBottomSheet';
 import { SelectBox } from '../../../components/SelectBox/SelectBox';
 import { useGetTopics } from '../../../hooks/Feed/useGetTopics';
+import { useBottomSheet } from '../../../hooks/useBottomSheet';
+import { useAuthStore } from '../../../store/useAuthStore';
 import { GAEvents } from '../../../utils/GAEvent';
 import { SelectSortBottomSheet } from './SelectSortBottomSheet';
 
@@ -18,12 +21,18 @@ export const GatherTopicContent = ({ categoryId }: { categoryId: number }) => {
   const { data: TopicsData, isLoading } = useGetTopics(categoryId, selectedSort.value);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuthStore();
+  const { openBottomSheet } = useBottomSheet();
 
   const movetoFeedByTopic = (topicId: number, categoryId: number) => {
-    GAEvents.pastTopicFeedView(topicId);
-    navigate(`/feed/${topicId}/${categoryId}`, {
-      state: { fromGather: true },
-    });
+    if (isLoggedIn) {
+      GAEvents.pastTopicFeedView(topicId);
+      navigate(`/feed/${topicId}/${categoryId}`, {
+        state: { fromGather: true },
+      });
+    } else {
+      openBottomSheet(<GuestBottomSheet />);
+    }
   };
 
   return (
