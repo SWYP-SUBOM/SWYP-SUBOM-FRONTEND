@@ -104,7 +104,10 @@ export const Write = () => {
       setStep(nextStep);
       setOpinion(newContents[nextStep - 1] || '');
     } else {
-      const finalContent = newContents.join(' ');
+      const finalContent = newContents
+        .map((content) => content.trim())
+        .filter((content) => content.length > 0)
+        .join(' ');
       movetoGetFeedback(finalContent);
     }
   };
@@ -212,33 +215,29 @@ export const Write = () => {
       });
     };
 
-    if (isFirst || isDirty) {
-      if (isFirst) {
-        saveMutation.mutate(
-          { categoryId, topicId, content: finalContent },
-          {
-            onSuccess: (res) => {
-              const postId = res.postId;
-              setCurrentPostId(postId);
-              setIsFirst(false);
-              setIsDirty(false);
-              saveAndRequestFeedback(postId);
-            },
+    if (isFirst) {
+      saveMutation.mutate(
+        { categoryId, topicId, content: finalContent },
+        {
+          onSuccess: (res) => {
+            const postId = res.postId;
+            setCurrentPostId(postId);
+            setIsFirst(false);
+            setIsDirty(false);
+            saveAndRequestFeedback(postId);
           },
-        );
-      } else {
-        updateAndSaveMutation.mutate(
-          { postId: currentPostId, status: 'DRAFT', content: finalContent },
-          {
-            onSuccess: () => {
-              setIsDirty(false);
-              saveAndRequestFeedback(currentPostId!);
-            },
-          },
-        );
-      }
+        },
+      );
     } else {
-      saveAndRequestFeedback(currentPostId!);
+      updateAndSaveMutation.mutate(
+        { postId: currentPostId, status: 'DRAFT', content: finalContent },
+        {
+          onSuccess: () => {
+            setIsDirty(false);
+            saveAndRequestFeedback(currentPostId!);
+          },
+        },
+      );
     }
   };
 
