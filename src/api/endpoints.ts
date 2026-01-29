@@ -18,6 +18,7 @@ export const HOME_ENDPOINTS = {
 
 export const CATEGORY_ENDPOINTS = {
   GET_CATEGORY: '/api/categories',
+  GET_DAILYQUESTIONS: '/api/categories/questions',
 } as const;
 
 export const CALENDAR_ENDPOINTS = {
@@ -26,6 +27,7 @@ export const CALENDAR_ENDPOINTS = {
 
 export const POST_ENDPOINTS = {
   GET_POST: '/api/posts',
+  GET_POPULARPOST: '/api/posts/popular',
   MY_WRITINGS: '/api/posts/my-writings',
   MY_REACTIONS: '/api/posts/my-reactions',
 } as const;

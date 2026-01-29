@@ -52,4 +52,46 @@ export const GUIDE_MAP = {
   },
 };
 
+type StepNumber = 1 | 2 | 3;
+
+type StepData = {
+  [key in StepNumber]: {
+    q: string;
+    p: string;
+  };
+};
+
+export const STEP_MESSAGES: {
+  LOGICAL: StepData;
+  QUESTION: StepData;
+} = {
+  LOGICAL: {
+    1: {
+      q: '이 주제에 대해 당신은 어떤 입장인가요?',
+      p: '주제에 대한 의견을 한 문장으로 정리해 보세요.',
+    },
+    2: {
+      q: '그렇게 생각한 이유는 무엇인가요?',
+      p: '경험, 기사, 통계, 주변 사례 등을 활용해 설명해보세요.',
+    },
+    3: {
+      q: '마지막으로 강조하고 싶은 점은 무엇인가요?',
+      p: '주제에 대해 강조하고 싶은 이야기로 글을 마무리해보세요.',
+    },
+  },
+  QUESTION: {
+    1: {
+      q: '이 주제에 대해서 어떻게 생각하나요?',
+      p: '주제에 대한 생각을 한 문장으로 정리해 보세요.',
+    },
+    2: {
+      q: '그렇게 생각하게 된 이유나 경험이 있나요?',
+      p: '이에 대한 계기나, 관련 경험이 있다면 함께 설명해주세요.',
+    },
+    3: {
+      q: '마지막으로 강조하고 싶은 점은 무엇인가요?',
+      p: '생각을 간단히 정리하며 핵심 메시지로 마무리해보세요.',
+    },
+  },
+};
 export type guideTopicType = keyof typeof GUIDE_MAP;
