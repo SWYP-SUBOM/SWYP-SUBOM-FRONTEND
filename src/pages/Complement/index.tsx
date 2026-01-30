@@ -115,6 +115,32 @@ export const Complement = () => {
     );
   };
 
+  const SHARED_STYLE: React.CSSProperties = {
+    fontFamily: "'SUIT Variable', system-ui, -apple-system, sans-serif",
+    fontWeight: 500,
+    fontVariationSettings: "'wght' 500",
+
+    fontSize: '16px',
+    lineHeight: '25.6px',
+    letterSpacing: '-0.08px',
+
+    transform: 'scale(0.875)',
+    transformOrigin: 'top left',
+    width: '114.286%',
+    height: '114.286%',
+
+    WebkitTextSizeAdjust: '100%',
+    WebkitFontSmoothing: 'antialiased',
+
+    wordBreak: 'break-all',
+    whiteSpace: 'pre-wrap',
+    padding: '16px 8px 40px 16px',
+    margin: 0,
+    border: 'none',
+    outline: 'none',
+    boxSizing: 'border-box',
+  };
+
   return (
     <>
       <WriteLayout
@@ -140,26 +166,30 @@ export const Complement = () => {
             <div className="relative w-full h-[360px] bg-white rounded-xl border border-gray-500 overflow-hidden text-left">
               <div
                 ref={highlightRef}
-                className="absolute top-0 left-0 w-full h-full B03_M pl-4 pr-2 pt-4 pb-10 pointer-events-none overflow-y-auto whitespace-pre-wrap break-all hide-scrollbar text-gray-800"
+                className="absolute top-0 left-0 w-full h-full pl-4 pr-2 pt-4 pb-10 pointer-events-none overflow-y-auto whitespace-pre-wrap break-all hide-scrollbar text-gray-800"
                 aria-hidden="true"
                 dangerouslySetInnerHTML={{ __html: highlightedContent }}
-                style={{ lineHeight: '1.5' }}
+                style={{ ...SHARED_STYLE, zIndex: 1 }}
               />
-
               <textarea
                 ref={textRef}
                 value={opinion}
                 onChange={(e) => setOpinion(e.target.value)}
                 onScroll={handleScroll}
                 spellCheck={false}
-                className="relative z-10 w-full h-full bg-transparent B03_M pl-4 pr-2 pt-4 pb-10 resize-none focus:outline-none hide-scrollbar"
+                className="relative z-10 w-full h-full bg-transparent pl-4 pr-2 pt-4 pb-10 resize-none focus:outline-none hide-scrollbar"
                 style={{
-                  lineHeight: '1.5',
+                  ...SHARED_STYLE,
+                  zIndex: 10,
                   color: 'transparent',
                   caretColor: '#1F2937',
+                  WebkitTextSizeAdjust: '100%',
+                  textSizeAdjust: '100%',
+                  WebkitTapHighlightColor: 'transparent',
                 }}
               />
             </div>
+
             <div className="pt-[15px]">
               <FeedbackBanner>써봄이의 피드백을{'\n'}참고해서 수정해보세요!</FeedbackBanner>
             </div>
@@ -174,7 +204,7 @@ export const Complement = () => {
             <div className="h-[50px]" />
           </div>
           <div
-            className={`sticky bottom-0 left-0 right-0 flex justify-center bg-[#F3F5F8] pb-7 pt-4 transition-shadow duration-300 ${
+            className={`sticky bottom-0 left-0 right-0 flex justify-center bg-[#F3F5F8] pb-[calc(28px+env(safe-area-inset-bottom))] pt-4 transition-shadow duration-300 ${
               isScrolled ? 'shadow-[0_-10px_50px_0_#D0D2D9]' : 'shadow-none'
             }`}
           >
