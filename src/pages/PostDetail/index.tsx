@@ -43,7 +43,7 @@ export const PostDetail = () => {
           )}
           {isBubbleOpen && (
             <SpeechBubble
-              className="absolute bottom-[calc(100px+env(safe-area-inset-bottom))] right-4 flex flex-col items-end z-50]"
+              className="absolute bottom-[calc(100px+env(safe-area-inset-bottom))] right-4 flex flex-col items-end z-50"
               bubbleText="작성된 글이 어떠셨나요?"
               onBubbleClose={handleCloseBubble}
             />
