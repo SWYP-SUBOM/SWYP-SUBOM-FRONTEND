@@ -154,12 +154,6 @@ export const Write = () => {
   }, [opinion, contents, initialOpinion, draftPostData]);
 
   useEffect(() => {
-    if (step === 3 && !isTotalLengthValid() && !hasClosedBubble.current) {
-      setIsBubbleOpen(true);
-    }
-  }, [step, opinion]);
-
-  useEffect(() => {
     if (step === 3) {
       if (!isTotalLengthValid()) {
         if (!hasClosedBubble.current) {
@@ -355,9 +349,9 @@ export const Write = () => {
                 {step === 1 ? (
                   <button
                     onClick={handleNextStep}
-                    disabled={opinion.length < 1}
+                    disabled={opinion.trim().length < 1}
                     className={`rounded-xl w-full h-14 B02_B text-white transition-colors
-          ${opinion.length < 1 ? 'bg-gray-600' : 'bg-b7'}`}
+          ${opinion.trim().length < 1 ? 'bg-gray-600' : 'bg-b7'}`}
                   >
                     다음
                   </button>
@@ -391,7 +385,7 @@ export const Write = () => {
               </div>
               {isBubbleOpen && (
                 <SpeechBubble
-                  className="fixed bottom-[70px] left-1/2 -translate-x-5 z-50"
+                  className="fixed bottom-[calc(70px+env(safe-area-inset-bottom))] left-1/2 -translate-x-5 z-50 whitespace-nowrap"
                   bubbleText={
                     <>
                       <span className="text-[var(--color-b4)] ">100자 이상</span> 작성 시 피드백
