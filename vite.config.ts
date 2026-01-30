@@ -34,12 +34,18 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
+      includeAssets: [
+        "pwaicon-192x192.png",
+        "pwaicon-512x512.png",
+        "pwaicon-apple.png",
+      ],
       manifest: {
         name: "써봄",
         short_name: "써봄",
         description: "써봄",
         theme_color: "#ffffff",
+        start_url: "/",
+        display: "standalone",
         icons: [
           {
             src: "pwaicon-192x192.png",
