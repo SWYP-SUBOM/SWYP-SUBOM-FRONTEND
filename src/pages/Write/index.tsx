@@ -135,6 +135,18 @@ export const Write = () => {
       setInitialOpinion(fullContent);
       setIsFirst(false);
       setCurrentPostId(draftPostId);
+
+      let lastStep: 1 | 2 | 3 = 1;
+      if (newContents[2].trim().length > 0) {
+        lastStep = 3;
+      } else if (newContents[1].trim().length > 0) {
+        lastStep = 2;
+      } else {
+        lastStep = 1;
+      }
+
+      setStep(lastStep);
+      setOpinion(newContents[lastStep - 1]);
     }
   }, [draftPostData, isTodayDraft]);
 
