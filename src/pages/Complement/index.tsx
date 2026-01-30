@@ -1,6 +1,5 @@
 import { useScroll } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { CategoryChip } from '../../components/common/CategoryChip';
 import type { CategoryNameType } from '../../constants/Category';
@@ -8,21 +7,16 @@ import type { guideTopicType } from '../../constants/Guide';
 import { useGetAIFeedBack } from '../../hooks/FeedBack/uesGetAIFeedBack';
 import { useGetPost } from '../../hooks/Post/useGetPost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
-import { useModal } from '../../hooks/useModal';
-import { useVisualViewport } from '../../hooks/useVisualViewport';
 import { WriteLayout } from '../../layout/WriteLayout';
 import { useBottomSheetStore } from '../../store/useBottomSheetStore';
 import { GAEvents } from '../../utils/GAEvent';
 import { getHighlightedHTML } from '../../utils/HighLights';
 import { FeedbackBanner } from '../Feedback/_components/FeedbackBanner';
 import { FeedbackBox } from '../Feedback/_components/FeedbackBox';
-import { GuideModal } from '../Write/GuideModal/GuideModal';
 
 export const Complement = () => {
   const location = useLocation();
   const { closeBottomSheet } = useBottomSheetStore();
-  const { openModal, Content, isOpen } = useModal();
-  const { isKeyboardOpen, height, offsetTop } = useVisualViewport();
   const hasSentEditStartEvent = useRef(false);
 
   useEffect(() => {
@@ -36,9 +30,6 @@ export const Complement = () => {
   }>();
 
   const [showSaveAlert, setShowSaveAlert] = useState(false);
-
-  const isSafari =
-    typeof window !== 'undefined' && /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
   const { postId, aiFeedbackId } = location.state as {
     postId: number;
@@ -55,11 +46,6 @@ export const Complement = () => {
   if (!categoryName || !topicType) return null;
 
   const [initialOpinion, setInitialOpinion] = useState('');
-
-  const openGuideModal = (topicType: guideTopicType) => {
-    GAEvents.writingGuideClick();
-    openModal(<GuideModal topicType={topicType} />);
-  };
 
   const [opinion, setOpinion] = useState(initialOpinion);
   useEffect(() => {
@@ -129,65 +115,80 @@ export const Complement = () => {
     );
   };
 
+  const SHARED_STYLE: React.CSSProperties = {
+    fontFamily: "'SUIT Variable', system-ui, -apple-system, sans-serif",
+    fontWeight: 500,
+    fontVariationSettings: "'wght' 500",
+
+    fontSize: '16px',
+    lineHeight: '25.6px',
+    letterSpacing: '-0.08px',
+
+    transform: 'scale(0.875)',
+    transformOrigin: 'top left',
+    width: '114.286%',
+    height: '114.286%',
+
+    WebkitTextSizeAdjust: '100%',
+    WebkitFontSmoothing: 'antialiased',
+
+    wordBreak: 'break-all',
+    whiteSpace: 'pre-wrap',
+    padding: '16px 8px 40px 16px',
+    margin: 0,
+    border: 'none',
+    outline: 'none',
+    boxSizing: 'border-box',
+  };
+
   return (
     <>
       <WriteLayout
         isRightActions={true}
         handleClickSaveButton={handleSaveComplementPost}
         isDirty={isDirty}
-        openGuideModal={() => openGuideModal(topicType)}
         isSaveDisabled={!isDirty}
         showSaveAlert={showSaveAlert}
       >
         <div ref={containerRef} className="relative min-h-[100dvh] bg-[#F3F5F8]">
           <div className="sticky top-0 z-10 px-4 pb-3 pt-[30px] bg-[#F3F5F8]">
-            <CategoryChip categoryName={categoryName} />
+            <div className="flex items-center justify-between">
+              <CategoryChip categoryName={categoryName} />
+              <div className="flex items-center gap-1">
+                <span className="C01_SB text-gray-800">{opinion.length}</span>
+                <span className="C01_SB text-gray-700"> / 700</span>
+              </div>
+            </div>
+
             <div className="py-[10px] B01_B">{topicName}</div>
           </div>
           <div className="px-4">
             <div className="relative w-full h-[360px] bg-white rounded-xl border border-gray-500 overflow-hidden text-left">
               <div
                 ref={highlightRef}
-                className="absolute top-0 left-0 w-full h-full B03_M pl-4 pr-2 pt-4 pb-10 pointer-events-none overflow-y-auto whitespace-pre-wrap break-all hide-scrollbar text-gray-800"
+                className="absolute top-0 left-0 w-full h-full pl-4 pr-2 pt-4 pb-10 pointer-events-none overflow-y-auto whitespace-pre-wrap break-all hide-scrollbar text-gray-800"
                 aria-hidden="true"
                 dangerouslySetInnerHTML={{ __html: highlightedContent }}
-                style={{ lineHeight: '1.5' }}
+                style={{ ...SHARED_STYLE, zIndex: 1 }}
               />
-
               <textarea
                 ref={textRef}
                 value={opinion}
                 onChange={(e) => setOpinion(e.target.value)}
                 onScroll={handleScroll}
                 spellCheck={false}
-                className="relative z-10 w-full h-full bg-transparent B03_M pl-4 pr-2 pt-4 pb-10 resize-none focus:outline-none hide-scrollbar"
+                className="relative z-10 w-full h-full bg-transparent pl-4 pr-2 pt-4 pb-10 resize-none focus:outline-none hide-scrollbar"
                 style={{
-                  lineHeight: '1.5',
+                  ...SHARED_STYLE,
+                  zIndex: 10,
                   color: 'transparent',
                   caretColor: '#1F2937',
+                  WebkitTextSizeAdjust: '100%',
+                  textSizeAdjust: '100%',
+                  WebkitTapHighlightColor: 'transparent',
                 }}
               />
-              {postData && !isKeyboardOpen && (
-                <div className="C01_SB absolute bottom-6 right-4 text-gray-700">
-                  {opinion!.length} / 700
-                </div>
-              )}
             </div>
-            {isKeyboardOpen &&
-              createPortal(
-                <div
-                  className="fixed left-0 w-full px-5 flex justify-between items-center bg-white border-t border-gray-200"
-                  style={{
-                    zIndex: 9999,
-                    top: `${height + offsetTop - 50}px`,
-                    height: '50px',
-                  }}
-                >
-                  <span className="B03_1_M text-gray-800">현재 글자수</span>
-                  <span className="B03_1_M text-gray-750">{opinion.length} / 700</span>
-                </div>,
-                document.body,
-              )}
 
             <div className="pt-[15px]">
               <FeedbackBanner>써봄이의 피드백을{'\n'}참고해서 수정해보세요!</FeedbackBanner>
@@ -202,23 +203,20 @@ export const Complement = () => {
             </div>
             <div className="h-[50px]" />
           </div>
-          {!(isSafari && isKeyboardOpen) && (
-            <div
-              className={`sticky bottom-0 left-0 right-0 flex justify-center bg-[#F3F5F8] pb-7 pt-4 transition-shadow duration-300 ${
-                isScrolled ? 'shadow-[0_-10px_50px_0_#D0D2D9]' : 'shadow-none'
-              }`}
+          <div
+            className={`sticky bottom-0 left-0 right-0 flex justify-center bg-[#F3F5F8] pb-[calc(28px+env(safe-area-inset-bottom))] pt-4 transition-shadow duration-300 ${
+              isScrolled ? 'shadow-[0_-10px_50px_0_#D0D2D9]' : 'shadow-none'
+            }`}
+          >
+            <button
+              onClick={handlePublishPost}
+              className="cursor-pointer rounded-xl max-w-[368px] w-full h-14 bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white rounded-xl B02_B"
             >
-              <button
-                onClick={handlePublishPost}
-                className="cursor-pointer rounded-xl max-w-[368px] w-full h-14 bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] text-white rounded-xl B02_B"
-              >
-                작성 완료
-              </button>
-            </div>
-          )}
+              작성 완료
+            </button>
+          </div>
         </div>
       </WriteLayout>
-      {isOpen && Content}
     </>
   );
 };

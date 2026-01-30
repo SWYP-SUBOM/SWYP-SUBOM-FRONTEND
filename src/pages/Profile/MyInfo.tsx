@@ -39,7 +39,7 @@ export const MyInfo = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen pt-10">
+    <div className="flex flex-col min-h-screen pb-[env(safe-area-inset-bottom)]">
       <TitleHeader title="내 정보 관리" headerWithNoalarm={true} />
 
       <div className="px-4 mt-4 space-y-3">

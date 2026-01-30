@@ -10,7 +10,6 @@ interface WriteLayoutProps {
   isRightActions: boolean;
   isSaveDisabled?: boolean;
   isDirty?: boolean;
-  openGuideModal?: () => void;
   showSaveAlert?: boolean;
 }
 
@@ -20,7 +19,6 @@ export const WriteLayout = ({
   isRightActions = true,
   isSaveDisabled = false,
   isDirty = false,
-  openGuideModal,
   showSaveAlert = false,
 }: WriteLayoutProps) => {
   const { pathname } = useLocation();
@@ -57,7 +55,6 @@ export const WriteLayout = ({
           handleClickSaveButton={handleClickSaveButton}
           isSaveDisabled={isSaveDisabled}
           isDirty={isDirty}
-          openGuideModal={openGuideModal}
           isRightActions={isRightActions}
         />
         <div

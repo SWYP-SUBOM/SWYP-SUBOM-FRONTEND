@@ -1,3 +1,4 @@
+import setupLocator from '@locator/runtime';
 import * as Sentry from '@sentry/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -7,7 +8,6 @@ import App from './App.tsx';
 import './index.css';
 import { initSentry } from './lib/sentry.ts';
 import { NotFound } from './pages/Error/NotFound.tsx';
-import setupLocator from '@locator/runtime';
 
 export const queryClient = new QueryClient();
 

@@ -50,7 +50,7 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
       case 'DRAFT':
         if (aiFeedbackId) {
           navigate(
-            `/complement/${homeData?.todayPost?.categoryName}/${homeData?.todayPost?.topicName}/${homeData?.todayPost?.topicType}`,
+            `/complement/${encodeURIComponent(homeData?.todayPost?.categoryName || '')}/${encodeURIComponent(homeData?.todayPost?.topicName || '')}/${encodeURIComponent(homeData?.todayPost?.topicType || '')}`,
             {
               state: {
                 categoryName: homeData?.todayPost?.categoryName,

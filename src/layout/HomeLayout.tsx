@@ -7,24 +7,22 @@ interface HomeLayoutProps {
   showHeaderVar?: boolean;
 }
 
-export const HomeLayout: React.FC<HomeLayoutProps> = ({ children, showHeaderVar = true }) => {
+export const HomeLayout = ({ children, showHeaderVar = true }: HomeLayoutProps) => {
   return (
     <div
       className="
         max-w-[400px]
         mx-auto
-        app-root
         bg-[var(--color-white)]
         relative
         shadow-[0_0_20px_rgba(0,0,0,0.1)]
         flex
         flex-col
-        overflow-hidden
-        "
+        min-h-[100dvh]
+      "
     >
-      <div className="bg-[#F3F5F8]">{showHeaderVar && <Header />}</div>
+      {showHeaderVar && <Header />}
       <main
-        className="flex-1 overflow-hidden"
         style={{
           paddingBottom: 'calc(70px + env(safe-area-inset-bottom))',
         }}
@@ -32,6 +30,7 @@ export const HomeLayout: React.FC<HomeLayoutProps> = ({ children, showHeaderVar 
         {children}
         <Outlet />
       </main>
+
       <NavBar />
     </div>
   );
