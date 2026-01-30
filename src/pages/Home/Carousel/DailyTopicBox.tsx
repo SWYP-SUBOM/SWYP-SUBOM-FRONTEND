@@ -23,10 +23,46 @@ export const DailyTopicBox = ({
 }: DailyTopicBoxProps) => {
   const navigate = useNavigate();
   const todayPost = useTodayPostInfoStore((state) => state.todayPost);
+  const isTodayDraft = todayPost?.postStatus === 'DRAFT';
   const isTodayPublished =
     todayPost.postStatus === 'PUBLISHED' || todayPost.postStatus === 'PUBLISHED_WITHCLICK';
 
   const category = CATEGORIES.find((c) => c.categoryId === categoryId) || CATEGORIES[0];
+  const aiFeedbackId = todayPost?.aiFeedbackId;
+
+  const handleWriteClick = () => {
+    if (!topicId) return;
+
+    if (isTodayDraft && aiFeedbackId) {
+      navigate(
+        `/complement/${encodeURIComponent(categoryName)}/${encodeURIComponent(topicName || '')}/${encodeURIComponent(topicType || '')}`,
+        {
+          state: {
+            categoryName,
+            topicName,
+            topicId,
+            categoryId,
+            postId: todayPost?.postId,
+            aiFeedbackId,
+            topicType,
+          },
+        },
+      );
+      return;
+    }
+
+    navigate('/write', {
+      state: {
+        categoryId,
+        categoryName,
+        topicName,
+        topicId,
+        topicType,
+        draftPostId: isTodayDraft ? todayPost?.postId : undefined,
+        isTodayDraft: isTodayDraft,
+      },
+    });
+  };
 
   return (
     <div
@@ -58,17 +94,7 @@ export const DailyTopicBox = ({
       >
         <button
           disabled={isTodayPublished || !topicId}
-          onClick={() =>
-            navigate('/write', {
-              state: {
-                categoryId,
-                categoryName,
-                topicName,
-                topicId,
-                topicType,
-              },
-            })
-          }
+          onClick={handleWriteClick}
           className={`w-full rounded-xl bg-white py-2 B03-1_M transition-transform border border-gray-500 text-gray-750
     ${isTodayPublished ? 'cursor-pointer opacity-70' : 'cursor-pointer'}
   `}

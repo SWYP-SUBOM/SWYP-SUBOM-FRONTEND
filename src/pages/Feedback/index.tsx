@@ -99,7 +99,7 @@ export const FeedBack = () => {
             )}
             <div className="h-[50px]" />
           </div>
-          <div className="sticky bottom-0 left-0 right-0 flex justify-center bg-[#F3F5F8] pb-7 pt-4 transition-shadow duration-300">
+          <div className="sticky bottom-0 left-0 right-0 flex justify-center bg-[#F3F5F8] pb-[calc(28px+env(safe-area-inset-bottom))] pt-4 transition-shadow duration-300">
             <div className="flex gap-2 w-[360px]">
               <button
                 onClick={handlePublishPost}
