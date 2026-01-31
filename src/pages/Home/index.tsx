@@ -86,25 +86,27 @@ const Home = () => {
         <TopicCarousel />
         <div className="px-4 pt-[40px]">
           <GuideBanner />
-          <div className="flex items-center justify-between pt-[30px] mb-1">
-            <div className="flex items-center gap-1">
-              <p className="T02_B text-gray-900">오늘의 인기 글</p>
-              <img src={hotright} className="w-4 h-4 translate-y-1/8" alt="hot-arrow" />
-            </div>
-          </div>
-          <p className="mb-4 pt-1 B03_1_M text-gray-750 pb-1">
-            조회수, 반응수에 따라 실시간으로 갱신!
-          </p>
           {popularPostData && (
-            <TodayHotPostBox
-              categoryName={popularPostData?.category.categoryName as CategoryNameType}
-              onClick={() => {}}
-              nickname={popularPostData?.nickname}
-              summary={popularPostData?.summary}
-              totalReactions={popularPostData?.totalReactions}
-              updatedAt={popularPostData.updatedAt.split('T')[0]}
-              postViews={popularPostData?.postViews}
-            />
+            <>
+              <div className="flex items-center justify-between pt-[30px] mb-1">
+                <div className="flex items-center gap-1">
+                  <p className="T02_B text-gray-900">오늘의 인기 글</p>
+                  <img src={hotright} className="w-4 h-4 translate-y-1/8" alt="hot-arrow" />
+                </div>
+              </div>
+              <p className="mb-4 pt-1 B03_1_M text-gray-750 pb-1">
+                조회수, 반응수에 따라 실시간으로 갱신!
+              </p>
+              <TodayHotPostBox
+                categoryName={popularPostData?.category.categoryName as CategoryNameType}
+                onClick={() => {}}
+                nickname={popularPostData?.nickname}
+                summary={popularPostData?.summary}
+                totalReactions={popularPostData?.totalReactions}
+                updatedAt={popularPostData.updatedAt.split('T')[0]}
+                postViews={popularPostData?.postViews}
+              />
+            </>
           )}
         </div>
       </div>
