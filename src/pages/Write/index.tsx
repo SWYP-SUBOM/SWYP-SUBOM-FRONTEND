@@ -7,6 +7,7 @@ import upStep from '../../assets/Write/upstep.svg';
 import { CategoryChip } from '../../components/common/CategoryChip';
 import { usePostAIFeedBack } from '../../hooks/FeedBack/usePostAIFeedBack';
 import { useGetDraftPost } from '../../hooks/Post/useGetPost';
+import { useVisualViewport } from '../../hooks/useVisualViewport';
 import { useSavePost } from '../../hooks/Post/useSavePost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { WriteLayout } from '../../layout/WriteLayout';
@@ -54,6 +55,11 @@ export const Write = () => {
   const [contents, setContents] = useState(['', '', '']);
   const [direction, setDirection] = useState(0);
 
+  const [step, setStep] = useState<1 | 2 | 3>(1);
+  const [contents, setContents] = useState(['', '', '']);
+  const [direction, setDirection] = useState(0);
+
+  const { isKeyboardOpen } = useVisualViewport();
   const saveMutation = useSavePost();
   const updateAndSaveMutation = useUpdateAndSavePost();
   const postAIFeedBackMutation = usePostAIFeedBack();
