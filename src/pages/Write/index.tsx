@@ -7,7 +7,6 @@ import upStep from '../../assets/Write/upstep.svg';
 import { CategoryChip } from '../../components/common/CategoryChip';
 import { usePostAIFeedBack } from '../../hooks/FeedBack/usePostAIFeedBack';
 import { useGetDraftPost } from '../../hooks/Post/useGetPost';
-import { useVisualViewport } from '../../hooks/useVisualViewport';
 import { useSavePost } from '../../hooks/Post/useSavePost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { WriteLayout } from '../../layout/WriteLayout';
@@ -55,11 +54,6 @@ export const Write = () => {
   const [contents, setContents] = useState(['', '', '']);
   const [direction, setDirection] = useState(0);
 
-  const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [contents, setContents] = useState(['', '', '']);
-  const [direction, setDirection] = useState(0);
-
-  const { isKeyboardOpen } = useVisualViewport();
   const saveMutation = useSavePost();
   const updateAndSaveMutation = useUpdateAndSavePost();
   const postAIFeedBackMutation = usePostAIFeedBack();
@@ -406,7 +400,7 @@ export const Write = () => {
                   className="fixed bottom-[calc(70px+env(safe-area-inset-bottom))] left-1/2 -translate-x-5 z-50 whitespace-nowrap"
                   bubbleText={
                     <>
-                      <span className="text-[var(--color-b4)] ">100자 이상</span> 작성 시 피드백
+                      <span className="text-[var(—color-b4)] ">100자 이상</span> 작성 시 피드백
                       제공
                     </>
                   }
