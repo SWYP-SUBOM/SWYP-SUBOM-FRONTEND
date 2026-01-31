@@ -7,7 +7,6 @@ import upStep from '../../assets/Write/upstep.svg';
 import { CategoryChip } from '../../components/common/CategoryChip';
 import { usePostAIFeedBack } from '../../hooks/FeedBack/usePostAIFeedBack';
 import { useGetDraftPost } from '../../hooks/Post/useGetPost';
-import { useVisualViewport } from '../../hooks/useVisualViewport';
 import { useSavePost } from '../../hooks/Post/useSavePost';
 import { useUpdateAndSavePost } from '../../hooks/Post/useUpdateAndSavePost';
 import { WriteLayout } from '../../layout/WriteLayout';
@@ -50,14 +49,11 @@ export const Write = () => {
   const [isFirst, setIsFirst] = useState(true);
 
   const [showSaveAlert, setShowSaveAlert] = useState(false);
-  const textRef = useRef<HTMLTextAreaElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
 
   const [step, setStep] = useState<1 | 2 | 3>(1);
   const [contents, setContents] = useState(['', '', '']);
   const [direction, setDirection] = useState(0);
 
-  const { isKeyboardOpen } = useVisualViewport();
   const saveMutation = useSavePost();
   const updateAndSaveMutation = useUpdateAndSavePost();
   const postAIFeedBackMutation = usePostAIFeedBack();
@@ -183,36 +179,6 @@ export const Write = () => {
     }
   }, [step, opinion]);
 
-  useEffect(() => {
-    if (isKeyboardOpen && textRef.current && containerRef.current) {
-      setTimeout(() => {
-        const textarea = textRef.current;
-        if (textarea) {
-          textarea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-          const selectionStart = textarea.selectionStart;
-          const textBeforeCursor = textarea.value.substring(0, selectionStart);
-          const lines = textBeforeCursor.split('\n');
-          const currentLine = lines.length - 1;
-
-          const style = window.getComputedStyle(textarea);
-          const lineHeight = parseFloat(style.lineHeight) || 24;
-          const paddingTop = parseFloat(style.paddingTop) || 16;
-
-          const cursorTop = currentLine * lineHeight + paddingTop;
-          const textareaHeight = textarea.clientHeight;
-          const bottomOffset = 70;
-
-          // 커서가 하단 영역에 가려지면 스크롤
-          if (cursorTop + lineHeight > textareaHeight - bottomOffset) {
-            const targetScrollTop = cursorTop + lineHeight - textareaHeight + bottomOffset;
-            textarea.scrollTop = Math.max(0, targetScrollTop);
-          }
-        }
-      }, 100);
-    }
-  }, [isKeyboardOpen, opinion]);
-
   const handleCloseBubble = () => {
     setIsBubbleOpen(false);
     hasClosedBubble.current = true;
@@ -233,35 +199,6 @@ export const Write = () => {
     if (!hasWritingStarted.current && limitedValue.trim().length > 0) {
       hasWritingStarted.current = true;
       GAEvents.writingStart(limitedValue.trim());
-    }
-
-    if (isKeyboardOpen && textRef.current) {
-      requestAnimationFrame(() => {
-        const textarea = textRef.current!;
-        const textLength = limitedValue.length;
-        const lines = limitedValue.split('\n');
-        const lineCount = lines.length;
-
-        if (textLength >= 50 || lineCount >= 3) {
-          const style = window.getComputedStyle(textarea);
-          const lineHeight = parseFloat(style.lineHeight) || 24;
-          const paddingTop = parseFloat(style.paddingTop) || 16;
-
-          const selectionStart = textarea.selectionStart;
-          const textBeforeCursor = limitedValue.substring(0, selectionStart);
-          const currentLine = textBeforeCursor.split('\n').length - 1;
-
-          const cursorTop = currentLine * lineHeight + paddingTop;
-          const textareaHeight = textarea.clientHeight;
-          const bottomOffset = 70; // 글자수 박스 높이 + 여유 공간
-
-          // 커서가 하단 영역에 가려지면 스크롤
-          if (cursorTop + lineHeight > textareaHeight - bottomOffset) {
-            const targetScrollTop = cursorTop + lineHeight - textareaHeight + bottomOffset;
-            textarea.scrollTop = Math.max(0, targetScrollTop);
-          }
-        }
-      });
     }
   };
 
