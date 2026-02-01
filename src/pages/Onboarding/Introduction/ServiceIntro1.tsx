@@ -14,29 +14,32 @@ export const ServiceIntro1 = () => {
   }, []);
 
   return (
-    <>
+    <div className="min-h-dvh flex flex-col">
       <ProgressIndicator activeIndexes={[0]} total={2} />
 
-      <OnboardingLayout
-        title={
-          <>
-            <div>AI가 대신 써주는 시대,</div>
-            <div>우리는 점점 덜 생각하게 되었어요</div>
-          </>
-        }
-        subtitle={
-          <>
-            <div>편리함은 늘었지만,</div>
-            <div>내 생각과 말은 점점 희미해지고 있어요</div>
-          </>
-        }
-        image={{
-          src: onboardingServiceIntro1,
-          alt: 'ServiceIntro1',
-          className: 'w-61 h-61',
-        }}
-      />
-      <div className="absolute top-[520px] sm:top-[654px] left-0 right-0 flex flex-col justify-center items-center px-4  z-5">
+      <div className="flex-1 flex flex-col min-h-0">
+        <OnboardingLayout
+          title={
+            <>
+              <div>AI가 대신 써주는 시대,</div>
+              <div>우리는 점점 덜 생각하게 되었어요</div>
+            </>
+          }
+          subtitle={
+            <>
+              <div>편리함은 늘었지만,</div>
+              <div>내 생각과 말은 점점 희미해지고 있어요</div>
+            </>
+          }
+          image={{
+            src: onboardingServiceIntro1,
+            alt: 'ServiceIntro1',
+            className: 'w-61 h-61',
+          }}
+        />
+      </div>
+
+      <div className="mt-auto w-full px-4 pt-4 pb-[calc(24px+env(safe-area-inset-bottom))] flex flex-col items-center">
         <Button label="다음으로" onClick={handleNext} />
         <button
           onClick={handleSkip}
@@ -45,6 +48,6 @@ export const ServiceIntro1 = () => {
           건너뛰기
         </button>
       </div>
-    </>
+    </div>
   );
 };

@@ -7,13 +7,24 @@ import { MonthlyCalendar } from './MonthlyCalendar/MonthlyCalendar';
 import type { CalendarDateStatus } from './MonthlyCalendar/MonthlyCalendar.types';
 import { MonthlyTrainingStatusBox } from './MonthlyTrainingStatusBox/MonthlyTrainingStatusBox';
 import { WeeklyChallengeBox } from './WeeklyChallengeBox/WeeklyChallengeBox';
-
+import {GuestBottomSheet} from '../../components/common/GuestBottomSheet';
+import { useBottomSheet } from '../../hooks/useBottomSheet';
+import { useAuthStore } from '../../store/useAuthStore';
 import { GAEvents } from '../../utils/GAEvent';
 
 export const Calendar = () => {
+  const { isLoggedIn } = useAuthStore();
+  const { openBottomSheet } = useBottomSheet();
+  
   useEffect(() => {
     GAEvents.calendarView();
 
+    if (!isLoggedIn)  {
+      setTimeout(() => {
+        openBottomSheet(<GuestBottomSheet />);
+      }, 3000);
+    }
+    
     return () => {
       const currentPath = window.location.pathname;
       const targetPaths = ['/home', '/', '/feed', '/profile'];

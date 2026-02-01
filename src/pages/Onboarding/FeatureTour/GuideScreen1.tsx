@@ -6,28 +6,32 @@ import { ProgressIndicator } from '../_components/ProgressIndicator';
 export const GuideScreen1 = () => {
   const { handleNext, handleSkip } = useOnboardingNavigation();
   return (
-    <>
+    <div className="min-h-dvh flex flex-col">
       <ProgressIndicator activeIndexes={[0]} total={4} />
-      <OnboardingLayout
-        title={
-          <>
-            <div>하루에 단 한번,</div>
-            <div>원하는 주제로 글을 써봐요</div>
-          </>
-        }
-        subtitle={
-          <>
-            <div>카테고리마다 매일</div>
-            <div>새로운 주제가 열립니다.</div>
-          </>
-        }
-        image={{
-          src: guide1,
-          alt: 'guide1',
-          className: 'w-61 h-61',
-        }}
-      />
-      <div className="absolute top-[520px] sm:top-[654px] left-0 right-0 flex flex-col justify-center items-center px-4  z-5">
+
+      <div className="flex-1 flex flex-col min-h-0">
+        <OnboardingLayout
+          title={
+            <>
+              <div>하루에 단 한번,</div>
+              <div>원하는 주제로 글을 써봐요</div>
+            </>
+          }
+          subtitle={
+            <>
+              <div>카테고리마다 매일</div>
+              <div>새로운 주제가 열립니다.</div>
+            </>
+          }
+          image={{
+            src: guide1,
+            alt: 'guide1',
+            className: 'w-61 h-61',
+          }}
+        />
+      </div>
+
+      <div className="mt-auto w-full px-4 pt-4 pb-[calc(24px+env(safe-area-inset-bottom))] flex flex-col items-center">
         <Button label="다음으로" onClick={handleNext} />
         <button
           onClick={handleSkip}
@@ -36,6 +40,6 @@ export const GuideScreen1 = () => {
           건너뛰기
         </button>
       </div>
-    </>
+    </div>
   );
 };

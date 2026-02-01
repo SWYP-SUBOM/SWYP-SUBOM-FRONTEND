@@ -6,29 +6,32 @@ import guide2 from '../../../assets/Onboarding/guide2.png';
 export const GuideScreen2 = () => {
   const { handleNext, handleSkip } = useOnboardingNavigation();
   return (
-    <>
+    <div className="min-h-dvh flex flex-col">
       <ProgressIndicator activeIndexes={[1]} total={4} />
 
-      <OnboardingLayout
-        title={
-          <>
-            <div>AI 피드백으로</div>
-            <div>글을 더 깊게 완성하세요</div>
-          </>
-        }
-        subtitle={
-          <>
-            <div>글을 작성하면, AI가 단순 교정이 아닌,</div>
-            <div>논리와 표현의 피드백을 제시합니다.</div>
-          </>
-        }
-        image={{
-          src: guide2,
-          alt: 'guide2',
-          className: 'w-61 h-61',
-        }}
-      />
-      <div className="absolute top-[520px] sm:top-[654px] left-0 right-0 flex flex-col justify-center items-center px-4  z-5">
+      <div className="flex-1 flex flex-col min-h-0">
+        <OnboardingLayout
+          title={
+            <>
+              <div>AI 피드백으로</div>
+              <div>글을 더 깊게 완성하세요</div>
+            </>
+          }
+          subtitle={
+            <>
+              <div>글을 작성하면, AI가 단순 교정이 아닌,</div>
+              <div>논리와 표현의 피드백을 제시합니다.</div>
+            </>
+          }
+          image={{
+            src: guide2,
+            alt: 'guide2',
+            className: 'w-61 h-61',
+          }}
+        />
+      </div>
+
+      <div className="mt-auto w-full px-4 pt-4 pb-[calc(24px+env(safe-area-inset-bottom))] flex flex-col items-center">
         <Button label="다음으로" onClick={handleNext} />
         <button
           onClick={handleSkip}
@@ -37,6 +40,6 @@ export const GuideScreen2 = () => {
           건너뛰기
         </button>
       </div>
-    </>
+    </div>
   );
 };

@@ -1,5 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { CategoryChip } from '../../../components/common/CategoryChip';
+import { GuestBottomSheet } from '../../../components/common/GuestBottomSheet';
+import { useBottomSheet } from '../../../hooks/useBottomSheet';
+import { useAuthStore } from '../../../store/useAuthStore';
 import { CATEGORIES } from '../../../constants/Categories';
 import type { CategoryNameType } from '../../../constants/Category';
 import { useTodayPostInfoStore } from '../../../store/useTodayPostInfo';
@@ -22,6 +25,8 @@ export const DailyTopicBox = ({
   topicType,
 }: DailyTopicBoxProps) => {
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuthStore();
+  const { openBottomSheet } = useBottomSheet();
   const todayPost = useTodayPostInfoStore((state) => state.todayPost);
   const isTodayDraft = todayPost?.postStatus === 'DRAFT';
   const isTodayPublished =
@@ -32,6 +37,11 @@ export const DailyTopicBox = ({
 
   const handleWriteClick = () => {
     if (!topicId) return;
+
+    if (!isLoggedIn) {
+      openBottomSheet(<GuestBottomSheet />);
+      return;
+    }
 
     if (isTodayDraft && aiFeedbackId) {
       navigate(
