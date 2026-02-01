@@ -15,21 +15,24 @@ export const Login = () => {
   const { handleSkip } = useOnboardingNavigation();
 
   return (
-    <div className="app-root bg-b7">
-      <OnboardingLayout
-        title={
-          <div className="text-white">
-            <div>AI시대,</div>
-            <div>나의 언어를 지키는 루틴</div>
-          </div>
-        }
-        image={{
-          src: onboardingLogin,
-          alt: 'onboardingLogin',
-          className: 'w-61 h-61',
-        }}
-      />
-      <div className="absolute top-[520px] sm:top-[654px] left-0 right-0 flex flex-col justify-center items-center px-4  z-5">
+    <div className="app-root bg-b7 min-h-dvh flex flex-col">
+      <div className="flex-1 flex flex-col min-h-0">
+        <OnboardingLayout
+          title={
+            <div className="text-white">
+              <div>AI시대,</div>
+              <div>나의 언어를 지키는 루틴</div>
+            </div>
+          }
+          image={{
+            src: onboardingLogin,
+            alt: 'onboardingLogin',
+            className: 'w-61 h-61',
+          }}
+        />
+      </div>
+
+      <div className="mt-auto w-full px-4 pt-4 pb-[calc(24px+env(safe-area-inset-bottom))] flex flex-col items-center">
         <button
           onClick={handleKakaoLogin}
           type="button"
