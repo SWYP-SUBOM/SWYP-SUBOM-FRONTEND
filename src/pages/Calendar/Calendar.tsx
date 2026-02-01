@@ -3,28 +3,24 @@ import { useMemo, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { useGetCalendar } from '../../hooks/Calendar/useGetCalendar';
+import { useDelayedGuestBottomSheet } from '../../hooks/useDelayedGuestBottomSheet';
 import { MonthlyCalendar } from './MonthlyCalendar/MonthlyCalendar';
 import type { CalendarDateStatus } from './MonthlyCalendar/MonthlyCalendar.types';
 import { MonthlyTrainingStatusBox } from './MonthlyTrainingStatusBox/MonthlyTrainingStatusBox';
 import { WeeklyChallengeBox } from './WeeklyChallengeBox/WeeklyChallengeBox';
-import {GuestBottomSheet} from '../../components/common/GuestBottomSheet';
-import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { useAuthStore } from '../../store/useAuthStore';
 import { GAEvents } from '../../utils/GAEvent';
 
+const GUEST_BOTTOM_SHEET_DELAY_MS = 3000;
+
 export const Calendar = () => {
   const { isLoggedIn } = useAuthStore();
-  const { openBottomSheet } = useBottomSheet();
-  
+  useDelayedGuestBottomSheet(!isLoggedIn, GUEST_BOTTOM_SHEET_DELAY_MS);
+
   useEffect(() => {
     GAEvents.calendarView();
 
-    if (!isLoggedIn)  {
-      setTimeout(() => {
-        openBottomSheet(<GuestBottomSheet />);
-      }, 3000);
-    }
-    
+  
     return () => {
       const currentPath = window.location.pathname;
       const targetPaths = ['/home', '/', '/feed', '/profile'];
