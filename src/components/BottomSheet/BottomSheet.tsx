@@ -65,29 +65,20 @@ export const Description = ({ children }: { children: ReactNode }) => {
 };
 
 export const Trigger = ({
-  leftText,
-  rightText,
-  onLeftClick,
-  onRightClick,
+  loginText,
+  onLoginClick,
 }: {
-  leftText: string;
-  rightText: string;
-  onLeftClick?: () => void;
-  onRightClick?: () => void;
+  loginText: string;
+  onLoginClick: () => void;
 }) => {
   return (
     <div className="flex w-full gap-3">
-      <button
-        className="flex-1 h-14 cursor-pointer bg-[#E7EBEE] rounded-xl text-gray-750 font-medium"
-        onClick={onLeftClick}
-      >
-        {leftText}
-      </button>
+      
       <button
         className="flex-1 h-14 cursor-pointer bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] rounded-xl text-white font-medium"
-        onClick={onRightClick}
+        onClick={onLoginClick}
       >
-        {rightText}
+        {loginText}
       </button>
     </div>
   );
