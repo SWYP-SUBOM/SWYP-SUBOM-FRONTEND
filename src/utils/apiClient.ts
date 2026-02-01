@@ -3,7 +3,7 @@ import type { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import axios, { AxiosError } from 'axios';
 import { OAUTH_ENDPOINTS } from '../api/endpoints';
 import { useAuthStore } from '../store/useAuthStore';
-import { getAccessToken, isTokenExpiringSoon, setAccessToken } from './api';
+import { getAccessToken, setAccessToken, isTokenExpiringSoon } from './api';
 
 // 리프레시 토큰 재발급 중복 방지
 let isRefreshing = false;
@@ -140,13 +140,21 @@ const createAxiosInstance = (): AxiosInstance => {
         return Promise.reject(error);
       }
 
-      // 401 에러이고 리프레시 토큰 요청이 아닌 경우
+      // 401 에러: ACCESS_TOKEN_EXPIRED일 때만 /api/reissue 호출 (문서 기준)
+      const responseCode = (error.response?.data as { code?: string } | undefined)?.code;
+      const isAccessTokenExpired = responseCode === 'ACCESS_TOKEN_EXPIRED';
+
       if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
-        // 리프레시 토큰 요청 자체가 401이면 무한 루프 방지
+      
         if (originalRequest.url === OAUTH_ENDPOINTS.REISSUE) {
           const { logout } = useAuthStore.getState();
           logout();
           return Promise.reject(new Error('인증이 만료되었습니다.'));
+        }
+
+    
+        if (!isAccessTokenExpired) {
+          return Promise.reject(error);
         }
 
         // 이미 리프레시 중이면 대기
