@@ -9,8 +9,15 @@ import { useGetHome } from '../../hooks/Home/useGetHome';
 import { useGetUserName } from '../../hooks/User/useGetUserName';
 import { GAEvents } from '../../utils/GAEvent';
 import { ProfileContents } from './_components/Profilecontents';
+import { useAuthStore } from '../../store/useAuthStore';
+import { useBottomSheet } from '../../hooks/useBottomSheet';
+import { GuestBottomSheet } from '../../components/common/GuestBottomSheet';
 
 export const Profile = () => {
+  const { isLoggedIn } = useAuthStore();
+  const { openBottomSheet } = useBottomSheet();
+  const navigate = useNavigate();
+
   useEffect(() => {
     GAEvents.mypageView();
 
@@ -22,7 +29,7 @@ export const Profile = () => {
       }
     };
   }, []);
-  const navigate = useNavigate();
+
   const { data: userName, isLoading: isUserNameLoading } = useGetUserName();
   const { data: homeData, isLoading: isHomeDataLoading } = useGetHome();
 
@@ -33,20 +40,28 @@ export const Profile = () => {
     window.location.href = 'http://pf.kakao.com/_gPxmgn/chat';
   };
 
+  const handleProfileMenuClick = (path: string) => {
+    if (!isLoggedIn) {
+      openBottomSheet(<GuestBottomSheet />);
+      return;
+    }
+    navigate(path);
+  };
+
   return (
     <div className="flex flex-col min-h-screen ">
       <div className="flex flex-col items-center justify-center bg-b6">
         <TitleHeader title="마이 페이지" />
         <img src={profile} alt="profile" className="w-[130px] h-[130px] rounded-full  " />
         <div className="T01_B text-white mt-4">
-          {isLoading ? '...' : userName ? `${userName} 님` : '님'}
+          {isLoading ? '로딩중...' : userName ? `${userName} 님` : ''}
         </div>
         <div className="B02_M text-white mt-2 mb-5">
           {isLoading
-            ? '...'
+            ? '로딩중...'
             : streak > 0
               ? `${streak}일 째 써봄과 함께 하는 중`
-              : '써봄과 함께 하는 중'}
+              : ''}
         </div>
       </div>
 
@@ -54,7 +69,7 @@ export const Profile = () => {
         <ProfileContents
           title="내 정보 관리"
           righticon={true}
-          onClick={() => navigate('/profile/myinfo')}
+          onClick={() => handleProfileMenuClick('/profile/myinfo')}
         />
 
         <div className="B02_B text-gray-900 mx-8 mt-10">내 활동 관리</div>
@@ -63,13 +78,13 @@ export const Profile = () => {
             icon={reaction}
             title="내가 반응 남긴 글"
             righticon={true}
-            onClick={() => navigate('/profile/my-reactions')}
+            onClick={() => handleProfileMenuClick('/profile/my-reactions')}
           />
           <ProfileContents
             icon={post}
             title="내가 쓴 글"
             righticon={true}
-            onClick={() => navigate('/profile/my-posts')}
+            onClick={() => handleProfileMenuClick('/profile/my-posts')}
           />
         </div>
 

@@ -1,23 +1,11 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import { GuestBottomSheet } from '../../components/common/GuestBottomSheet';
-import { useBottomSheet } from '../../hooks/useBottomSheet';
-import { useAuthStore } from '../../store/useAuthStore';
+import { useLocation } from 'react-router-dom';
 import { NAVBAR_ITEMS } from './NavBar.constant';
 import { NavBarIcon } from './NavBarIcon';
 
 export const NavBar = () => {
   const location = useLocation();
-  const { isLoggedIn } = useAuthStore();
-  const { openBottomSheet } = useBottomSheet();
-  const navigate = useNavigate();
 
-  const handleMoveClick = (path: string) => {
-    if (!isLoggedIn && (path === '/calendar' || path === '/profile')) {
-      openBottomSheet(<GuestBottomSheet />);
-      return;
-    }
-    navigate(path);
-  };
+ 
 
   return (
     <div
@@ -33,7 +21,6 @@ export const NavBar = () => {
           iconActive={item.iconActive}
           path={item.path}
           active={location.pathname === item.path}
-          onClick={() => handleMoveClick(item.path)}
         />
       ))}
     </div>
