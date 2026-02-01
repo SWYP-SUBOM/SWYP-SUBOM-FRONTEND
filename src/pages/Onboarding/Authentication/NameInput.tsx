@@ -52,38 +52,41 @@ export const NameInput = () => {
   };
 
   return (
-    <div className="app-root flex flex-col  pt-[168px]  style={{ paddingBottom: 'calc(16px + env(safe-area-inset-bottom))'}}">
-      <div className="flex flex-col justify-center items-center text-center  ">
-        <div className="T02_B text-gray-900 ">당신의 이름을 입력해주세요</div>
+    <div className="app-root flex flex-col min-h-dvh pt-[168px]">
+      <div className="flex-1 flex flex-col min-h-0">
+        <div className="flex flex-col justify-center items-center text-center  ">
+          <div className="T02_B text-gray-900 ">당신의 이름을 입력해주세요</div>
 
-        <div className="B03_1_M text-neutral-600 mt-[27px]">별명과 실명 모두 괜찮아요</div>
-        <div className="B03_1_M text-neutral-600 ">
-          (단, <span className="text-blue-600 B03_B">숫자·특수문자</span> 포함이{' '}
-          <span className="text-blue-600 B03_B">불가능</span>해요)
-        </div>
-      </div>
-
-      <div className="flex flex-col items-center px-10 mt-[44px] relative">
-        <div className="w-full relative">
-          <div className="w-full h-14 relative bg-gray-100 rounded-lg">
-            <input
-              type="text"
-              value={name}
-              onChange={handleChange}
-              placeholder={NAME_PLACEHOLDER}
-              maxLength={NAME_MAX_LENGTH}
-              className={`w-full h-14 bg-gray-100  border-b-2 text-gray-900 B01_B focus:outline-none px-2 ${
-                error ? 'border-red-500' : 'border-blue-400 focus:border-blue-600'
-              }`}
-            />
-            <div className="absolute right-1 bottom-3 B03_1_M text-neutral-400">
-              {name.length}/{NAME_MAX_LENGTH}
-            </div>
+          <div className="B03_1_M text-neutral-600 mt-[27px]">별명과 실명 모두 괜찮아요</div>
+          <div className="B03_1_M text-neutral-600 ">
+            (단, <span className="text-blue-600 B03_B">숫자·특수문자</span> 포함이{' '}
+            <span className="text-blue-600 B03_B">불가능</span>해요)
           </div>
-          {error && <div className="mt-2 text-red-500 B03_1_M text-left">{error}</div>}
+        </div>
+
+        <div className="flex flex-col items-center px-10 mt-[44px] relative">
+          <div className="w-full relative">
+            <div className="w-full h-14 relative bg-gray-100 rounded-lg">
+              <input
+                type="text"
+                value={name}
+                onChange={handleChange}
+                placeholder={NAME_PLACEHOLDER}
+                maxLength={NAME_MAX_LENGTH}
+                className={`w-full h-14 bg-gray-100  border-b-2 text-gray-900 B01_B focus:outline-none px-2 ${
+                  error ? 'border-red-500' : 'border-blue-400 focus:border-blue-600'
+                }`}
+              />
+              <div className="absolute right-1 bottom-3 B03_1_M text-neutral-400">
+                {name.length}/{NAME_MAX_LENGTH}
+              </div>
+            </div>
+            {error && <div className="mt-2 text-red-500 B03_1_M text-left">{error}</div>}
+          </div>
         </div>
       </div>
-      <div className="absolute top-[520px] sm:top-[654px] left-0 right-0 flex flex-col justify-center items-center px-4 z-5">
+
+      <div className="mt-auto w-full px-4 pt-4 pb-[calc(24px+env(safe-area-inset-bottom))] flex flex-col items-center">
         <Button label="시작하기" onClick={handleSubmit} disabled={!isValid} />
       </div>
     </div>
