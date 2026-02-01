@@ -140,3 +140,7 @@ vite.config.ts.timestamp-*
 
 *storybook.log
 storybook-static
+
+# PWA dev files
+dev-dist
+dist

@@ -6,6 +6,7 @@ import type {
   MyReactionsResponse,
   MyWritingsRequest,
   MyWritingsResponse,
+  PopularPostResponse,
   PostReactionResponse,
   PostResponse,
   PostWithEditResponse,
@@ -128,6 +129,18 @@ export const getMyReactions = async (
   return response.data;
 };
 
+export async function getPopularPost(): Promise<PopularPostResponse['data']> {
+  const url = `${POST_ENDPOINTS.GET_POPULARPOST}`;
+
+  const response = await apiClient.get<PopularPostResponse>(url);
+
+  if (!response.data) {
+    throw new Error('인기 글을 조회할 수 없습니다');
+  }
+
+  return response.data;
+}
+
 export const postService = {
   getPost,
   putPostReaction,
@@ -137,4 +150,5 @@ export const postService = {
   deletePost,
   getMyWritings,
   getMyReactions,
+  getPopularPost,
 };

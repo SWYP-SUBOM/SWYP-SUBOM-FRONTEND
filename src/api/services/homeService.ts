@@ -1,6 +1,6 @@
 import { apiClient } from '../../utils/apiClient';
 import { CATEGORY_ENDPOINTS, HOME_ENDPOINTS } from '../endpoints';
-import type { dailyQuestionResponse, homeResponse } from '../types/home';
+import type { dailyQuestionResponse, dailyQuestionsResponse, homeResponse } from '../types/home';
 
 export const getHomeData = async (): Promise<homeResponse['data']> => {
   const response = await apiClient.get<homeResponse>(HOME_ENDPOINTS.HOME);
@@ -22,7 +22,18 @@ export const getDailyQuestion = async (
   return response.data;
 };
 
+export const getDailyQuestions = async (): Promise<dailyQuestionsResponse['data']> => {
+  const response = await apiClient.get<dailyQuestionsResponse>(
+    `${CATEGORY_ENDPOINTS.GET_DAILYQUESTIONS}`,
+  );
+  if (!response.data) {
+    throw new Error('오늘의 질문들을 조회할 수 없습니다');
+  }
+  return response.data;
+};
+
 export const homeService = {
   getHomeData,
   getDailyQuestion,
+  getDailyQuestions,
 };

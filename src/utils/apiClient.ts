@@ -126,9 +126,17 @@ const createAxiosInstance = (): AxiosInstance => {
     async (error: AxiosError) => {
       const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
-      // 500에러 뜨는 경우 temporaryerror 페이지로 이동
-      if (error.response && error.response.status == 500) {
-        window.location.href = '/temporaryerror';
+      if (!error.response) {
+        console.error('네트워크 응답 없음 (Status 0)');
+        return Promise.reject(error);
+      }
+
+      // 2. 500 에러 처리 (정말 서버가 터졌을 때만 리다이렉트)
+      if (error.response.status === 500) {
+        // 현재 페이지가 이미 에러 페이지가 아닐 때만 이동
+        if (window.location.pathname !== '/temporaryerror') {
+          window.location.href = '/temporaryerror';
+        }
         return Promise.reject(error);
       }
 
