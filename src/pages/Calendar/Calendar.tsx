@@ -20,12 +20,7 @@ export const Calendar = () => {
   useEffect(() => {
     GAEvents.calendarView();
 
-    if (!isLoggedIn)  {
-      setTimeout(() => {
-        openBottomSheet(<GuestBottomSheet />);
-      }, 3000);
-    }
-    
+  
     return () => {
       const currentPath = window.location.pathname;
       const targetPaths = ['/home', '/', '/feed', '/profile'];
