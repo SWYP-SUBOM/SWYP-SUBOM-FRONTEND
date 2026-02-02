@@ -9,7 +9,7 @@ export const OnboardingLayout = ({ title, subtitle, image }: OnboardingLayoutTyp
         }
       >
         {title}
-        <div className="mt-[12px] B03_1_M text-gray-800">{subtitle}</div>
+        <div className="mt-[12px] B03_1_M text-gray-800">{subtitle}</div> 
       </div>
 
       <div className="flex justify-center items-center mt-4 sm:mt-[74px]">

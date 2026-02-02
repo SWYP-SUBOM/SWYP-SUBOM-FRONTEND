@@ -5,10 +5,12 @@ import logoImg from '../assets/Header/logo-img.svg';
 import logoName from '../assets/Header/logo-name.png';
 import { PwaInstallBanner } from '../components/common/PwaInstallBanner';
 import { usePwaInstall } from '../hooks/usePwaInstall';
+import { useAuthStore } from '../store/useAuthStore';
 import { useNotificationStore } from '../store/useNotificationStore';
 
 export const Header = () => {
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuthStore();
   const unreadCount = useNotificationStore((state) => state.unreadCount);
 
   const { target, canInstall, installApp } = usePwaInstall();
@@ -35,9 +37,12 @@ export const Header = () => {
             </button>
           )}
 
-          <div className="relative cursor-pointer" onClick={() => navigate('/notification')}>
+          <div
+            className={`relative ${isLoggedIn ? 'cursor-pointer' : 'cursor-not-allowed opacity-50 pointer-events-none'}`}
+            onClick={() => isLoggedIn && navigate('/notification')}
+          >
             <img src={alarm} className="w-9 h-6" alt="알림" />
-            {unreadCount > 0 && (
+            {unreadCount > 0 && isLoggedIn && (
               <div className="absolute -top-1 right-2 w-2 h-2 bg-red-500 rounded-full" />
             )}
           </div>
