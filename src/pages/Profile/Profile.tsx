@@ -18,7 +18,7 @@ export const Profile = () => {
   const { isLoggedIn } = useAuthStore();
   const { openBottomSheet } = useBottomSheet();
   const navigate = useNavigate();
-  useThemeColor('#2276ff');
+  useThemeColor('#288cff');
 
   useEffect(() => {
     GAEvents.mypageView();
