@@ -28,10 +28,10 @@ export const GuideScreen1 = () => {
           image={{
             src: guide1,
             alt: 'guide1',
-            className: 'sm:w-[328px] sm:h-[348px] w-[244px] h-[244px]',
+            className: 'w-[328px] h-[348px] ',
           }}
         />
-        <div className="w-full px-4 pt-6 pb-[calc(80px+env(safe-area-inset-bottom))] flex flex-col items-center">
+        <div className="w-full px-4 pt-6 pb-[calc(20px+env(safe-area-inset-bottom))] flex flex-col items-center">
           <Button label="다음으로" onClick={handleNext} />
         </div>
       </div>
