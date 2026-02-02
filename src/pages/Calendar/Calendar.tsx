@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { useGetCalendar } from '../../hooks/Calendar/useGetCalendar';
 import { useDelayedGuestBottomSheet } from '../../hooks/useDelayedGuestBottomSheet';
-import { useThemeColor } from '../../hooks/useThemecolor';
+import { useThemeColor } from '../../hooks/useThemeColor';
 import { useAuthStore } from '../../store/useAuthStore';
 import { GAEvents } from '../../utils/GAEvent';
 import { MonthlyCalendar } from './MonthlyCalendar/MonthlyCalendar';

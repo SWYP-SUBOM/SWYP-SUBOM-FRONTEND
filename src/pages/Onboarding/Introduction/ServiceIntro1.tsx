@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import onboardingServiceIntro1 from '../../../assets/Onboarding/onboardingServiceIntro1.gif';
 import { Button } from '../../../components/common/Button';
 import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
-import { useThemeColor } from '../../../hooks/useThemecolor';
+import { useThemeColor } from '../../../hooks/useThemeColor';
 import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
 import { GAEvents } from '../../../utils/GAEvent';
 import { ProgressIndicator } from '../_components/ProgressIndicator';

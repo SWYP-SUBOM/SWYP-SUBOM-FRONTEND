@@ -9,7 +9,7 @@ import { TitleHeader } from '../../components/common/TitleHeader';
 import { useGetHome } from '../../hooks/Home/useGetHome';
 import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { useGetUserName } from '../../hooks/User/useGetUserName';
-import { useThemeColor } from '../../hooks/useThemecolor';
+import { useThemeColor } from '../../hooks/useThemeColor';
 import { useAuthStore } from '../../store/useAuthStore';
 import { GAEvents } from '../../utils/GAEvent';
 import { ProfileContents } from './_components/Profilecontents';

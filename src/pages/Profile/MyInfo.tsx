@@ -4,7 +4,7 @@ import { useModal } from '../../hooks/useModal';
 import { useGetMe } from '../../hooks/User/useGetMe';
 import { useLogout } from '../../hooks/User/useLogout';
 import { useUnregister } from '../../hooks/User/useUnregister';
-import { useThemeColor } from '../../hooks/useThemecolor';
+import { useThemeColor } from '../../hooks/useThemeColor';
 import { GAEvents } from '../../utils/GAEvent';
 import { ActionButtons } from './_components/ActionButtons';
 import { InfoCard } from './_components/InfoCard';

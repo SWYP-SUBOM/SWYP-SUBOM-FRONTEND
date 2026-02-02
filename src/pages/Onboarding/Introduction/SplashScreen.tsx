@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import onboardingLogo from '../../../assets/Onboarding/onboardingLogo.png';
-import { useThemeColor } from '../../../hooks/useThemecolor';
+import { useThemeColor } from '../../../hooks/useThemeColor';
 export const SplashScreen = () => {
   useThemeColor('#2276ff');
   const navigate = useNavigate();

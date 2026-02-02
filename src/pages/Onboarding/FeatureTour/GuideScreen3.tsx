@@ -1,7 +1,7 @@
 import guide3 from '../../../assets/Onboarding/guide3.png';
 import { Button } from '../../../components/common/Button';
 import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
-import { useThemeColor } from '../../../hooks/useThemecolor';
+import { useThemeColor } from '../../../hooks/useThemeColor';
 import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
 import { ProgressIndicator } from '../_components/ProgressIndicator';
 export const GuideScreen3 = () => {

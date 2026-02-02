@@ -6,7 +6,7 @@ import { useGetHome } from '../../hooks/Home/useGetHome';
 import { useGetPopularPost } from '../../hooks/Post/useGetPopularPost';
 import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { useGetUserName } from '../../hooks/User/useGetUserName';
-import { useThemeColor } from '../../hooks/useThemecolor';
+import { useThemeColor } from '../../hooks/useThemeColor';
 import { useHomeDraftSheetStore } from '../../store/useHomeDraftSheetStore';
 import { useTodayPostInfoStore } from '../../store/useTodayPostInfo';
 import { GAEvents } from '../../utils/GAEvent';
