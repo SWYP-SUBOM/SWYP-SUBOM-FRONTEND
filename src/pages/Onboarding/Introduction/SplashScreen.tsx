@@ -1,7 +1,9 @@
-import onboardingLogo from '../../../assets/Onboarding/onboardingLogo.png';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import onboardingLogo from '../../../assets/Onboarding/onboardingLogo.png';
+import { useThemeColor } from '../../../hooks/useThemecolor';
 export const SplashScreen = () => {
+  useThemeColor('#2276ff');
   const navigate = useNavigate();
   useEffect(() => {
     setTimeout(() => {

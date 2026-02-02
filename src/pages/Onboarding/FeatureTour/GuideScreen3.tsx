@@ -1,10 +1,12 @@
+import guide3 from '../../../assets/Onboarding/guide3.png';
+import { Button } from '../../../components/common/Button';
+import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
+import { useThemeColor } from '../../../hooks/useThemecolor';
 import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
 import { ProgressIndicator } from '../_components/ProgressIndicator';
-import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
-import { Button } from '../../../components/common/Button';
-import guide3 from '../../../assets/Onboarding/guide3.png';
 export const GuideScreen3 = () => {
   const { handleNext } = useOnboardingNavigation();
+  useThemeColor('#f3f5f8');
   return (
     <div className="min-h-dvh flex flex-col">
       <ProgressIndicator activeIndexes={[2]} total={4} />

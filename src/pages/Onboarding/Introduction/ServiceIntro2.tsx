@@ -1,11 +1,13 @@
-import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
-import { ProgressIndicator } from '../_components/ProgressIndicator';
-import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
 import onboardingServiceIntro2 from '../../../assets/Onboarding/onboardingServiceIntro2.gif';
 import { Button } from '../../../components/common/Button';
+import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
+import { useThemeColor } from '../../../hooks/useThemecolor';
+import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
+import { ProgressIndicator } from '../_components/ProgressIndicator';
 
 export const ServiceIntro2 = () => {
   const { handleNext } = useOnboardingNavigation();
+  useThemeColor('#f3f5f8');
 
   return (
     <div className="min-h-dvh flex flex-col">
@@ -35,7 +37,6 @@ export const ServiceIntro2 = () => {
 
       <div className="mt-auto w-full px-4 pt-4 pb-[calc(80px+env(safe-area-inset-bottom))] flex flex-col items-center">
         <Button label="다음으로" onClick={handleNext} />
-       
       </div>
     </div>
   );
