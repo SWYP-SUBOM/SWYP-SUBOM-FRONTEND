@@ -4,19 +4,21 @@ import customerservice from '../../assets/Profile/customerservice.svg';
 import post from '../../assets/Profile/post.svg';
 import profile from '../../assets/Profile/Profile.png';
 import reaction from '../../assets/Profile/reaction.svg';
+import { GuestBottomSheet } from '../../components/common/GuestBottomSheet';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { useGetHome } from '../../hooks/Home/useGetHome';
+import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { useGetUserName } from '../../hooks/User/useGetUserName';
+import { useThemeColor } from '../../hooks/useThemeColor';
+import { useAuthStore } from '../../store/useAuthStore';
 import { GAEvents } from '../../utils/GAEvent';
 import { ProfileContents } from './_components/Profilecontents';
-import { useAuthStore } from '../../store/useAuthStore';
-import { useBottomSheet } from '../../hooks/useBottomSheet';
-import { GuestBottomSheet } from '../../components/common/GuestBottomSheet';
 
 export const Profile = () => {
   const { isLoggedIn } = useAuthStore();
   const { openBottomSheet } = useBottomSheet();
   const navigate = useNavigate();
+  useThemeColor('#2276ff');
 
   useEffect(() => {
     GAEvents.mypageView();
@@ -57,7 +59,13 @@ export const Profile = () => {
           {!isLoggedIn ? '' : isLoading ? '로딩중...' : userName ? `${userName} 님` : ''}
         </div>
         <div className="B02_M text-white mt-2 mb-5">
-          {!isLoggedIn ? '' : isLoading ? '로딩중...' : streak > 0 ? `${streak}일 째 써봄과 함께 하는 중` : ''}
+          {!isLoggedIn
+            ? ''
+            : isLoading
+              ? '로딩중...'
+              : streak > 0
+                ? `${streak}일 째 써봄과 함께 하는 중`
+                : ''}
         </div>
       </div>
 

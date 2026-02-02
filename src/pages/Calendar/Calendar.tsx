@@ -1,26 +1,27 @@
 import { eachDayOfInterval, endOfWeek, format, isSameDay, startOfWeek } from 'date-fns';
-import { useMemo, useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TitleHeader } from '../../components/common/TitleHeader';
 import { useGetCalendar } from '../../hooks/Calendar/useGetCalendar';
 import { useDelayedGuestBottomSheet } from '../../hooks/useDelayedGuestBottomSheet';
+import { useThemeColor } from '../../hooks/useThemeColor';
+import { useAuthStore } from '../../store/useAuthStore';
+import { GAEvents } from '../../utils/GAEvent';
 import { MonthlyCalendar } from './MonthlyCalendar/MonthlyCalendar';
 import type { CalendarDateStatus } from './MonthlyCalendar/MonthlyCalendar.types';
 import { MonthlyTrainingStatusBox } from './MonthlyTrainingStatusBox/MonthlyTrainingStatusBox';
 import { WeeklyChallengeBox } from './WeeklyChallengeBox/WeeklyChallengeBox';
-import { useAuthStore } from '../../store/useAuthStore';
-import { GAEvents } from '../../utils/GAEvent';
 
 const GUEST_BOTTOM_SHEET_DELAY_MS = 3000;
 
 export const Calendar = () => {
   const { isLoggedIn } = useAuthStore();
+  useThemeColor('#2276ff');
   useDelayedGuestBottomSheet(!isLoggedIn, GUEST_BOTTOM_SHEET_DELAY_MS);
 
   useEffect(() => {
     GAEvents.calendarView();
 
-  
     return () => {
       const currentPath = window.location.pathname;
       const targetPaths = ['/home', '/', '/feed', '/profile'];

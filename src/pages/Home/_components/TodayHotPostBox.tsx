@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import heartIcon from '../../../assets/Feed/heart.svg';
 import right from '../../../assets/Feed/right.svg';
 import viewIcon from '../../../assets/Feed/view.svg';
@@ -7,27 +8,33 @@ import { DateFormatter } from '../../../utils/DateFormatter';
 
 interface TodayHotPostBoxProps {
   categoryName: CategoryNameType;
-  onClick: () => void;
   nickname: string;
   summary: string;
   totalReactions: number;
   updatedAt: string;
   postViews: number;
+  postId: number;
 }
 export const TodayHotPostBox = ({
   categoryName,
-  onClick,
   nickname,
   summary,
   totalReactions,
   updatedAt,
   postViews,
+  postId,
 }: TodayHotPostBoxProps) => {
   const summaryShort = summary.length > 100 ? summary.slice(0, 100) : summary;
+  const navigate = useNavigate();
+
+  const movetoDetail = (postId: number) => {
+    navigate(`/postdetail/${postId}`);
+  };
+
   return (
     <>
       <div
-        onClick={onClick}
+        onClick={() => movetoDetail(postId)}
         className="cursor-pointer px-4 py-4 rounded-xl w-full h-[185px] border border-[#E0E4E7] bg-white flex flex-col justify-between
       hover:shadow-[0_0_30px_0_#D0D2D9] active:shadow-[0_0_30px_0_#D0D2D9]"
       >
