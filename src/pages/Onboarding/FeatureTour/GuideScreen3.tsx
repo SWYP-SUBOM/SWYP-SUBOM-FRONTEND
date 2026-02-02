@@ -27,7 +27,7 @@ export const GuideScreen3 = () => {
           image={{
             src: guide3,
             alt: 'guide3',
-            className: 'sm:w-[328px] sm:h-[348px] w-[244px] h-[244px] sm:mt-[20px] mt-[18px]',
+            className: 'w-[328px] h-[348px] sm:mt-[20px] mt-[18px]',
           }}
         />
         <div className="w-full px-4 pt-6 pb-[calc(80px+env(safe-area-inset-bottom))] flex flex-col items-center">
