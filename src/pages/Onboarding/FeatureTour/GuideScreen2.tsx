@@ -11,7 +11,7 @@ export const GuideScreen2 = () => {
     <div className="min-h-dvh flex flex-col">
       <ProgressIndicator activeIndexes={[1]} total={4} />
 
-      <div className="flex-1 flex flex-col min-h-0">
+      <div className="flex-1 flex flex-col ">
         <OnboardingLayout
           title={
             <>
@@ -31,10 +31,9 @@ export const GuideScreen2 = () => {
             className: 'sm:w-[328px] sm:h-[348px] w-[244px] h-[244px]',
           }}
         />
-      </div>
-
-      <div className="mt-auto w-full px-4 pt-4 pb-[calc(80px+env(safe-area-inset-bottom))] flex flex-col items-center">
-        <Button label="다음으로" onClick={handleNext} />
+        <div className="w-full px-4 pt-6 pb-[calc(80px+env(safe-area-inset-bottom))] flex flex-col items-center">
+          <Button label="다음으로" onClick={handleNext} />
+        </div>
       </div>
     </div>
   );
