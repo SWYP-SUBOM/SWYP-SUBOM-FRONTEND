@@ -30,7 +30,7 @@ export const GuideScreen3 = () => {
             className: 'w-[328px] h-[348px] sm:mt-[20px] mt-[18px]',
           }}
         />
-        <div className="w-full px-4 pt-6 pb-[calc(80px+env(safe-area-inset-bottom))] flex flex-col items-center">
+        <div className="w-full px-4 pt-9 pb-[calc(20px+env(safe-area-inset-bottom))] flex flex-col items-center">
           <Button label="다음으로" onClick={handleNext} />
         </div>
       </div>
