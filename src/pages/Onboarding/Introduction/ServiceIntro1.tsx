@@ -34,7 +34,7 @@ export const ServiceIntro1 = () => {
           image={{
             src: onboardingServiceIntro1,
             alt: 'ServiceIntro1',
-            className: 'w-61 h-61',
+            className: 'w-[244px] h-[244px]',
           }}
         />
       </div>

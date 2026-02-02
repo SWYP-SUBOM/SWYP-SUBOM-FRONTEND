@@ -5,7 +5,7 @@ import onboardingServiceIntro2 from '../../../assets/Onboarding/onboardingServic
 import { Button } from '../../../components/common/Button';
 
 export const ServiceIntro2 = () => {
-  const { handleNext, handleSkip } = useOnboardingNavigation();
+  const { handleNext } = useOnboardingNavigation();
 
   return (
     <div className="min-h-dvh flex flex-col">
@@ -33,14 +33,9 @@ export const ServiceIntro2 = () => {
         />
       </div>
 
-      <div className="mt-auto w-full px-4 pt-4 pb-[calc(24px+env(safe-area-inset-bottom))] flex flex-col items-center">
+      <div className="mt-auto w-full px-4 pt-4 pb-[calc(80px+env(safe-area-inset-bottom))] flex flex-col items-center">
         <Button label="다음으로" onClick={handleNext} />
-        <button
-          onClick={handleSkip}
-          className="w-20 h-10  text-gray-700 B03_M underline cursor-pointer mt-[2dvh] active:bg-gray-400 active:scale-95  hover:bg-gray-400  rounded-lg transition-colors duration-300  "
-        >
-          건너뛰기
-        </button>
+       
       </div>
     </div>
   );

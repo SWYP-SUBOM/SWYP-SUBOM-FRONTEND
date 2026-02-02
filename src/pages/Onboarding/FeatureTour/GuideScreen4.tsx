@@ -33,12 +33,12 @@ export const GuideScreen4 = () => {
           image={{
             src: guide4,
             alt: 'guide4',
-            className: 'w-61 h-61',
+            className: 'sm:w-[328px] sm:h-[348px] w-[244px] h-[244px]',
           }}
         />
       </div>
 
-      <div className="mt-auto w-full px-4 pt-4 pb-[calc(24px+env(safe-area-inset-bottom))] flex flex-col items-center">
+      <div className="mt-auto w-full px-4 pt-4 pb-[calc(80px+env(safe-area-inset-bottom))] flex flex-col items-center">
         <Button label="시작하기" onClick={handleComplete} />
       </div>
     </div>
