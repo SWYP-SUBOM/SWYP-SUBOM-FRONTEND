@@ -1,12 +1,14 @@
-import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
-import { ProgressIndicator } from '../_components/ProgressIndicator';
-import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
-import { Button } from '../../../components/common/Button';
 import guide4 from '../../../assets/Onboarding/guide4.png';
+import { Button } from '../../../components/common/Button';
+import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
+import { useThemeColor } from '../../../hooks/useThemeColor';
+import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
 import { GAEvents } from '../../../utils/GAEvent';
+import { ProgressIndicator } from '../_components/ProgressIndicator';
 
 export const GuideScreen4 = () => {
   const { handleNext } = useOnboardingNavigation();
+  useThemeColor('#f3f5f8');
 
   const handleComplete = () => {
     GAEvents.onboardingComplete();

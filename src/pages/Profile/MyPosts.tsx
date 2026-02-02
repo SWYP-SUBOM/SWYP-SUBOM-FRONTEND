@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { TitleHeader } from '../../components/common/TitleHeader.tsx';
 import { useGetMyWritings } from '../../hooks/Profile/useGetMyWritings.ts';
 import { useInfiniteScroll } from '../../hooks/useInfiniteScroll.ts';
+import { useThemeColor } from '../../hooks/useThemeColor.ts';
 import { GAEvents } from '../../utils/GAEvent';
 import { MyPostCard } from './_components/MyPosts/MyPostCard.tsx';
 import { DateFilterModal } from './_components/MyReactions/DateFilterModal.tsx';
@@ -18,6 +19,7 @@ type DateOption = 'lastWeek' | 'lastMonth' | 'lastYear' | 'all' | 'custom';
 
 export const MyPosts = () => {
   const navigate = useNavigate();
+  useThemeColor('#eef1f4');
   const [sort, setSort] = useState<SortOption>('latest');
 
   useEffect(() => {

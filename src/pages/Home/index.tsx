@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import hotright from '../../assets/Home/hotright.svg';
 import type { CategoryNameType } from '../../constants/Category';
 import { useGetHome } from '../../hooks/Home/useGetHome';
 import { useGetPopularPost } from '../../hooks/Post/useGetPopularPost';
 import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { useGetUserName } from '../../hooks/User/useGetUserName';
+import { useThemeColor } from '../../hooks/useThemeColor';
 import { useHomeDraftSheetStore } from '../../store/useHomeDraftSheetStore';
 import { useTodayPostInfoStore } from '../../store/useTodayPostInfo';
 import { GAEvents } from '../../utils/GAEvent';
@@ -17,6 +19,7 @@ import { HomeBanner } from './HomeBanner/HomeBanner';
 const Home = () => {
   const { openBottomSheet, BottomContent } = useBottomSheet();
   const { isDraftSheetOpened, setDraftSheetOpened } = useHomeDraftSheetStore();
+  useThemeColor('#f3f5f8');
 
   const { data: userNameData } = useGetUserName();
   const { data: homeData } = useGetHome();
@@ -31,6 +34,7 @@ const Home = () => {
   const topicId = homeData?.todayPost?.topicId;
   const aiFeedbackId = homeData?.todayPost?.aiFeedbackId;
   const topicType = homeData?.todayPost?.topicType;
+  const navigate = useNavigate();
 
   useEffect(() => {
     GAEvents.topicListView();
@@ -91,7 +95,9 @@ const Home = () => {
               <div className="flex items-center justify-between pt-[30px] mb-1">
                 <div className="flex items-center gap-1">
                   <p className="T02_B text-gray-900">오늘의 인기 글</p>
-                  <img src={hotright} className="w-4 h-4 translate-y-1/8" alt="hot-arrow" />
+                  <button onClick={() => navigate('/feed')}>
+                    <img src={hotright} className="w-4 h-4 translate-y-1/8" alt="hot-arrow" />
+                  </button>
                 </div>
               </div>
               <p className="mb-4 pt-1 B03_1_M text-gray-750 pb-1">
@@ -99,12 +105,12 @@ const Home = () => {
               </p>
               <TodayHotPostBox
                 categoryName={popularPostData?.category.categoryName as CategoryNameType}
-                onClick={() => {}}
                 nickname={popularPostData?.nickname}
                 summary={popularPostData?.summary}
                 totalReactions={popularPostData?.totalReactions}
                 updatedAt={popularPostData.updatedAt.split('T')[0]}
                 postViews={popularPostData?.postViews}
+                postId={popularPostData?.postId}
               />
             </>
           )}

@@ -1,10 +1,12 @@
 import guide1 from '../../../assets/Onboarding/guide1.png';
 import { Button } from '../../../components/common/Button';
 import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
+import { useThemeColor } from '../../../hooks/useThemeColor';
 import { OnboardingLayout } from '../../../layout/Onboarding/OnboardingLayout';
 import { ProgressIndicator } from '../_components/ProgressIndicator';
 export const GuideScreen1 = () => {
   const { handleNext } = useOnboardingNavigation();
+  useThemeColor('#f3f5f8');
   return (
     <div className="min-h-dvh flex flex-col">
       <ProgressIndicator activeIndexes={[0]} total={4} />
@@ -33,7 +35,6 @@ export const GuideScreen1 = () => {
 
       <div className="mt-auto w-full px-4 pt-4 pb-[calc(80px+env(safe-area-inset-bottom))] flex flex-col items-center">
         <Button label="다음으로" onClick={handleNext} />
-       
       </div>
     </div>
   );

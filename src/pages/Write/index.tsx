@@ -35,6 +35,7 @@ export const Write = () => {
   const draftPostId = location.state.draftPostId;
   const isTodayDraft = location.state.isTodayDraft;
   const topicType = location.state.topicType;
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [opinion, setOpinion] = useState('');
   const [initialOpinion, setInitialOpinion] = useState('');
@@ -94,8 +95,10 @@ export const Write = () => {
   };
 
   const handleNextStep = () => {
+    const currentVal = textareaRef.current?.value || opinion;
+
     const newContents = [...contents];
-    newContents[step - 1] = opinion;
+    newContents[step - 1] = currentVal;
     setContents(newContents);
 
     if (step < 3) {
@@ -114,10 +117,14 @@ export const Write = () => {
 
   const handlePrevStep = () => {
     if (step === 1) return;
+
+    const currentVal = textareaRef.current?.value || opinion;
+
     setDirection(-1);
     const newContents = [...contents];
-    newContents[step - 1] = opinion;
+    newContents[step - 1] = currentVal;
     setContents(newContents);
+
     const prevStep = (step - 1) as 1 | 2 | 3;
     setStep(prevStep);
     setOpinion(newContents[prevStep - 1] || '');
@@ -342,6 +349,7 @@ export const Write = () => {
                         }}
                       >
                         <textarea
+                          ref={textareaRef}
                           placeholder={currentStepData[step].p}
                           value={opinion}
                           onChange={handleTextChange}
@@ -400,8 +408,7 @@ export const Write = () => {
                   className="fixed bottom-[calc(70px+env(safe-area-inset-bottom))] left-1/2 -translate-x-5 z-50 whitespace-nowrap"
                   bubbleText={
                     <>
-                      <span className="text-[var(—color-b4)] ">100자 이상</span> 작성 시 피드백
-                      제공
+                      <span className="text-[var(—color-b4)] ">100자 이상</span> 작성 시 피드백 제공
                     </>
                   }
                   onBubbleClose={handleCloseBubble}

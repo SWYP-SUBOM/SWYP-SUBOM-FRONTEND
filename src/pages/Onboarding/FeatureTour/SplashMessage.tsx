@@ -1,10 +1,12 @@
 import { useEffect } from 'react';
 import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
 import { useGetUserName } from '../../../hooks/User/useGetUserName';
+import { useThemeColor } from '../../../hooks/useThemeColor';
 
 export const SplashMessage = () => {
   const { handleNext } = useOnboardingNavigation();
   const { data: userName, isLoading } = useGetUserName();
+  useThemeColor('#2276ff');
 
   useEffect(() => {
     setTimeout(() => {

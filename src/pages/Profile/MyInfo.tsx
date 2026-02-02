@@ -4,6 +4,7 @@ import { useModal } from '../../hooks/useModal';
 import { useGetMe } from '../../hooks/User/useGetMe';
 import { useLogout } from '../../hooks/User/useLogout';
 import { useUnregister } from '../../hooks/User/useUnregister';
+import { useThemeColor } from '../../hooks/useThemeColor';
 import { GAEvents } from '../../utils/GAEvent';
 import { ActionButtons } from './_components/ActionButtons';
 import { InfoCard } from './_components/InfoCard';
@@ -11,6 +12,7 @@ import { InfoNotice } from './_components/InfoNotice';
 import { NameChangeModal } from './_components/NameChangeModal';
 
 export const MyInfo = () => {
+  useThemeColor('#eef1f4');
   useEffect(() => {
     GAEvents.profileManageView();
   }, []);
