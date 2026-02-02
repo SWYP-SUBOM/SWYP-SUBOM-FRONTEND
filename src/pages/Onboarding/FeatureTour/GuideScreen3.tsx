@@ -9,30 +9,6 @@ export const GuideScreen3 = () => {
     <div className="min-h-dvh flex flex-col">
       <ProgressIndicator activeIndexes={[2]} total={4} />
 
-<<<<<<< Updated upstream
-      <div className="flex-1 flex flex-col min-h-0">
-        <OnboardingLayout
-          title={
-            <>
-              <div>내 글을</div>
-              <div>한눈에 확인해보세요</div>
-            </>
-          }
-          subtitle={
-            <>
-              <div>캘린더에서 나의 글을 한눈에 확인해보세요</div>
-            </>
-          }
-          image={{
-            src: guide3,
-            alt: 'guide3',
-            className: 'w-61 h-61',
-          }}
-        />
-      </div>
-
-      <div className="mt-auto w-full px-4 pt-4 pb-[calc(24px+env(safe-area-inset-bottom))] flex flex-col items-center">
-=======
       <OnboardingLayout
         title={
           <>
@@ -55,7 +31,6 @@ export const GuideScreen3 = () => {
       />
 
       <div className="w-full px-4 pt-4 pb-[calc(24px+env(safe-area-inset-bottom))] flex flex-col items-center">
->>>>>>> Stashed changes
         <Button label="다음으로" onClick={handleNext} />
         <button
           onClick={handleSkip}
