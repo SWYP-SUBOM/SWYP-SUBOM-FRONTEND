@@ -39,7 +39,7 @@ export const GuideScreen4 = () => {
           }}
         />
         <div className="w-full px-4 pt-9 pb-[calc(20px+env(safe-area-inset-bottom))] flex flex-col items-center">
-          <Button label="홈으로 돌아가기" onClick={handleNext} />
+          <Button label="홈으로 돌아가기" onClick={handleComplete} />
         </div>
       </div>
     </div>
