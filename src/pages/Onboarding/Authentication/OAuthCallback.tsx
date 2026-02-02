@@ -31,7 +31,7 @@ export const OAuthCallback = () => {
         }
       },
       onError: () => {
-        navigate(ROUTES.ONBOARDING_LOGIN);
+        navigate(ROUTES.HOME);
       },
     });
   }, [searchParams]);
