@@ -25,7 +25,7 @@ export const GuideScreen1 = () => {
         image={{
           src: guide1,
           alt: 'guide1',
-          className: 'sm:w-[328px] sm:h-[348px] w-[244px] h-[244px]',
+          className: 'sm:w-[328px] sm:h-[348px] w-[244px] h-[244px] sm:mt-[20px] mt-[18px]',
         }}
       />
 
