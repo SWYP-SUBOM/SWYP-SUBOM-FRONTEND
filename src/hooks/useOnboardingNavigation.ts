@@ -32,17 +32,11 @@ export const useOnboardingNavigation = () => {
     switch (currentPath) {
       case ROUTES.ONBOARDING_INTRO1:
       case ROUTES.ONBOARDING_INTRO2:
-        navigate(ROUTES.ONBOARDING_LOGIN);
-        break;
-
-      case ROUTES.ONBOARDING_LOGIN:
         navigate(ROUTES.HOME);
         break;
 
-      case ROUTES.ONBOARDING_GUIDE_SCREEN1:
-      case ROUTES.ONBOARDING_GUIDE_SCREEN2:
-      case ROUTES.ONBOARDING_GUIDE_SCREEN3:
-        navigate(ROUTES.ONBOARDING_GUIDE_SCREEN4);
+      case ROUTES.ONBOARDING_NAME_INPUT:
+        navigate(ROUTES.ONBOARDING_SPLASH_MESSAGE);
         break;
 
       default:
