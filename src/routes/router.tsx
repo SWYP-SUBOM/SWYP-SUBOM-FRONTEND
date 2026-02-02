@@ -11,7 +11,6 @@ import { FeedBack } from '../pages/Feedback';
 import { GatherTopic } from '../pages/GatherTopic';
 import Home from '../pages/Home';
 import { Notification } from '../pages/Notification';
-import { Login } from '../pages/Onboarding/Authentication/Login';
 import { NameInput } from '../pages/Onboarding/Authentication/NameInput';
 import { OAuthCallback } from '../pages/Onboarding/Authentication/OAuthCallback';
 import { GuideScreen1 } from '../pages/Onboarding/FeatureTour/GuideScreen1';
@@ -100,10 +99,7 @@ export const router = createBrowserRouter([
             path: 'onboarding/intro2',
             element: <ServiceIntro2 />,
           },
-          {
-            path: 'onboarding/Login',
-            element: <Login />,
-          },
+          
           {
             path: 'onboarding/NameInput',
             element: <NameInput />,

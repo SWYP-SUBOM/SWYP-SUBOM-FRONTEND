@@ -1,8 +1,15 @@
 import guideright from '../../../assets/Home/guideright.svg';
 import book from '../../../assets/HomeBanner/book.png';
-
+import { useNavigate } from 'react-router-dom';
+import { ROUTES } from '../../../routes/routes';
+const ONBOARDING_GUIDE_SCREEN1 = ROUTES.ONBOARDING_GUIDE_SCREEN1;
+ 
 export const GuideBanner = () => {
-  const handleGuideBannerClick = () => {};
+  const navigate = useNavigate();
+  const handleGuideBannerClick = () => {
+    
+    navigate(ONBOARDING_GUIDE_SCREEN1);
+  };
 
   return (
     <div

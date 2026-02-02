@@ -6,6 +6,7 @@ import { useTodayPostInfoStore } from '../../../store/useTodayPostInfo';
 import { getAccessToken } from '../../../utils/api';
 import type { HomeBannerTitleProps } from './HomeBanner.types';
 import { HomeBannerItem } from './HomeBannerItem';
+import { kakaoLoginUrl } from '../../../api/services/authService';
 
 export const HomeBannerTitle = ({ children, textColor }: HomeBannerTitleProps) => {
   return <div className={`${textColor} T02_B`}>{children}</div>;
@@ -83,7 +84,7 @@ export const HomeBanner = ({ userNameData, homeData }: HomeBannerProps) => {
         navigate('/feed');
         break;
       case 'GUEST':
-        navigate('/onboarding/Login');
+        window.location.href = kakaoLoginUrl();
         break;
       default:
         break;
