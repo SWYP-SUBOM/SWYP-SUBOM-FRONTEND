@@ -35,7 +35,7 @@ export const GuideScreen4 = () => {
           image={{
             src: guide4,
             alt: 'guide4',
-            className: 'w-[328px] h-[348px] ',
+            className: 'w-[328px] h-[348px] sm:mt-[20px] mt-[18px]',
           }}
         />
         <div className="w-full px-4 pt-9 pb-[calc(20px+env(safe-area-inset-bottom))] flex flex-col items-center">
