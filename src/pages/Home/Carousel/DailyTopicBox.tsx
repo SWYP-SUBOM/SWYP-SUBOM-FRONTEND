@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { CategoryChip } from '../../../components/common/CategoryChip';
 import { GuestBottomSheet } from '../../../components/common/GuestBottomSheet';
-import { useBottomSheet } from '../../../hooks/useBottomSheet';
-import { useAuthStore } from '../../../store/useAuthStore';
 import { CATEGORIES } from '../../../constants/Categories';
 import type { CategoryNameType } from '../../../constants/Category';
+import { useBottomSheet } from '../../../hooks/useBottomSheet';
+import { useAuthStore } from '../../../store/useAuthStore';
 import { useTodayPostInfoStore } from '../../../store/useTodayPostInfo';
+import { IsDraftBottomSheet } from '../_components/IsDraftBottomSheet';
 
 interface DailyTopicBoxProps {
   categoryId: number;
@@ -40,6 +41,34 @@ export const DailyTopicBox = ({
 
     if (!isLoggedIn) {
       openBottomSheet(<GuestBottomSheet />);
+      return;
+    }
+
+    // 임시저장 글이 있는데, 클릭한 카테고리가 기존과 다를 경우
+    if (isTodayDraft && todayPost?.categoryId !== categoryId) {
+      openBottomSheet(
+        <IsDraftBottomSheet
+          draftPostId={todayPost!.postId!}
+          isTodayDraft={isTodayDraft}
+          // 이어쓰기
+          prevData={{
+            categoryName: todayPost?.categoryName || '',
+            topicName: todayPost?.topicName || '',
+            categoryId: todayPost?.categoryId || 0,
+            topicId: todayPost?.topicId || 0,
+            aiFeedbackId: todayPost?.aiFeedbackId,
+            topicType: todayPost?.topicType || '',
+          }}
+          // 새로쓰기
+          newData={{
+            categoryId,
+            categoryName,
+            topicName: topicName || '',
+            topicId,
+            topicType: topicType || '',
+          }}
+        />,
+      );
       return;
     }
 

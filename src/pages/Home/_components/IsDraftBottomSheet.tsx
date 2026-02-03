@@ -5,24 +5,25 @@ import { BottomSheet, Xbutton } from '../../../components/BottomSheet/BottomShee
 import { useDeletePost } from '../../../hooks/Post/useDeletePost';
 import { useBottomSheet } from '../../../hooks/useBottomSheet';
 
-export const IsDraftBottomSheet = ({
-  draftPostId,
-  isTodayDraft,
-  categoryName,
-  topicName,
-  categoryId,
-  topicId,
-  aiFeedbackId,
-  topicType,
-}: {
-  draftPostId: number;
-  isTodayDraft: boolean;
+interface TargetData {
+  categoryId: number;
   categoryName: string;
   topicName: string;
-  categoryId: number;
   topicId: number;
   aiFeedbackId?: number | null;
   topicType: string;
+}
+
+export const IsDraftBottomSheet = ({
+  draftPostId,
+  isTodayDraft,
+  prevData,
+  newData,
+}: {
+  draftPostId: number;
+  isTodayDraft: boolean;
+  prevData: TargetData;
+  newData: TargetData;
 }) => {
   const deleteMutation = useDeletePost();
   const navigate = useNavigate();
@@ -32,8 +33,19 @@ export const IsDraftBottomSheet = ({
     try {
       await deleteMutation.mutateAsync({ postId: draftPostId });
       toast.success('삭제 완료');
-      queryClient.invalidateQueries({ queryKey: ['home'] });
-      navigate('/home');
+      await queryClient.invalidateQueries({ queryKey: ['home'] });
+
+      navigate('/write', {
+        state: {
+          categoryId: newData.categoryId,
+          categoryName: newData.categoryName,
+          topicName: newData.topicName,
+          topicId: newData.topicId,
+          topicType: newData.topicType,
+          isTodayDraft: false,
+          showDeleteAlert: true,
+        },
+      });
     } catch (error) {
       console.error('삭제 에러:', error);
     } finally {
@@ -43,29 +55,21 @@ export const IsDraftBottomSheet = ({
 
   const handleMoveContinuing = () => {
     closeBottomSheet();
-    if (aiFeedbackId) {
+    if (prevData.aiFeedbackId) {
       navigate(
-        `/complement/${encodeURIComponent(categoryName)}/${encodeURIComponent(topicName)}/${encodeURIComponent(topicType)}`,
+        `/complement/${encodeURIComponent(prevData.categoryName)}/${encodeURIComponent(prevData.topicName)}/${encodeURIComponent(prevData.topicType)}`,
         {
           state: {
-            categoryName: categoryName,
-            topicName: topicName,
-            topicId: topicId,
-            categoryId: categoryId,
+            ...prevData,
             postId: draftPostId,
             isTodayDraft: isTodayDraft,
-            aiFeedbackId: aiFeedbackId,
-            topicType: topicType,
           },
         },
       );
     } else {
       navigate('/write', {
         state: {
-          categoryName: categoryName,
-          topicName: topicName,
-          topicId: topicId,
-          categoryId: categoryId,
+          ...prevData,
           draftPostId: draftPostId,
           isTodayDraft: isTodayDraft,
         },
