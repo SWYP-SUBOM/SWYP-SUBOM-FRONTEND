@@ -4,21 +4,16 @@ import hotright from '../../assets/Home/hotright.svg';
 import type { CategoryNameType } from '../../constants/Category';
 import { useGetHome } from '../../hooks/Home/useGetHome';
 import { useGetPopularPost } from '../../hooks/Post/useGetPopularPost';
-import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { useGetUserName } from '../../hooks/User/useGetUserName';
 import { useThemeColor } from '../../hooks/useThemeColor';
-import { useHomeDraftSheetStore } from '../../store/useHomeDraftSheetStore';
 import { useTodayPostInfoStore } from '../../store/useTodayPostInfo';
 import { GAEvents } from '../../utils/GAEvent';
 import { GuideBanner } from './_components/GuideBanner';
-import { IsDraftBottomSheet } from './_components/IsDraftBottomSheet';
 import { TodayHotPostBox } from './_components/TodayHotPostBox';
 import { TopicCarousel } from './Carousel/TopicCarousel';
 import { HomeBanner } from './HomeBanner/HomeBanner';
 
 const Home = () => {
-  const { openBottomSheet, BottomContent } = useBottomSheet();
-  const { isDraftSheetOpened, setDraftSheetOpened } = useHomeDraftSheetStore();
   useThemeColor('#f3f5f8');
 
   const { data: userNameData } = useGetUserName();
@@ -26,14 +21,6 @@ const Home = () => {
   const { data: popularPostData } = useGetPopularPost();
   const setTodayPostInfo = useTodayPostInfoStore((state) => state.setTodayPostInfo);
 
-  const isTodayDraft = homeData?.todayPost?.postStatus === 'DRAFT';
-  const draftPostId = homeData?.todayPost?.postId;
-  const categoryName = homeData?.todayPost?.categoryName;
-  const topicName = homeData?.todayPost?.topicName;
-  const categoryId = homeData?.todayPost?.categoryId;
-  const topicId = homeData?.todayPost?.topicId;
-  const aiFeedbackId = homeData?.todayPost?.aiFeedbackId;
-  const topicType = homeData?.todayPost?.topicType;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -49,34 +36,6 @@ const Home = () => {
 
     setTodayPostInfo(homeData.todayPost);
   }, [homeData]);
-
-  useEffect(() => {
-    if (isDraftSheetOpened) return;
-
-    if (
-      isTodayDraft &&
-      draftPostId &&
-      categoryName &&
-      topicName &&
-      categoryId &&
-      topicId &&
-      topicType
-    ) {
-      openBottomSheet(
-        <IsDraftBottomSheet
-          draftPostId={draftPostId}
-          isTodayDraft={isTodayDraft}
-          categoryName={categoryName}
-          topicName={topicName}
-          categoryId={categoryId}
-          topicId={topicId}
-          aiFeedbackId={aiFeedbackId}
-          topicType={topicType}
-        />,
-      );
-      setDraftSheetOpened(true);
-    }
-  }, [isTodayDraft, draftPostId, openBottomSheet]);
 
   return (
     <>
@@ -116,7 +75,6 @@ const Home = () => {
           )}
         </div>
       </div>
-      {BottomContent}
     </>
   );
 };

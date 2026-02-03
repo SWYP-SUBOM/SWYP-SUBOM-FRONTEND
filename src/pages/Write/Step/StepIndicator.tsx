@@ -13,10 +13,18 @@ export const StepIndicator = ({ step, prevText, currentLength }: StepIndicatorPr
     if (!text) return '';
     const sentences = text.trim().split(/[.!?]+/);
     const filteredSentences = sentences.filter((s) => s.trim().length > 0);
-    const lastSentence = filteredSentences[filteredSentences.length - 1]?.trim() || '';
+
+    let lastSentence = filteredSentences[filteredSentences.length - 1]?.trim() || '';
     const lastPunctuation = text.trim().match(/[.!?]+$/)?.[0] || '';
 
-    return lastSentence + lastPunctuation;
+    const fullSentence = lastSentence + lastPunctuation;
+    const maxLength = 30;
+
+    if (fullSentence.length > maxLength) {
+      return `...${fullSentence.slice(-maxLength)}`;
+    }
+
+    return fullSentence;
   };
 
   return (
