@@ -1,14 +1,19 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import hotright from '../../assets/Home/hotright.svg';
+import { PushNotificationModal } from '../../components/common/PushNotificationModal';
 import type { CategoryNameType } from '../../constants/Category';
 import { useGetHome } from '../../hooks/Home/useGetHome';
 import { useGetPopularPost } from '../../hooks/Post/useGetPopularPost';
+import { useFCM } from '../../hooks/useFCM';
+import { useModal } from '../../hooks/useModal';
+import { usePWAInfo } from '../../hooks/usePWAInfo';
 import { useGetUserName } from '../../hooks/User/useGetUserName';
 import { useThemeColor } from '../../hooks/useThemeColor';
 import { useTodayPostInfoStore } from '../../store/useTodayPostInfo';
 import { GAEvents } from '../../utils/GAEvent';
 import { GuideBanner } from './_components/GuideBanner';
+import { PwaBanner } from './_components/PwaBannter';
 import { TodayHotPostBox } from './_components/TodayHotPostBox';
 import { TopicCarousel } from './Carousel/TopicCarousel';
 import { HomeBanner } from './HomeBanner/HomeBanner';
@@ -20,6 +25,9 @@ const Home = () => {
   const { data: homeData } = useGetHome();
   const { data: popularPostData } = useGetPopularPost();
   const setTodayPostInfo = useTodayPostInfoStore((state) => state.setTodayPostInfo);
+  const { isStandalone, notificationPermission, isIOS } = usePWAInfo();
+  const { openModal } = useModal();
+  const { handleRequestPermission } = useFCM();
 
   const navigate = useNavigate();
 
@@ -37,6 +45,16 @@ const Home = () => {
     setTodayPostInfo(homeData.todayPost);
   }, [homeData]);
 
+  useEffect(() => {
+    if (!isStandalone && notificationPermission === 'default') {
+      if (!isIOS) {
+        openModal(<PushNotificationModal />);
+      } else {
+        handleRequestPermission();
+      }
+    }
+  }, [isStandalone, isIOS, notificationPermission, openModal, handleRequestPermission]);
+
   return (
     <>
       <div className="flex flex-col bg-[#F3F5F8] pb-6">
@@ -49,6 +67,7 @@ const Home = () => {
         <TopicCarousel />
         <div className="px-4 pt-[40px]">
           <GuideBanner />
+          <PwaBanner />
           {popularPostData && (
             <>
               <div className="flex items-center justify-between pt-[30px] mb-1">

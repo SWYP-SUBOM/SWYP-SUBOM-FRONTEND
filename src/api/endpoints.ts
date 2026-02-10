@@ -37,6 +37,10 @@ export const NOTIFICATION_ENDPOINTS = {
   NOTIFICATION_STREAM: '/api/notifications/stream',
 } as const;
 
+export const FCM_ENDPOINTS = {
+  FCM: '/api/fcm/token',
+} as const;
+
 export const ADMIN_ENDPOINTS = {
   LOGIN: '/api/admin/manage/login',
   TOPICS: '/api/admin/topics',
@@ -53,4 +57,5 @@ export const ENDPOINTS = {
   ...POST_ENDPOINTS,
   ...NOTIFICATION_ENDPOINTS,
   ...ADMIN_ENDPOINTS,
+  ...FCM_ENDPOINTS,
 } as const;
