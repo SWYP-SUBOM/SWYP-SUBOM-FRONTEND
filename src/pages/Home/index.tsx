@@ -13,7 +13,7 @@ import { useThemeColor } from '../../hooks/useThemeColor';
 import { useTodayPostInfoStore } from '../../store/useTodayPostInfo';
 import { GAEvents } from '../../utils/GAEvent';
 import { GuideBanner } from './_components/GuideBanner';
-import { PwaBanner } from './_components/PwaBannter';
+import { PwaBanner } from './_components/PwaBanner';
 import { TodayHotPostBox } from './_components/TodayHotPostBox';
 import { TopicCarousel } from './Carousel/TopicCarousel';
 import { HomeBanner } from './HomeBanner/HomeBanner';
@@ -46,8 +46,8 @@ const Home = () => {
   }, [homeData]);
 
   useEffect(() => {
-    if (!isStandalone && notificationPermission === 'default') {
-      if (!isIOS) {
+    if (isStandalone && notificationPermission === 'default') {
+      if (isIOS) {
         openModal(<PushNotificationModal />);
       } else {
         handleRequestPermission();

@@ -8,7 +8,13 @@ export function PushNotificationModal() {
 
   const handleAllowClick = async () => {
     await handleRequestPermission();
-    closeModal();
+    try {
+      await handleRequestPermission();
+    } catch (e) {
+      console.error('푸시 알림 권한 요청 실패:', e);
+    } finally {
+      closeModal();
+    }
   };
 
   return (
