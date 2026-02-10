@@ -10,6 +10,7 @@ import { useModal } from '../../hooks/useModal';
 import { usePWAInfo } from '../../hooks/usePWAInfo';
 import { useGetUserName } from '../../hooks/User/useGetUserName';
 import { useThemeColor } from '../../hooks/useThemeColor';
+import { useAuthStore } from '../../store/useAuthStore';
 import { useTodayPostInfoStore } from '../../store/useTodayPostInfo';
 import { GAEvents } from '../../utils/GAEvent';
 import { GuideBanner } from './_components/GuideBanner';
@@ -28,6 +29,7 @@ const Home = () => {
   const { isStandalone, notificationPermission, isIOS } = usePWAInfo();
   const { openModal } = useModal();
   const { handleRequestPermission } = useFCM();
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const navigate = useNavigate();
 
@@ -46,14 +48,17 @@ const Home = () => {
   }, [homeData]);
 
   useEffect(() => {
-    if (isStandalone && notificationPermission === 'default') {
+    if (!isStandalone) return;
+    if (!isLoggedIn) return;
+
+    if (notificationPermission === 'default') {
       if (isIOS) {
         openModal(<PushNotificationModal />);
       } else {
         handleRequestPermission();
       }
     }
-  }, [isStandalone, isIOS, notificationPermission, openModal, handleRequestPermission]);
+  }, [isStandalone, isLoggedIn, isIOS, notificationPermission, openModal, handleRequestPermission]);
 
   return (
     <>
