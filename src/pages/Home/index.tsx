@@ -5,15 +5,21 @@ import { PushNotificationModal } from '../../components/common/PushNotificationM
 import type { CategoryNameType } from '../../constants/Category';
 import { useGetHome } from '../../hooks/Home/useGetHome';
 import { useGetPopularPost } from '../../hooks/Post/useGetPopularPost';
+<<<<<<< HEAD
 import { useFCM } from '../../hooks/useFCM';
 import { useModal } from '../../hooks/useModal';
 import { usePWAInfo } from '../../hooks/usePWAInfo';
+=======
+>>>>>>> main
 import { useGetUserName } from '../../hooks/User/useGetUserName';
 import { useThemeColor } from '../../hooks/useThemeColor';
 import { useTodayPostInfoStore } from '../../store/useTodayPostInfo';
 import { GAEvents } from '../../utils/GAEvent';
 import { GuideBanner } from './_components/GuideBanner';
+<<<<<<< HEAD
 import { PwaBanner } from './_components/PwaBannter';
+=======
+>>>>>>> main
 import { TodayHotPostBox } from './_components/TodayHotPostBox';
 import { TopicCarousel } from './Carousel/TopicCarousel';
 import { HomeBanner } from './HomeBanner/HomeBanner';
