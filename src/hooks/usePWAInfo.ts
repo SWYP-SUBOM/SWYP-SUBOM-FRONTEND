@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+
 export const usePWAInfo = () => {
   const userAgent = window.navigator.userAgent.toLowerCase();
 
@@ -9,8 +11,22 @@ export const usePWAInfo = () => {
     window.matchMedia('(display-mode: standalone)').matches ||
     (window.navigator as any).standalone === true;
 
-  const notificationPermission =
-    typeof Notification !== 'undefined' ? Notification.permission : 'default';
+  const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>(
+    typeof Notification !== 'undefined' ? Notification.permission : 'default',
+  );
+
+  useEffect(() => {
+    if (typeof Notification === 'undefined') return;
+
+    setNotificationPermission(Notification.permission);
+
+    const handleFocus = () => {
+      setNotificationPermission(Notification.permission);
+    };
+
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, []);
 
   return { isIOS, isStandalone, notificationPermission };
 };

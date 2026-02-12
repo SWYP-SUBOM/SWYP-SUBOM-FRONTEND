@@ -48,8 +48,9 @@ const Home = () => {
   }, [homeData]);
 
   useEffect(() => {
-    if (!isStandalone) return;
-    if (!isLoggedIn) return;
+    if (!isStandalone || !isLoggedIn) return;
+
+    if (notificationPermission === 'granted') return;
 
     if (notificationPermission === 'default') {
       if (isIOS) {
@@ -58,7 +59,7 @@ const Home = () => {
         handleRequestPermission();
       }
     }
-  }, [isStandalone, isLoggedIn, isIOS, notificationPermission, openModal, handleRequestPermission]);
+  }, [isStandalone, isLoggedIn, isIOS, notificationPermission]);
 
   return (
     <>
