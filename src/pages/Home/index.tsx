@@ -57,14 +57,19 @@ const Home = () => {
       return;
     }
 
-    if (notificationPermission === 'default') {
+    const alreadyAsked = localStorage.getItem('push_permission_asked');
+    if (alreadyAsked === 'true') return;
+
+    if (currentNativePermission === 'default') {
+      localStorage.setItem('push_permission_asked', 'true');
+
       if (isIOS) {
         openModal(<PushNotificationModal />);
       } else {
         handleRequestPermission();
       }
     }
-  }, [isStandalone, isLoggedIn, isIOS, notificationPermission, openModal, handleRequestPermission]);
+  }, [isStandalone, isLoggedIn, isIOS, openModal, handleRequestPermission]);
 
   return (
     <>
