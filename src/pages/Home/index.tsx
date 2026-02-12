@@ -26,7 +26,7 @@ const Home = () => {
   const { data: homeData } = useGetHome();
   const { data: popularPostData } = useGetPopularPost();
   const setTodayPostInfo = useTodayPostInfoStore((state) => state.setTodayPostInfo);
-  const { isStandalone, notificationPermission, isIOS } = usePWAInfo();
+  const { isStandalone, isIOS } = usePWAInfo();
   const { openModal } = useModal();
   const { handleRequestPermission } = useFCM();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
