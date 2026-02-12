@@ -6,15 +6,12 @@ export function PushNotificationModal() {
   const { handleRequestPermission } = useFCM();
   const { closeModal } = useModal();
 
-  const handleAllowClick = async () => {
-    await handleRequestPermission();
-    try {
-      await handleRequestPermission();
-    } catch (e) {
+  const handleAllowClick = () => {
+    closeModal();
+
+    handleRequestPermission().catch((e) => {
       console.error('푸시 알림 권한 요청 실패:', e);
-    } finally {
-      closeModal();
-    }
+    });
   };
 
   return (
