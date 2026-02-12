@@ -26,7 +26,7 @@ const Home = () => {
   const { data: homeData } = useGetHome();
   const { data: popularPostData } = useGetPopularPost();
   const setTodayPostInfo = useTodayPostInfoStore((state) => state.setTodayPostInfo);
-  const { isStandalone, notificationPermission, isIOS } = usePWAInfo();
+  const { isStandalone, isIOS } = usePWAInfo();
   const { openModal } = useModal();
   const { handleRequestPermission } = useFCM();
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -57,14 +57,26 @@ const Home = () => {
       return;
     }
 
-    if (notificationPermission === 'default') {
+    const alreadyAsked = localStorage.getItem('push_permission_asked');
+    if (alreadyAsked === 'true') return;
+
+    if (currentNativePermission === 'default') {
+      localStorage.setItem('push_permission_asked', 'true');
+
       if (isIOS) {
         openModal(<PushNotificationModal />);
+        localStorage.setItem('push_permission_asked', 'true');
       } else {
-        handleRequestPermission();
+        handleRequestPermission()
+          .then(() => {
+            localStorage.setItem('push_permission_asked', 'true');
+          })
+          .catch((e) => {
+            console.error('푸시 알림 권한 요청 실패:', e);
+          });
       }
     }
-  }, [isStandalone, isLoggedIn, isIOS, notificationPermission, openModal, handleRequestPermission]);
+  }, [isStandalone, isLoggedIn, isIOS, openModal, handleRequestPermission]);
 
   return (
     <>
