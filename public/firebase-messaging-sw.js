@@ -16,13 +16,45 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// 백그라운드 메시지 처리
 messaging.onBackgroundMessage((payload) => {
-  const notificationTitle = payload.notification.title;
+  console.log("[백그라운드 메시지 수신:", payload);
+
+  // 서버에서 보낸 data 객체 내부의 값을 사용합니다.
+  const notificationTitle = payload.data?.title || "새로운 알림이 왔어요!";
   const notificationOptions = {
-    body: payload.notification.body,
+    body: payload.data?.body || "내용을 확인해보세요",
     icon: "/pwaicon-192x192.png",
+    badge: "/pwaicon-192x192.png",
+    data: {
+      url: payload.data?.url || "/home",
+    },
   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  // 브라우저에 알림 표시
+  return self.registration.showNotification(
+    notificationTitle,
+    notificationOptions
+  );
+});
+
+// 알림 클릭 이벤트 처리
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const targetUrl = event.notification.data.url;
+
+  event.waitUntil(
+    clients
+      .matchAll({ type: "window", includeUncontrolled: true })
+      .then((clientList) => {
+        // 이미 창이 열려있다면 포커스, 아니면 새로 열기
+        for (const client of clientList) {
+          if (client.url === targetUrl && "focus" in client) {
+            return client.focus();
+          }
+        }
+        if (clients.openWindow) {
+          return clients.openWindow(targetUrl);
+        }
+      })
+  );
 });
