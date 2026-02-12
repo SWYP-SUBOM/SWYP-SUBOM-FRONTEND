@@ -50,7 +50,12 @@ const Home = () => {
   useEffect(() => {
     if (!isStandalone || !isLoggedIn) return;
 
-    if (notificationPermission === 'granted') return;
+    const currentNativePermission =
+      typeof window !== 'undefined' ? Notification.permission : 'default';
+
+    if (currentNativePermission === 'granted' || currentNativePermission === 'denied') {
+      return;
+    }
 
     if (notificationPermission === 'default') {
       if (isIOS) {
@@ -59,7 +64,7 @@ const Home = () => {
         handleRequestPermission();
       }
     }
-  }, [isStandalone, isLoggedIn, isIOS, notificationPermission]);
+  }, [isStandalone, isLoggedIn, isIOS, notificationPermission, openModal, handleRequestPermission]);
 
   return (
     <>
