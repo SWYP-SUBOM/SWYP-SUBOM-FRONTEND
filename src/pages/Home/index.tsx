@@ -65,8 +65,15 @@ const Home = () => {
 
       if (isIOS) {
         openModal(<PushNotificationModal />);
+        localStorage.setItem('push_permission_asked', 'true');
       } else {
-        handleRequestPermission();
+        handleRequestPermission()
+          .then(() => {
+            localStorage.setItem('push_permission_asked', 'true');
+          })
+          .catch((e) => {
+            console.error('푸시 알림 권한 요청 실패:', e);
+          });
       }
     }
   }, [isStandalone, isLoggedIn, isIOS, openModal, handleRequestPermission]);
