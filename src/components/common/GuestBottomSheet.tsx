@@ -13,7 +13,7 @@ export interface pendingDataProps {
   isTodayDraft: boolean;
 }
 
-export const GuestBottomSheet = ({ pendingData }: { pendingData: pendingDataProps }) => {
+export const GuestBottomSheet = ({ pendingData }: { pendingData?: pendingDataProps }) => {
   const { closeBottomSheet } = useBottomSheet();
   const handleKakaoLogin = () => {
     if (pendingData) {
