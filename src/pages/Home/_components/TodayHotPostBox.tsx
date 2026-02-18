@@ -8,7 +8,6 @@ import { CategoryTag } from './CategoryTag';
 
 interface TodayHotPostBoxProps {
   categoryName: CategoryNameType;
-  nickname: string;
   summary: string;
   totalReactions: number;
   updatedAt: string;
@@ -17,7 +16,6 @@ interface TodayHotPostBoxProps {
 }
 export const TodayHotPostBox = ({
   categoryName,
-  nickname,
   summary,
   totalReactions,
   updatedAt,

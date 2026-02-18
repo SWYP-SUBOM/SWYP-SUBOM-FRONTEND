@@ -103,7 +103,6 @@ const Home = () => {
               </p>
               <TodayHotPostBox
                 categoryName={popularPostData?.category.categoryName as CategoryNameType}
-                nickname={popularPostData?.nickname}
                 summary={popularPostData?.summary}
                 totalReactions={popularPostData?.totalReactions}
                 updatedAt={popularPostData.updatedAt.split('T')[0]}
