@@ -1,7 +1,6 @@
 import penCompleteWithClick from '../../../assets/HomeBanner/pen-complete-withclick.png';
 import penComplete from '../../../assets/HomeBanner/pen-complete.png';
 import penDraft from '../../../assets/HomeBanner/pen-draft.png';
-import penGuest from '../../../assets/HomeBanner/pen-guest.png';
 import penNotStarted from '../../../assets/HomeBanner/pen-not-started.png';
 import type {
   HomeBannerItemType,
@@ -52,10 +51,10 @@ export const HomeBannerItem: Record<HomeBannerStatus, HomeBannerItemType> = {
     bgColor: 'bg-[var(--color-b2)]',
   },
   GUEST: {
-    description: <span className="B03_B text-[#D7ECFF]">로그인 후 이용 가능</span>,
-    title: '로그인하고 \n 루틴 시작하기',
-    titleTextColor: 'text-white',
-    img: penGuest,
-    bgColor: 'bg-[var(--color-b5)]',
+    description: <span className="B03_B text-[#2276FF]">하루에 한 글로 사고력 훈련</span>,
+    title: '나의 사고력 레벨은? \n 지금 바로 글 써보기',
+    titleTextColor: 'text-gray-900',
+    img: penNotStarted,
+    bgColor: 'bg-[var(--color-b2)]',
   },
 };
