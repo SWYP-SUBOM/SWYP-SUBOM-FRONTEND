@@ -35,17 +35,27 @@ export const Xbutton = () => {
   );
 };
 
-export const Content = ({ children }: { children: ReactNode }) => {
+export const Content = ({
+  children,
+  height = 339,
+  icon = warning,
+  iconSize = 70,
+}: {
+  children: ReactNode;
+  height?: number;
+  icon?: string;
+  iconSize?: number;
+}) => {
   return (
     <motion.div
-      className="relative bg-[#F9F9F9] w-full max-w-[420px] h-[339px] py-6 rounded-tl-2xl rounded-tr-2xl px-4 flex flex-col items-center"
+      className={`relative bg-[#F9F9F9] w-full max-w-[420px] py-6 rounded-tl-2xl rounded-tr-2xl px-4 flex flex-col items-center h-[${height}px]`}
       initial={{ y: 339 }}
       animate={{ y: 0 }}
       exit={{ y: 339 }}
       transition={{ type: 'tween', duration: 0.3 }}
     >
       <div className="pb-6 pt-[50px] flex justify-center items-center">
-        <img src={warning} className="w-[70px] h-[70px]" alt="warning" />
+        <img src={icon} className={`w-[${iconSize}px] h-[${iconSize}px]`} alt="icon" />
       </div>
       <div className="flex flex-col items-center w-full">{children}</div>
     </motion.div>
@@ -53,12 +63,12 @@ export const Content = ({ children }: { children: ReactNode }) => {
 };
 
 export const Title = ({ children }: { children: ReactNode }) => {
-  return <div className="items-center justify-center T01_B">{children}</div>;
+  return <div className="items-center text-center justify-center T01_B">{children}</div>;
 };
 
 export const Description = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="inline-block items-center justify-center text-center break-normal whitespace-normal B02_M pt-2 pb-[34px] text-gray-800">
+    <div className="inline-block items-center text-center justify-center text-center break-normal whitespace-normal B02_M pt-2 pb-[34px] text-gray-800">
       {children}
     </div>
   );
@@ -81,7 +91,6 @@ export const Trigger = ({
 }) => {
   return (
     <div className="flex w-full gap-3">
-      
       {leftText && (
         <button
           className="flex-1 h-14 cursor-pointer bg-[#E7EBEE] rounded-xl text-gray-750 font-medium"
@@ -91,12 +100,12 @@ export const Trigger = ({
         </button>
       )}
       {rightText && (
-      <button
-        className="flex-1 h-14 cursor-pointer bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] rounded-xl text-white font-medium"
-        onClick={onRightClick}
-      >
-        {rightText}
-      </button>
+        <button
+          className="flex-1 h-14 cursor-pointer bg-[var(--color-b7)] active:bg-[var(--color-b8)] hover:bg-[var(--color-b8)] rounded-xl text-white font-medium"
+          onClick={onRightClick}
+        >
+          {rightText}
+        </button>
       )}
 
       {loginText && (
@@ -107,7 +116,6 @@ export const Trigger = ({
           {loginText}
         </button>
       )}
-      
     </div>
   );
 };

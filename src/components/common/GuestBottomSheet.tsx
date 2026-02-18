@@ -1,24 +1,43 @@
+import { kakaoLoginUrl } from '../../api/services/authService';
+import write from '../../assets/BottomSheet/write.svg';
+import type { CategoryNameType } from '../../constants/Category';
 import { useBottomSheet } from '../../hooks/useBottomSheet';
 import { BottomSheet, Xbutton } from '../BottomSheet/BottomSheet';
-import { kakaoLoginUrl } from '../../api/services/authService';
 
-export const GuestBottomSheet = () => {
+export interface pendingDataProps {
+  categoryId: number;
+  categoryName: CategoryNameType;
+  topicName: string;
+  topicId: number;
+  topicType: string;
+  isTodayDraft: boolean;
+}
+
+export const GuestBottomSheet = ({ pendingData }: { pendingData?: pendingDataProps }) => {
   const { closeBottomSheet } = useBottomSheet();
   const handleKakaoLogin = () => {
+    if (pendingData) {
+      localStorage.setItem('pending_post_data', JSON.stringify(pendingData));
+    }
     window.location.href = kakaoLoginUrl();
   };
 
   return (
     <BottomSheet>
       <BottomSheet.Overlay>
-        <BottomSheet.Content>
+        <BottomSheet.Content height={382} icon={write} iconSize={52}>
           <Xbutton></Xbutton>
-          <BottomSheet.Title>로그인 후 이용 가능</BottomSheet.Title>
-          <BottomSheet.Description>로그인하여 글쓰기 훈련을 시작해보세요!</BottomSheet.Description>
-          <BottomSheet.Trigger  
-            loginText="카카오톡으로 1초만에 로그인"
+          <BottomSheet.Title>
+            무료로 내 글쓰기 실력을 <br /> 점검해보세요
+          </BottomSheet.Title>
+          <BottomSheet.Description>
+            AI가 문장력과 글의 흐름을 분석해
+            <br /> 점수와 개선 포인트를 알려드려요.
+          </BottomSheet.Description>
+          <BottomSheet.Trigger
+            loginText="3초만에 로그인하기"
             onLoginClick={() => {
-              closeBottomSheet(); 
+              closeBottomSheet();
               handleKakaoLogin();
             }}
           />

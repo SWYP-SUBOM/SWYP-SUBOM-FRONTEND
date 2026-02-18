@@ -26,8 +26,20 @@ export const OAuthCallback = () => {
         // username이 "no"면 닉네임 입력 페이지로, 아니면 홈으로
         if (name === 'no') {
           navigate(ROUTES.ONBOARDING_NAME_INPUT);
+          return;
+        }
+
+        const isPendingData = localStorage.getItem('pending_post_data');
+
+        if (isPendingData) {
+          const data = JSON.parse(isPendingData);
+          localStorage.removeItem('pending_post_data');
+
+          // 시작하기 버튼 -> 로그인 -> 해당 글쓰기(/write) 페이지로 이동
+          navigate('/write', { state: data, replace: true });
         } else {
-          navigate(ROUTES.HOME);
+          // 일반 유저라면 홈으로 이동
+          navigate(ROUTES.HOME, { replace: true });
         }
       },
       onError: () => {

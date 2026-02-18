@@ -2,13 +2,12 @@ import { useNavigate } from 'react-router-dom';
 import heartIcon from '../../../assets/Feed/heart.svg';
 import right from '../../../assets/Feed/right.svg';
 import viewIcon from '../../../assets/Feed/view.svg';
-import { CategoryChip } from '../../../components/common/CategoryChip';
 import type { CategoryNameType } from '../../../constants/Category';
 import { DateFormatter } from '../../../utils/DateFormatter';
+import { CategoryTag } from './CategoryTag';
 
 interface TodayHotPostBoxProps {
   categoryName: CategoryNameType;
-  nickname: string;
   summary: string;
   totalReactions: number;
   updatedAt: string;
@@ -17,7 +16,6 @@ interface TodayHotPostBoxProps {
 }
 export const TodayHotPostBox = ({
   categoryName,
-  nickname,
   summary,
   totalReactions,
   updatedAt,
@@ -41,8 +39,7 @@ export const TodayHotPostBox = ({
         <div>
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <CategoryChip categoryName={categoryName}></CategoryChip>
-              <div className="B03-1_M text-gray-900">By {nickname}</div>
+              <CategoryTag categoryName={categoryName}></CategoryTag>
             </div>
             <div>
               <img src={right} className="w-6 h-6" />
