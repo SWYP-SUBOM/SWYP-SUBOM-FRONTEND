@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import onboardingLogo from '../../../assets/Onboarding/onboardingLogo.png';
-import { useThemeColor } from '../../../hooks/useThemeColor';
+import onboardingLogo from '../../assets/Onboarding/onboardingLogo.png';
+import { useThemeColor } from '../../hooks/useThemeColor';
 export const SplashScreen = () => {
   useThemeColor('#2276ff');
   const navigate = useNavigate();
   useEffect(() => {
     setTimeout(() => {
-      navigate('/onboarding/intro1');
+      navigate('/home');
     }, 2000);
   }, []);
   return (

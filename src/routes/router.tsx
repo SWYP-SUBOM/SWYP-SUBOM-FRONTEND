@@ -18,9 +18,7 @@ import { GuideScreen2 } from '../pages/Onboarding/FeatureTour/GuideScreen2';
 import { GuideScreen3 } from '../pages/Onboarding/FeatureTour/GuideScreen3';
 import { GuideScreen4 } from '../pages/Onboarding/FeatureTour/GuideScreen4';
 import { SplashMessage } from '../pages/Onboarding/FeatureTour/SplashMessage';
-import { ServiceIntro1 } from '../pages/Onboarding/Introduction/ServiceIntro1';
-import { ServiceIntro2 } from '../pages/Onboarding/Introduction/ServiceIntro2';
-import { SplashScreen } from '../pages/Onboarding/Introduction/SplashScreen';
+import { SplashScreen } from '../pages/Onboarding/SplashScreen';
 import { PostDetail } from '../pages/PostDetail';
 import { FeedbackView } from '../pages/Profile/FeedbackView';
 import { MyInfo } from '../pages/Profile/MyInfo';
@@ -90,16 +88,7 @@ export const router = createBrowserRouter([
           {
             path: '',
             element: <SplashScreen />,
-          },
-          {
-            path: 'onboarding/intro1',
-            element: <ServiceIntro1 />,
-          },
-          {
-            path: 'onboarding/intro2',
-            element: <ServiceIntro2 />,
-          },
-          
+          },         
           {
             path: 'onboarding/NameInput',
             element: <NameInput />,

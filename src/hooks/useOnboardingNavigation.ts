@@ -26,24 +26,7 @@ export const useOnboardingNavigation = () => {
     }
   };
 
-  const handleSkip = () => {
-    const currentPath = location.pathname;
+  
 
-    switch (currentPath) {
-      case ROUTES.ONBOARDING_INTRO1:
-      case ROUTES.ONBOARDING_INTRO2:
-        navigate(ROUTES.HOME);
-        break;
-
-      case ROUTES.ONBOARDING_NAME_INPUT:
-        navigate(ROUTES.ONBOARDING_SPLASH_MESSAGE);
-        break;
-
-      default:
-        navigate(ROUTES.HOME);
-        break;
-    }
-  };
-
-  return { handleNext, handleSkip };
+  return { handleNext };
 };

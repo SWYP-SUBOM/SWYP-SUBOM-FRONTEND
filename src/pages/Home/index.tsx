@@ -83,10 +83,7 @@ const Home = () => {
       <div className="flex flex-col bg-[#F3F5F8] pb-6">
         <div className="flex-none px-4">
           <HomeBanner userNameData={userNameData} homeData={homeData} />
-          <p className="mb-1 pt-[26px] T02_B text-gray-900">오늘의 주제</p>
-          <p className="pt-[2px] B03_1_M text-gray-750 pb-1">히루에 1번 작성할 수 있어요</p>
         </div>
-
         <TopicCarousel />
         <div className="px-4 pt-[40px]">
           <GuideBanner />
@@ -106,7 +103,6 @@ const Home = () => {
               </p>
               <TodayHotPostBox
                 categoryName={popularPostData?.category.categoryName as CategoryNameType}
-                nickname={popularPostData?.nickname}
                 summary={popularPostData?.summary}
                 totalReactions={popularPostData?.totalReactions}
                 updatedAt={popularPostData.updatedAt.split('T')[0]}
