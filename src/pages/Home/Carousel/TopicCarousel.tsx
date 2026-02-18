@@ -1,5 +1,7 @@
 import { animate, motion } from 'framer-motion';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import play from '../../../assets/Home/play.svg';
+import stop from '../../../assets/Home/stop.svg';
 import { CATEGORIES } from '../../../constants/Categories';
 import { useGetDailyQuestions } from '../../../hooks/Home/useGetDailyQuestions';
 import { DailyTopicBox } from './DailyTopicBox';
@@ -7,8 +9,10 @@ import { DailyTopicBox } from './DailyTopicBox';
 export const TopicCarousel = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
   const { data: dailyQuestionsData } = useGetDailyQuestions();
 
+  const totalSlides = CATEGORIES.length;
   const extendedCategories = useMemo(() => [...CATEGORIES, ...CATEGORIES, ...CATEGORIES], []);
 
   // 초기 위치 잡기 및 무한 루프 감지 (기존 handleScroll 로직 활용)
@@ -41,6 +45,42 @@ export const TopicCarousel = () => {
     }
   };
 
+  const scrollTo = useCallback(
+    (index: number) => {
+      const container = containerRef.current;
+      if (!container || !isPlaying) return;
+
+      const children = Array.from(container.children) as HTMLElement[];
+      // 중앙 세트의 해당 인덱스로 이동
+      const targetIdx = totalSlides + (index % totalSlides);
+      const targetScroll =
+        children[targetIdx].offsetLeft +
+        children[targetIdx].offsetWidth / 2 -
+        container.offsetWidth / 2;
+
+      animate(container.scrollLeft, targetScroll, {
+        type: 'spring',
+        stiffness: 150,
+        damping: 25,
+        onUpdate: (latest) => {
+          container.scrollLeft = latest;
+          handleUpdate();
+        },
+      });
+    },
+    [handleUpdate, totalSlides],
+  );
+
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval>;
+    if (isPlaying) {
+      interval = setInterval(() => {
+        scrollTo(activeIndex + 1);
+      }, 6000);
+    }
+    return () => clearInterval(interval);
+  }, [isPlaying, activeIndex, scrollTo]);
+
   useEffect(() => {
     const container = containerRef.current;
     if (container) {
@@ -50,28 +90,6 @@ export const TopicCarousel = () => {
       container.scrollLeft = initialScroll;
     }
   }, []);
-
-  const scrollTo = (index: number) => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const children = Array.from(container.children) as HTMLElement[];
-    const targetIdx = CATEGORIES.length + index;
-    const targetScroll =
-      children[targetIdx].offsetLeft +
-      children[targetIdx].offsetWidth / 2 -
-      container.offsetWidth / 2;
-
-    animate(container.scrollLeft, targetScroll, {
-      type: 'spring',
-      stiffness: 150,
-      damping: 25,
-      onUpdate: (latest) => {
-        container.scrollLeft = latest;
-        handleUpdate();
-      },
-    });
-  };
 
   const handleDragEnd = (_: any, info: any) => {
     const container = containerRef.current;
@@ -107,12 +125,31 @@ export const TopicCarousel = () => {
   };
 
   return (
-    <div className="w-full bg-transparent overflow-hidden">
+    <div className="relative w-full bg-transparent overflow-hidden">
+      <div className="absolute top-4 right-4 z-10">
+        <button
+          onClick={() => setIsPlaying((prev) => !prev)}
+          className="flex items-center pl-3 pr-1 py-1 rounded-[99px] bg-[#222329]/35 backdrop-blur-sm C01_SB"
+        >
+          <div className="flex items-center gap-1 mr-1">
+            <span className="text-white">{activeIndex + 1}</span>
+            <span className="text-gray-500">/ {totalSlides}</span>
+          </div>
+          <div className="w-5 h-5 flex items-center justify-center cursor-pointer">
+            <img
+              src={isPlaying ? stop : play}
+              alt={isPlaying ? 'stop' : 'play'}
+              className="w-full h-full"
+            />
+          </div>
+        </button>
+      </div>
       <motion.div
         ref={containerRef}
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0}
+        onDragStart={() => setIsPlaying(false)}
         onDrag={(_, info) => {
           if (containerRef.current) {
             containerRef.current.scrollLeft -= info.delta.x;
@@ -121,8 +158,8 @@ export const TopicCarousel = () => {
         }}
         onDragEnd={handleDragEnd}
         className="
-          flex items-start gap-4 overflow-x-hidden 
-          px-[10%] py-4
+          flex items-start overflow-x-hidden 
+          w-full
           cursor-grab active:cursor-grabbing select-none
           touch-none
         "
@@ -139,7 +176,7 @@ export const TopicCarousel = () => {
               animate={{ opacity: isCenter ? 1 : 0.6 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
               /* snap-always: 세게 밀어도 하나씩 걸리게 함 */
-              className="snap-center snap-always shrink-0 w-[85%] max-w-[320px] self-stretch pointer-events-none"
+              className="w-full snap-center snap-always shrink-0 self-stretch "
             >
               <div className="pointer-events-auto">
                 <DailyTopicBox
@@ -155,18 +192,6 @@ export const TopicCarousel = () => {
           );
         })}
       </motion.div>
-
-      <div className="flex justify-center gap-2 mt-4">
-        {CATEGORIES.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => scrollTo(index)}
-            className={`h-2 rounded-full transition-all duration-300 ${
-              activeIndex === index ? 'bg-blue-600 w-4' : ' bg-gray-400 w-2'
-            }`}
-          />
-        ))}
-      </div>
     </div>
   );
 };
