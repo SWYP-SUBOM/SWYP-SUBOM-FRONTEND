@@ -11,7 +11,6 @@ const firebaseConfig = {
 };
 
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-export const messaging = getMessaging(app);
 
 // VAPID KEY는 Firebase 콘솔 -> 설정 -> 클라우드 메시징에서 생성 가능
 export const requestForToken = async () => {
