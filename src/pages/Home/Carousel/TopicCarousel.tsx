@@ -109,9 +109,14 @@ export const TopicCarousel = () => {
       0,
     );
 
+    const dragDistance = info.offset.x;
+
     // 세게 밀었을 때 한 칸만 더 가도록 제한
-    if (velocity < -500) closestIndex += 1;
-    if (velocity > 500) closestIndex -= 1;
+    if (dragDistance < -50 || velocity < -50) {
+      closestIndex += 1;
+    } else if (dragDistance > 50 || velocity > 50) {
+      closestIndex -= 1;
+    }
 
     const targetScroll = centers[Math.max(0, Math.min(closestIndex, centers.length - 1))];
 
