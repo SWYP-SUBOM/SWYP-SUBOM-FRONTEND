@@ -1,4 +1,4 @@
-import guide4 from '../../../assets/Onboarding/guide4.png';
+import guide4 from '../../../assets/Onboarding/guide4.webp';
 import { Button } from '../../../components/common/Button';
 import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
 import { useThemeColor } from '../../../hooks/useThemeColor';

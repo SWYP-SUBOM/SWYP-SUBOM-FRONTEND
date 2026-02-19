@@ -1,4 +1,4 @@
-import guide1 from '../../../assets/Onboarding/guide1.png';
+import guide1 from '../../../assets/Onboarding/guide1.webp';
 import { Button } from '../../../components/common/Button';
 import { useOnboardingNavigation } from '../../../hooks/useOnboardingNavigation';
 import { useThemeColor } from '../../../hooks/useThemeColor';
@@ -29,7 +29,6 @@ export const GuideScreen1 = () => {
             src: guide1,
             alt: 'guide1',
             className: 'w-[328px] h-[348px]',
-
           }}
         />
         <div className="w-full px-4 pt-6 pb-[calc(20px+env(safe-area-inset-bottom))] flex flex-col items-center">

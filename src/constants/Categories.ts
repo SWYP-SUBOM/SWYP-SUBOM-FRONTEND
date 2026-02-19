@@ -3,11 +3,11 @@ import daily from '../assets/CategoryBox/daily.png';
 import hobby from '../assets/CategoryBox/hobby.png';
 import relationship from '../assets/CategoryBox/relationship.png';
 import value from '../assets/CategoryBox/value.png';
-import blue from '../assets/Home/blue.png';
-import green from '../assets/Home/green.png';
-import pink from '../assets/Home/pink.png';
-import purple from '../assets/Home/purple.png';
-import yellow from '../assets/Home/yellow.png';
+import blue from '../assets/Home/blue.webp';
+import green from '../assets/Home/green.webp';
+import pink from '../assets/Home/pink.webp';
+import purple from '../assets/Home/purple.webp';
+import yellow from '../assets/Home/yellow.webp';
 
 export interface Category {
   categoryId: number;
