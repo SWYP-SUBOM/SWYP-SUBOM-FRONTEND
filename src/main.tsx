@@ -13,17 +13,6 @@ export const queryClient = new QueryClient();
 
 initSentry();
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker
-    .register('/firebase-messaging-sw.js')
-    .then((registration) => {
-      console.log('FCM SW registered:', registration);
-    })
-    .catch((err) => {
-      console.error('FCM SW registration failed:', err);
-    });
-}
-
 if (import.meta.env.DEV) {
   setupLocator();
 }
