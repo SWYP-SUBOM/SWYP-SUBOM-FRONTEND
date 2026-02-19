@@ -16,7 +16,7 @@ export const CategoryTabs = [
 
 export const CATEGORY_TAG_COLOR_MAP = {
   일상: {
-    bg: 'bg-[var(--color-b1]',
+    bg: 'bg-[var(--color-b1)]',
     text: 'text-[#6D9FFF]',
   },
   인간관계: {
