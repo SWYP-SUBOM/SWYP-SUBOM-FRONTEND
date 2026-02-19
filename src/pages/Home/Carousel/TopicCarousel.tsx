@@ -72,13 +72,15 @@ export const TopicCarousel = () => {
   );
 
   useEffect(() => {
-    let interval: ReturnType<typeof setInterval>;
+    let interval: ReturnType<typeof setInterval> | null = null;
     if (isPlaying) {
       interval = setInterval(() => {
         scrollTo(activeIndex + 1);
       }, 6000);
     }
-    return () => clearInterval(interval);
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [isPlaying, activeIndex, scrollTo]);
 
   useEffect(() => {
@@ -121,6 +123,9 @@ export const TopicCarousel = () => {
         container.scrollLeft = latest;
         handleUpdate();
       },
+      onComplete: () => {
+        setIsPlaying(true);
+      },
     });
   };
 
@@ -149,7 +154,6 @@ export const TopicCarousel = () => {
         drag="x"
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0}
-        onDragStart={() => setIsPlaying(false)}
         onDrag={(_, info) => {
           if (containerRef.current) {
             containerRef.current.scrollLeft -= info.delta.x;
