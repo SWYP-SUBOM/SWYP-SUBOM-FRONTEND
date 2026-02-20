@@ -3,6 +3,7 @@ import alarm_black from '../../assets/Header/alarm.svg';
 import alarm_white from '../../assets/Header/alarm_white.svg';
 import left from '../../assets/Header/left.svg';
 import { useNotificationStore } from '../../store/useNotificationStore';
+import { useAuthStore } from '../../store/useAuthStore';
 
 interface TitleHeaderProps {
   headerWithNoalarm?: boolean;
@@ -25,6 +26,8 @@ export const TitleHeader = ({
   const unreadCount = useNotificationStore((state) => state.unreadCount);
   const isFeed = path === 'feed';
   const alarmIcon = isFeed ? alarm_black : alarm_white;
+
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const handleBack = () => {
     if (onBack) {
@@ -73,7 +76,10 @@ export const TitleHeader = ({
             {title}
           </div>
         )}
-        <button className="relative cursor-pointer pt-1" onClick={() => navigate('/notification')}>
+        <button
+          className="relative ${isLoggedIn ? 'cursor-pointer' : 'cursor-not-allowed opacity-50 pointer-events-none'} cursor-pointer pt-1"
+          onClick={() => isLoggedIn && navigate('/notification')}
+        >
           <img src={alarm_black} className="w-9 h-6" alt="알림" />
           {unreadCount > 0 && (
             <div className="absolute top-0 right-2 w-2 h-2 bg-red-500 rounded-full" />
