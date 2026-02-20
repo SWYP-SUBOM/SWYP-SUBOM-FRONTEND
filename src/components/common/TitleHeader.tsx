@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import alarm_black from '../../assets/Header/alarm.svg';
 import alarm_white from '../../assets/Header/alarm_white.svg';
 import left from '../../assets/Header/left.svg';
-import { useNotificationStore } from '../../store/useNotificationStore';
 import { useAuthStore } from '../../store/useAuthStore';
+import { useNotificationStore } from '../../store/useNotificationStore';
 
 interface TitleHeaderProps {
   headerWithNoalarm?: boolean;
@@ -24,10 +24,9 @@ export const TitleHeader = ({
 }: TitleHeaderProps) => {
   const navigate = useNavigate();
   const unreadCount = useNotificationStore((state) => state.unreadCount);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const isFeed = path === 'feed';
   const alarmIcon = isFeed ? alarm_black : alarm_white;
-
-  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const handleBack = () => {
     if (onBack) {
@@ -77,11 +76,11 @@ export const TitleHeader = ({
           </div>
         )}
         <button
-          className="relative ${isLoggedIn ? 'cursor-pointer' : 'cursor-not-allowed opacity-50 pointer-events-none'} cursor-pointer pt-1"
+          className={`relative ${isLoggedIn ? 'cursor-pointer' : 'cursor-not-allowed opacity-50 pointer-events-none'}`}
           onClick={() => isLoggedIn && navigate('/notification')}
         >
           <img src={alarm_black} className="w-9 h-6" alt="알림" />
-          {unreadCount > 0 && (
+          {unreadCount > 0 && isLoggedIn && (
             <div className="absolute top-0 right-2 w-2 h-2 bg-red-500 rounded-full" />
           )}
         </button>
@@ -97,9 +96,13 @@ export const TitleHeader = ({
       >
         {title}
       </div>
-      <button className="relative cursor-pointer pt-1" onClick={() => navigate('/notification')}>
+
+      <button
+        className={`relative ${isLoggedIn ? 'cursor-pointer' : 'cursor-not-allowed opacity-50 pointer-events-none'}`}
+        onClick={() => isLoggedIn && navigate('/notification')}
+      >
         <img src={alarmIcon} className="w-9 h-6" alt="알림" />
-        {unreadCount > 0 && (
+        {unreadCount > 0 && isLoggedIn && (
           <div className="absolute top-0 right-2 w-2 h-2 bg-red-500 rounded-full" />
         )}
       </button>
