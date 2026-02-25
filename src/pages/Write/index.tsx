@@ -46,8 +46,8 @@ export const Write = () => {
   const topicName = initialData.topicName;
   const topicId = initialData.topicId;
   const topicType = initialData.topicType;
-  const draftPostId = location.state.draftPostId;
-  const isTodayDraft = location.state.isTodayDraft;
+  const draftPostId = location.state?.draftPostId;
+  const isTodayDraft = location.state?.isTodayDraft ?? false;
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [opinion, setOpinion] = useState('');
