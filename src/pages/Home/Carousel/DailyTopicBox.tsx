@@ -1,10 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import { GuestBottomSheet } from '../../../components/common/GuestBottomSheet';
 import { CATEGORIES } from '../../../constants/Categories';
-import type { CategoryNameType } from '../../../constants/Category';
 import { CATEGORY_TAG_COLOR_MAP } from '../../../constants/CategoryMap';
 import { useBottomSheet } from '../../../hooks/useBottomSheet';
-import { useAuthStore } from '../../../store/useAuthStore';
 import { useTodayPostInfoStore } from '../../../store/useTodayPostInfo';
 import { IsDraftBottomSheet } from '../_components/IsDraftBottomSheet';
 
@@ -26,7 +23,6 @@ export const DailyTopicBox = ({
   topicType,
 }: DailyTopicBoxProps) => {
   const navigate = useNavigate();
-  const { isLoggedIn } = useAuthStore();
   const { openBottomSheet } = useBottomSheet();
   const todayPost = useTodayPostInfoStore((state) => state.todayPost);
   const isTodayDraft = todayPost?.postStatus === 'DRAFT';
@@ -38,19 +34,6 @@ export const DailyTopicBox = ({
 
   const handleWriteClick = () => {
     if (!topicId) return;
-
-    if (!isLoggedIn) {
-      const pendingData = {
-        categoryId,
-        categoryName: categoryName as CategoryNameType,
-        topicName: topicName || '',
-        topicId,
-        topicType: topicType || '',
-        isTodayDraft: false,
-      };
-      openBottomSheet(<GuestBottomSheet pendingData={pendingData} />);
-      return;
-    }
 
     if (isTodayDraft && todayPost?.categoryId !== categoryId) {
       openBottomSheet(
