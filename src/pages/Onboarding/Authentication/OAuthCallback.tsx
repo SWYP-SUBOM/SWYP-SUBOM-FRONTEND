@@ -33,8 +33,6 @@ export const OAuthCallback = () => {
 
         if (isPendingData) {
           const data = JSON.parse(isPendingData);
-          localStorage.removeItem('pending_post_data');
-
           // 시작하기 버튼 -> 로그인 -> 해당 글쓰기(/write) 페이지로 이동
           navigate('/write', { state: data, replace: true });
         } else {

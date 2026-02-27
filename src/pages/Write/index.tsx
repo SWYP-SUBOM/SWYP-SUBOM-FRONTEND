@@ -15,26 +15,39 @@ import { Skeleton } from '../Feedback/Skeleton';
 import { SpeechBubble } from './_components/SpeechBubble';
 import { FeedbackLoading } from './FeedbackLoading';
 
+import { GuestBottomSheet } from '../../components/common/GuestBottomSheet';
 import { CATEGORIES } from '../../constants/Categories';
 import { STEP_MESSAGES } from '../../constants/Guide';
+import { useBottomSheet } from '../../hooks/useBottomSheet';
+import { useAuthStore } from '../../store/useAuthStore';
 import { GAEvents } from '../../utils/GAEvent';
 import { StepIndicator } from './Step/StepIndicator';
 
 export const Write = () => {
   const location = useLocation();
   const { closeBottomSheet } = useBottomSheetStore();
+  const { isLoggedIn } = useAuthStore();
+  const { openBottomSheet } = useBottomSheet();
 
   const MAX_LENGTH = 700;
   const MIN_LENGTH = 100;
   const STEP_DELIMITER = ':::';
 
-  const categoryName = location.state.categoryName;
-  const categoryId = location.state.categoryId;
-  const topicName = location.state.topicName;
-  const topicId = location.state.topicId;
-  const draftPostId = location.state.draftPostId;
-  const isTodayDraft = location.state.isTodayDraft;
-  const topicType = location.state.topicType;
+  const getInitialData = () => {
+    if (location.state) return location.state;
+    const saved = localStorage.getItem('pending_post_data');
+    return saved ? JSON.parse(saved) : {};
+  };
+
+  const initialData = getInitialData();
+
+  const categoryName = initialData.categoryName;
+  const categoryId = initialData.categoryId;
+  const topicName = initialData.topicName;
+  const topicId = initialData.topicId;
+  const topicType = initialData.topicType;
+  const draftPostId = location.state?.draftPostId;
+  const isTodayDraft = location.state?.isTodayDraft ?? false;
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const [opinion, setOpinion] = useState('');
@@ -99,6 +112,23 @@ export const Write = () => {
 
     const newContents = [...contents];
     newContents[step - 1] = currentVal;
+    setContents(newContents);
+
+    if (step === 3 && !isLoggedIn) {
+      const fullContent = newContents.join(STEP_DELIMITER);
+      const pendingData = {
+        categoryId,
+        categoryName,
+        topicName,
+        topicId,
+        topicType,
+        isTodayDraft: false,
+        content: fullContent,
+      };
+      openBottomSheet(<GuestBottomSheet pendingData={pendingData} />);
+      return;
+    }
+
     setContents(newContents);
 
     if (step < 3) {
@@ -185,6 +215,29 @@ export const Write = () => {
       setIsBubbleOpen(false);
     }
   }, [step, opinion]);
+
+  useEffect(() => {
+    const savedData = localStorage.getItem('pending_post_data');
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData);
+
+        const splitContents = parsed.content.split(STEP_DELIMITER);
+        setContents(splitContents);
+
+        let lastStep: 1 | 2 | 3 = 1;
+        if (splitContents[2]?.trim()) lastStep = 3;
+        else if (splitContents[1]?.trim()) lastStep = 2;
+
+        setStep(lastStep);
+        setOpinion(splitContents[lastStep - 1] || '');
+
+        localStorage.removeItem('pending_post_data');
+      } catch (e) {
+        console.error('쓰던 글 복원 실패', e);
+      }
+    }
+  }, []);
 
   const handleCloseBubble = () => {
     setIsBubbleOpen(false);
