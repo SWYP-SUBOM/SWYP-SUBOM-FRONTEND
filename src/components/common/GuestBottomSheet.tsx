@@ -11,6 +11,7 @@ export interface pendingDataProps {
   topicId: number;
   topicType: string;
   isTodayDraft: boolean;
+  content: string;
 }
 
 export const GuestBottomSheet = ({ pendingData }: { pendingData?: pendingDataProps }) => {
